@@ -1,0 +1,27 @@
+{
+  "name": "fut-node",
+  "version": "1.0.0",
+  "description": "Simple node client for FollowUpThen API",
+  "main": "fut.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha ./tests"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto": "0.0.3",
+    "debug": "^2.6.8",
+    "querystring": "^0.2.0",
+    "request": "^2.81.0",
+    "simple-oauth2": "^1.2.0",
+    "unix-timestamp": "^0.2.0"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "nock": "^9.0.13"
+  }
+}
