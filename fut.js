@@ -244,7 +244,7 @@ Fut.prototype.createFut =  function(params, cb) {
         "Authorization": "Bearer " + this._accessToken,
         "Content-Type": "application/json"
       },
-      body: {three: 'more'},
+      body: settings,
       json: true
     }, (error, result, body) => {
       if(error || result.statusCode != 200) {
