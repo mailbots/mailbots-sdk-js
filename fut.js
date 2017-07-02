@@ -24,6 +24,7 @@ function _makeRequest(requestOptions, cb) {
     });
 }
 
+
 function Fut(config) {
   if (!(this instanceof Fut)) return new Fut(config);
   _checkParam(config.clientId, 'clientId');
@@ -54,19 +55,17 @@ function Fut(config) {
 
 }
 
-/////// NEXT:  Make this natively accept a Serverless / Lambda event object, extracting the signature from Cookies or Webhook.
-Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, rawBody, cb) {
+
+/*
+ *  Validates signature on webhook from FUT
+*/
+Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, rawBody) {
   let generatedSig = crypto.createHmac('sha256', webhookTimestamp + this.config.clientSecret).update(rawBody).digest('hex');
   let hookAge = timestamp.now() - webhookTimestamp;
-
-  if (generatedSig !== webhookSignature) {
-    return cb(new Error("x-fut-signature validation check failed"));
-  } else if (hookAge > 900) {
-    return cb(new Error("webhook expired"));
-  } else {
-    debug('webhook valid');
-    return cb(null, true);
+  if (generatedSig !== webhookSignature || hookAge > 900) {
+    return false
   }
+  return true;
 }
 
 
