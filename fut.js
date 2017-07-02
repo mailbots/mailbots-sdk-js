@@ -316,7 +316,7 @@ Fut.prototype.getAccessToken = function(authCode, cb) {
       const tokenDetails = oauth2.accessToken.create(result);
       debug('success! auth token: ', tokenDetails.token);
       this._accessToken = tokenDetails.token.access_token;
-      cb(null, tokenDetails.token.access_token);
+      if(cb) cb(null, tokenDetails.token.access_token);
       return resolve(tokenDetails.token.access_token);
     });
   })
