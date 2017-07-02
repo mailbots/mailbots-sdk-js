@@ -54,7 +54,7 @@ function Fut(config) {
 
 }
 
-
+/////// NEXT:  Make this natively accept a Serverless / Lambda event object, extracting the signature from Cookies or Webhook.
 Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, rawBody, cb) {
   let generatedSig = crypto.createHmac('sha256', webhookTimestamp + this.config.clientSecret).update(rawBody).digest('hex');
   let hookAge = timestamp.now() - webhookTimestamp;
@@ -286,26 +286,27 @@ Fut.prototype.getAuthorizationUri = function() {
 
 
 Fut.prototype.getAccessToken = function(authCode, cb) {
-  debug('auth code from auth uri used to retrive auth token: ', authCode);
-  const oauth2 = OAuth2.create({
-    client: {
-      id: this.config.clientId,
-      secret: this.config.clientSecret
-    },
-    auth: {
-      tokenHost: this.config.tokenHost,
-      tokenPath: this.config.tokenPath,
-      authorizePath: this.config.authorizePath,
-    },
-  });
-
-  const options = {
-    code: authCode,
-    redirect_uri: this.config.redirectUri,
-    client_id: this.config.clientId,
-  };
-
   return new Promise((resolve, reject) => {
+    debug('auth code from auth uri used to retrive auth token: ', authCode);
+
+    const oauth2 = OAuth2.create({
+      client: {
+        id: this.config.clientId,
+        secret: this.config.clientSecret
+      },
+      auth: {
+        tokenHost: this.config.tokenHost,
+        tokenPath: this.config.tokenPath,
+        authorizePath: this.config.authorizePath,
+      },
+    });
+
+    const options = {
+      code: authCode,
+      redirect_uri: this.config.redirectUri,
+      client_id: this.config.clientId,
+    };
+
     oauth2.authorizationCode.getToken(options, (error, result) => {
       if (error) {
         debug('Access Token Error', error.message)
