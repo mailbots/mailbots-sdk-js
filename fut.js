@@ -1,4 +1,5 @@
 const request = require('request');
+const requestPromise = require('request-promise');
 // require('request-debug')(request);
 const OAuth2 = require('simple-oauth2');
 const debug  = require('debug')('fut');
@@ -11,6 +12,16 @@ function _checkParam(param, paramName) {
   if(!param || (typeof param !== 'string')) {
     throw new Error('\''+ paramName + '\' is required to connect to FollowUpThen');
   }
+}
+
+function _makeRequest(requestOptions, cb) {
+  return requestPromise(requestOptions).then((res) => {
+      if(cb) cb(null, res);
+      return Promise.resolve(res);
+    }).catch((err) => {
+      if(cb) cb(err);
+      return Promise.reject(err);
+    });
 }
 
 function Fut(config) {
@@ -43,6 +54,7 @@ function Fut(config) {
 
 }
 
+
 Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, rawBody, cb) {
   let generatedSig = crypto.createHmac('sha256', webhookTimestamp + this.config.clientSecret).update(rawBody).digest('hex');
   let hookAge = timestamp.now() - webhookTimestamp;
@@ -73,23 +85,17 @@ Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, raw
     filters[list] - (string) - search a specific tag
  */
 Fut.prototype.getFuts = function(params, cb) {
-  debug('Fut search params', params);
-  urlParams = querystring.stringify(params);
-  request.get({
-    url: this.config.apiHost + '/api/v1/reminders/?' + urlParams,
+  var requestOptions = {
+    url: this.config.apiHost + '/api/v1/reminders/?' + querystring.stringify(params),
     headers: {
       "Authorization": "Bearer " + this._accessToken,
       "Content-Type": "application/json"
     },
     json: true
-  },
-   (error, result, body) => {
-     if(error || result.statusCode != 200) {
-      cb(new Error(result + ' ' + body));
-     } else {
-      cb(null, body);
-     }
-   });
+  }
+  debug('Request options for getting followups:', requestOptions);
+  return _makeRequest(requestOptions, cb);
+
 }
 
 
@@ -100,21 +106,16 @@ Fut.prototype.getFuts = function(params, cb) {
  * (int) futId
  */
 Fut.prototype.getFut = function(futId, cb) {
-  if(typeof futId != 'number') throw new Error ('futId must be an integer');
-  request.get({
+  if(typeof futId != 'number') throw new Error ('futId must be an integer')
+  var requestOptions = {
     url: this.config.apiHost + '/api/v1/reminders/' + futId,
     headers: {
       "Authorization": "Bearer " + this._accessToken,
       "Content-Type": "application/json"
     },
     json: true
-  }, (error, result, body) => {
-    if(error || result.statusCode != 200) {
-     cb(new Error(result + ' ' + body));
-    } else {
-     cb(null, body);
-    }
-  });
+  }
+  return _makeRequest(requestOptions, cb)
 }
 
 /*
@@ -135,7 +136,8 @@ Fut.prototype.getFut = function(futId, cb) {
  * (Note: Can accept either json or form-encoded)
  */
 Fut.prototype.createFut =  function(params, cb) {
-  request.post({
+  var requestOptions = {
+      method: 'POST',
       url: this.config.apiHost + '/api/v2/reminders/',
       headers: {
         "Authorization": "Bearer " + this._accessToken,
@@ -144,13 +146,8 @@ Fut.prototype.createFut =  function(params, cb) {
       },
       form: params,
       json: true
-      }, (error, result, body) => {
-        if(error || result.statusCode != 201) {
-         cb(new Error(result + ' ' + body));
-        } else {
-         cb(null, body);
-        }
-      });
+    }
+  return _makeRequest(requestOptions, cb)
  }
 
 
@@ -163,7 +160,7 @@ Fut.prototype.createFut =  function(params, cb) {
  */
  Fut.prototype.simulateFut = function(params, cb) {
    if(!params.simulate) params.simulate = 1;
-   this.createFut(params, cb);
+   return this.createFut(params, cb);
  }
 
 
@@ -183,21 +180,17 @@ Fut.prototype.createFut =  function(params, cb) {
       prepend - (string) - Prepended content   curl -X PUT -v --header "Authorization: Bearer ce18290427ff6537d019f58c2c593db4e69199c9" "http://local.followupthen.com/api/v1/reminders/1231/" --data "subject=test_updated_subject&method=to"
   */
   Fut.prototype.updateFut = function(futId, params, cb) {
-    request.put({
-        url: this.config.apiHost + '/api/v1/reminders/' + futId + '/',
-        headers: {
-          "Authorization": "Bearer " + this._accessToken,
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        form: params,
-        json: true
-        }, (error, result, body) => {
-          if(error || result.statusCode != 200) {
-           cb(new Error(result + ' ' + body));
-          } else {
-           cb(null, body);
-          }
-        });
+    var requestOptions = {
+          method: 'PUT',
+          url: this.config.apiHost + '/api/v1/reminders/' + futId + '/',
+          headers: {
+            "Authorization": "Bearer " + this._accessToken,
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+          },
+          form: params,
+          json: true
+        }
+    return _makeRequest(requestOptions, cb);
   }
 
 /*
@@ -233,12 +226,13 @@ Fut.prototype.createFut =  function(params, cb) {
    * "Completing" has different behavior depending on the fut - recurring, task, etc.
    */
   Fut.prototype.completeFut = function(futId, cb) {
-    this.deleteFut({futId: futId, complete: 1}, cb);
+    return this.deleteFut({futId: futId, complete: 1}, cb);
   }
 
   Fut.prototype.saveExtData = function(settings, cb) {
     if(typeof settings != 'object') throw new Error ('settings must be an object');
-    request.post({
+    var requestOptions = {
+      method: 'POST',
       url: this.config.apiHost + '/api/v1/extensions/self/users/self/data/',
       headers: {
         "Authorization": "Bearer " + this._accessToken,
@@ -246,31 +240,20 @@ Fut.prototype.createFut =  function(params, cb) {
       },
       body: settings,
       json: true
-    }, (error, result, body) => {
-      if(error || result.statusCode != 200) {
-       cb(new Error('Data unable to be saved'));
-      } else {
-       cb(null, body);
-      }
-    });
+    }
+    return _makeRequest(requestOptions, cb)
   }
 
-
   Fut.prototype.getExtData = function(cb) {
-    request.get({
-      url: this.config.apiHost + '/api/v1/extensions/self/users/self/data/',
-      headers: {
-        "Authorization": "Bearer " + this._accessToken,
-        "Content-Type": "application/json"
-      },
-      json: true
-    }, (error, result, body) => {
-      if(error || result.statusCode != 200) {
-       cb(new Error(result + ' ' + body));
-      } else {
-       cb(null, body);
+    var requestOptions = {
+        url: this.config.apiHost + '/api/v1/extensions/self/users/self/data/',
+        headers: {
+          "Authorization": "Bearer " + this._accessToken,
+          "Content-Type": "application/json"
+        },
+        json: true
       }
-    });
+    return _makeRequest(requestOptions, cb)
   }
 
 /*
@@ -301,6 +284,7 @@ Fut.prototype.getAuthorizationUri = function() {
   return {state: this.config.state, uri: authorizationUri};
 }
 
+
 Fut.prototype.getAccessToken = function(authCode, cb) {
   debug('auth code from auth uri used to retrive auth token: ', authCode);
   const oauth2 = OAuth2.create({
@@ -321,17 +305,22 @@ Fut.prototype.getAccessToken = function(authCode, cb) {
     client_id: this.config.clientId,
   };
 
-  oauth2.authorizationCode.getToken(options, (error, result) => {
-    if (error) {
-      debug('Access Token Error', error.message);
-      cb(new Error('Authentication failed'));
-    }
+  return new Promise((resolve, reject) => {
+    oauth2.authorizationCode.getToken(options, (error, result) => {
+      if (error) {
+        debug('Access Token Error', error.message)
+        if(cb) cb(new Error('Authentication failed'))
+        return reject('Authentication failed')
+      }
 
-    const tokenDetails = oauth2.accessToken.create(result);
-    debug('success! auth token: ', tokenDetails.token);
-    this._accessToken = tokenDetails.token.access_token;
-    cb(null, tokenDetails.token.access_token);
-  });
+      const tokenDetails = oauth2.accessToken.create(result);
+      debug('success! auth token: ', tokenDetails.token);
+      this._accessToken = tokenDetails.token.access_token;
+      cb(null, tokenDetails.token.access_token);
+      return resolve(tokenDetails.token.access_token);
+    });
+  })
+
 }
 
 // If we already have an accessToken stored in a cookie or something, load it here

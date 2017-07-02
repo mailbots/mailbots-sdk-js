@@ -46,26 +46,8 @@ describe('FollowUpThen REST API', () => {
     futClient = getFutClient();
   });
 
-  it('should give an error with an incorrect token', (done) => {
-    nock(mockedApiHost)
-      .get(/\/api\/v1\/reminders\/.*/, {
-        reqheaders: {
-          authorization: function(header) {
-            return (header === "Bearer 111111");
-          }
-        }
-      })
-      .reply(401);
 
-    futClient.setAccessToken('111111');
-    futClient.getFuts({limit: 1}, (err, res) => {
-      expect(err).to.not.be.null;
-      done()
-    })
-  })
-
-
-  it('should get a list of followups', (done) => {
+  it('should get a list of followups with a callback', (done) => {
     nock(mockedApiHost)
       .get(/\/api\/v1\/reminders\/.*/)
       .reply(200, [{
@@ -181,6 +163,138 @@ describe('FollowUpThen REST API', () => {
       done();
     })
   })
+
+
+  it('should get a list of followups with a promise', (done) => {
+    nock(mockedApiHost)
+      .get(/\/api\/v1\/reminders\/.*/)
+      .reply(200, [{
+          "id": "1080",
+          "status": "parsed",
+          "due": "Sun, June 25th 2017 2:17pm PDT",
+          "tags": [],
+          "friendly_tags": "",
+          "due_timestamp": 1498425449,
+          "created_timestamp": 1497820649,
+          "friendly_due": "Sun, June 25th 2017 2:17pm PDT",
+          "twenty_four_hour_time": "",
+          "completed_on_timestamp": "",
+          "friendly_completed": "",
+          "invalid_format": 0,
+          "subject": "Feed the Fish",
+          "content": "Yay",
+          "prepend": "",
+          "short_content": "Yay",
+          "description": "This will send you an email followup \u003Cspan class=\u0022when\u0022\u003E on \u003Cstrong\u003E Sun, June 25th 2017 2:17pm PDT\u003C\/strong\u003E\u003C\/span\u003E.",
+          "email_summary": "On Sun, June 25th 2017 2:17pm PDT, this email was sent to 1week-c@followupthen.com",
+          "multiple_recipients": "0",
+          "method": "to",
+          "to": "",
+          "is_completed": "0",
+          "original_time_format": "1week-c",
+          "applied_services": {
+              "sf": 0,
+              "r": 0,
+              "t": 0,
+              "sms": 0,
+              "c": 1,
+              "recurring": 0
+          },
+          "recurring": false,
+          "recipients": ["someone@gmail.com"],
+          "sms": false,
+          "task": false,
+          "events": [{
+              "eventid": 25460,
+              "type": "created",
+              "created": 1497820650,
+              "data": {
+                  "to": "",
+                  "cc": "",
+                  "bcc": "",
+                  "format": "1week-c",
+                  "due": 1498425449,
+                  "timezone": "America\/Los_Angeles",
+                  "message-id": null
+              }
+          }],
+          "due_group": "This Week"
+      }, {
+          "id": "1081",
+          "status": "parsed",
+          "due": "Sun, July 9th 2017 2:17pm PDT",
+          "tags": [],
+          "friendly_tags": "",
+          "due_timestamp": 1499635072,
+          "created_timestamp": 1497820672,
+          "friendly_due": "Sun, July 9th 2017 2:17pm PDT",
+          "twenty_four_hour_time": "",
+          "completed_on_timestamp": "",
+          "friendly_completed": "",
+          "invalid_format": 0,
+          "subject": "Taco Mania Proposal",
+          "content": "Followup with Roberto",
+          "prepend": "",
+          "short_content": "Followup with Roberto",
+          "description": "This will send you an email followup \u003Cspan class=\u0022when\u0022\u003E on \u003Cstrong\u003E Sun, July 9th 2017 2:17pm PDT\u003C\/strong\u003E\u003C\/span\u003E.",
+          "email_summary": "On Sun, July 9th 2017 2:17pm PDT, this email was sent to 3weeks-c@followupthen.com",
+          "multiple_recipients": "0",
+          "method": "to",
+          "to": "",
+          "is_completed": "0",
+          "original_time_format": "3weeks-c",
+          "applied_services": {
+              "sf": 0,
+              "r": 0,
+              "t": 0,
+              "sms": 0,
+              "c": 1,
+              "recurring": 0
+          },
+          "recurring": false,
+          "recipients": ["someone@gmail.com"],
+          "sms": false,
+          "task": false,
+          "events": [{
+              "eventid": 25478,
+              "type": "created",
+              "created": 1497820673,
+              "data": {
+                  "to": "",
+                  "cc": "",
+                  "bcc": "",
+                  "format": "3weeks-c",
+                  "due": 1499635072,
+                  "timezone": "America\/Los_Angeles",
+                  "message-id": null
+              }
+          }],
+          "due_group": "Future"
+      }])
+
+      futClient.getFuts({limit: 1}).then((res) => {
+        expect(res).to.be.an('array');
+        expect(res[0]).to.have.property('subject');
+        expect(res[0].id).to.equal('1080');
+        expect(res[1].id).to.equal('1081');
+        done();
+      })
+  })
+
+
+  // it('should throw an error when it cannot get a list of followups', (done) => {
+  //   nock(mockedApiHost)
+  //     .get(/\/api\/v1\/reminders\/.*/)
+  //     .reply(403, "Error: Permission Denied")
+  //
+  //     futClient.getFuts({limit: 1}).then((res) => {
+  //     }).catch((err) => {
+  //       console.log(err);
+  //       expect(err).to.be.a('string');
+  //       done();
+  //     })
+  // })
+
 
   it('should get a fut', (done) => {
       nock(mockedApiHost)
@@ -299,6 +413,7 @@ describe('FollowUpThen REST API', () => {
       subject: "Create a reminder from the API",
       timezone: "America/Los_Angeles"
       }, (err, res) => {
+        if(err) done(err)
         expect(res).to.be.an('object')
         expect(res.status).to.equal('success')
         done()
