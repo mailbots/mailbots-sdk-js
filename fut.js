@@ -57,14 +57,18 @@ function Fut(config) {
 
 
 /*
- *  Validates signature on webhook from FUT
+ *  Validates signature on webhook from FUT the webhook from FUT is valid.
+ *  Set verifyAge to false when testing / mocking HTTP requests
 */
-Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, rawBody) {
+Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, rawBody, verifyAge = true) {
   let generatedSig = crypto.createHmac('sha256', webhookTimestamp + this.config.clientSecret).update(rawBody).digest('hex');
+  if (generatedSig !== webhookSignature)
+    return false;
+
   let hookAge = timestamp.now() - webhookTimestamp;
-  if (generatedSig !== webhookSignature || hookAge > 900) {
-    return false
-  }
+  if (hookAge > 900 && verifyAge)
+    return false;
+
   return true;
 }
 
