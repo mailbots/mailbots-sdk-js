@@ -2,7 +2,7 @@ const request = require('request');
 const requestPromise = require('request-promise');
 // require('request-debug')(request);
 const OAuth2 = require('simple-oauth2');
-const debug  = require('debug')('fut');
+const debug  = require('debug')('fut-node');
 const querystring = require('querystring');
 const timestamp = require('unix-timestamp');
 timestamp.round = true;
@@ -15,10 +15,13 @@ function _checkParam(param, paramName) {
 }
 
 function _makeRequest(requestOptions, cb) {
+  debug('Request', requestOptions);
   return requestPromise(requestOptions).then((res) => {
+      debug('Response Ok:', res);
       if(cb) cb(null, res);
       return Promise.resolve(res);
     }).catch((err) => {
+      debug('Response Error:', err);
       if(cb) cb(err);
       return Promise.reject(err);
     });
@@ -47,7 +50,7 @@ function Fut(config) {
 
   this.config = Object.assign(this.configDefaults, this.config);
   this.config.state = Math.random().toString(36).substring(7);
-  debug('Fut OAuth Settings: ', this.config);
+  debug('settings: ', this.config);
 
   // Bearer token used in Auth header: curl url -h "Authorization: Bearer accessToken"
   // Set this with setAccessToken method below after fetching from proper Uri
@@ -59,16 +62,24 @@ function Fut(config) {
 /*
  *  Validates signature on webhook from FUT the webhook from FUT is valid.
  *  Set verifyAge to false when testing / mocking HTTP requests
+ *  Copious debugging provided because of possible variations in environments
 */
 Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, rawBody, verifyAge = true) {
   let generatedSig = crypto.createHmac('sha256', webhookTimestamp + this.config.clientSecret).update(rawBody).digest('hex');
+  debug('validateWebhook: rawBody', rawBody);
+  debug('validateWebhook: clientSecret', this.config.clientSecret);
+  debug('validateWebhook: generatedSig', generatedSig);
+  debug('validateWebhook: webhookSig', webhookSignature);
   if (generatedSig !== webhookSignature)
     return false;
 
   let hookAge = timestamp.now() - webhookTimestamp;
-  if (hookAge > 900 && verifyAge)
-    return false;
+  if (hookAge > 900 && verifyAge) {
+    debug('validateWebhook: failed age check: ', hookAge);
 
+    return false;
+  }
+  debug('validateWebhook: webhook validated!');
   return true;
 }
 
@@ -290,7 +301,7 @@ Fut.prototype.getAuthorizationUri = function() {
 
 Fut.prototype.getAccessToken = function(authCode, cb) {
   return new Promise((resolve, reject) => {
-    debug('auth code from auth uri used to retrive auth token: ', authCode);
+    debug('Auth code from auth uri used to retrive auth token: ', authCode);
 
     const oauth2 = OAuth2.create({
       client: {
@@ -312,7 +323,7 @@ Fut.prototype.getAccessToken = function(authCode, cb) {
 
     oauth2.authorizationCode.getToken(options, (error, result) => {
       if (error) {
-        debug('Access Token Error', error.message)
+        debug('Access token error', error.message)
         if(cb) cb(new Error('Authentication failed'))
         return reject('Authentication failed')
       }
