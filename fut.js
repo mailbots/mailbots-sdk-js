@@ -84,6 +84,30 @@ Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, raw
 }
 
 
+ /*
+  * Resolve FUT format
+  * https://rsweetland.github.io/fut-api-docs/#resolve-format
+    args
+     params (obj)
+      format - (string) – The format, whatever before @followupthen.com, example: 3days, 3weeks, etc.
+      phrasing - `generic` - Choose what phrasing to use when explaining to the user what will happen. Allowed values: generic, if_email, will.
+      method - `to` – Email method: to, cc, bcc
+      timezone -  - [Supported Timezones](http://php.net/manual/en/timezones.php). Example: America/Los_Angeles.
+  */
+  Fut.prototype.resolveFormat = function(params, cb) {
+    var requestOptions = {
+      method: 'GET',
+      url: this.config.apiHost + '/api/v1/resolve_fut_format/?' + querystring.stringify(params),
+      headers: {
+        "Authorization": "Bearer " + this._accessToken,
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+      },
+      json: true
+    }
+    return _makeRequest(requestOptions, cb);
+  }
+
+
 /*
  * Fetch Followups
  * https://github.com/rsweetland/followupthen/wiki/FUT-APIs#get-a-list-of-reminders
