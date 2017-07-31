@@ -10,11 +10,13 @@ var futClient = {};
 //  1. Modifying this URL point to an install of FUT Core.
 //  2. Login and copy the value of fut_token from your cookie.
 //  3. Flip the NOCK_OFF switch below.
+//  4. Optoinally turn on the nock recorder mock the request
 // (Note that this will actually modify whichever account is registered)
 // This can also be used to update this test lib when if / when the API changes
 var mockedApiHost = 'http://local.followupthen.com';
-var accessToken = '4843ffbf308c22c26449286f8f0014c8473c31c3';
+var accessToken = 'cb273cbcfd1dbbbda9967e66db34a8de97abf396';
 // process.env.NOCK_OFF = true;
+// nock.recorder.rec();
 
 var verifyRequest = {
   reqheaders: {
@@ -420,6 +422,115 @@ describe('FollowUpThen REST API', () => {
     })
   }).timeout(5000)
 
+
+ it('should create a to-method fut', (done) => {
+    nock('http://local.followupthen.com:80', {"encodedQueryParams":true})
+      .post('/api/v2/reminders/', "source%5Bsubject%5D=A%20new%20reminder%20from%20API&source%5Bbody%5D=This%20is%20a%20new%20reminder&source%5Brecipient_server%5D=1day%40followupthen.com&source%5Brecipients_to%5D=1day%40followupthen.com&source%5Btype%5D=email&subject=Create%20a%20reminder%20from%20the%20API&timezone=America%2FLos_Angeles")
+      .reply(201, {"status":"success","type":"reminder_created","followup":{"valid":true,"created":1501275660,"timezone":"America/Los_Angeles","created_friendly":"Fri, July 28th 2017 2:01pm PDT","due":1501362060,"due_friendly":"Sat, July 29th 2017 2:01pm PDT","format":"1day","completed":false,"completed_on":"","completed_on_friendly":"","tags":[],"suffix_flags":[],"extensions":{"sms":false,"task":false,"recurring":false,"response_detection":false},"user_date_format":"12h","followup_id":1753,"source":{"type":"email","subject":"A new reminder from API","body":"This is a new reminder","body_text":"This is a new reminder","from":"esweetland@gmail.com","external_recipients":[],"related_contacts":[],"email_method":"to"}}}, [ 'Date',
+      'Fri, 28 Jul 2017 21:01:00 GMT',
+      'Server',
+      'Apache/2.4.10 (Debian)',
+      'Cache-Control',
+      'no-cache',
+      'Content-Length',
+      '708',
+      'Connection',
+      'close',
+      'Content-Type',
+      'application/json' ]);
+
+    futClient.createFut({
+      // simulation: 1, //you would leave this off to actually create the FUT
+      source: {
+        subject: "A new reminder from API",
+        body: "This is a new reminder",
+        recipient_server: '1day@followupthen.com',
+        recipients_to: '1day@followupthen.com',
+        type: "email",
+      },
+      subject: "Create a reminder from the API",
+      timezone: "America/Los_Angeles"
+      }, (err, res) => {
+        if(err) done(err)
+        expect(res).to.be.an('object')
+        expect(res.status).to.equal('success')
+        expect(res.followup.source.email_method).to.equal('to')
+        done()
+    })
+  }).timeout(5000)
+
+ it('should create a cc-method fut', (done) => {
+    nock('http://local.followupthen.com:80', {"encodedQueryParams":true})
+      .post('/api/v2/reminders/', "source%5Bsubject%5D=A%20new%20reminder%20from%20API&source%5Bbody%5D=This%20is%20a%20new%20reminder&source%5Brecipient_server%5D=1day%40followupthen.com&source%5Brecipients_to%5D=someoneElse%40gmailll.com&source%5Brecipients_cc%5D=1day%40followupthen.com&source%5Btype%5D=email&subject=Create%20a%20reminder%20from%20the%20API&timezone=America%2FLos_Angeles")
+      .reply(201, {"status":"success","type":"reminder_created","followup":{"valid":true,"created":1501274442,"timezone":"America/Los_Angeles","created_friendly":"Fri, July 28th 2017 1:40pm PDT","due":1501360842,"due_friendly":"Sat, July 29th 2017 1:40pm PDT","format":"1day","completed":false,"completed_on":"","completed_on_friendly":"","tags":[],"suffix_flags":[],"extensions":{"sms":false,"task":false,"recurring":false,"response_detection":false},"user_date_format":"12h","followup_id":1742,"source":{"type":"email","subject":"A new reminder from API","body":"This is a new reminder","body_text":"This is a new reminder","from":"esweetland@gmail.com","external_recipients":["someoneelse@gmailll.com"],"related_contacts":[],"email_method":"cc"}}}, [ 'Date',
+      'Fri, 28 Jul 2017 20:40:42 GMT',
+      'Server',
+      'Apache/2.4.10 (Debian)',
+      'Cache-Control',
+      'no-cache',
+      'Content-Length',
+      '733',
+      'Connection',
+      'close',
+      'Content-Type',
+      'application/json' ]);
+
+    futClient.createFut({
+      // simulation: 1, //you would leave this off to actually create the FUT
+      source: {
+        subject: "A new reminder from API",
+        body: "This is a new reminder",
+        recipient_server: '1day@followupthen.com',
+        recipients_to: 'someoneElse@gmailll.com',
+        recipients_cc: '1day@followupthen.com',
+        type: "email",
+      },
+      subject: "Create a reminder from the API",
+      timezone: "America/Los_Angeles"
+      }, (err, res) => {
+        if(err) done(err)
+        expect(res).to.be.an('object')
+        expect(res.status).to.equal('success')
+        expect(res.followup.source.email_method).to.equal('cc')
+        done()
+    })
+  }).timeout(5000) 
+
+ it('should create a bcc-method fut', (done) => {
+    nock('http://local.followupthen.com:80', {"encodedQueryParams":true})
+      .post('/api/v2/reminders/', "source%5Bsubject%5D=A%20new%20reminder%20from%20API&source%5Bbody%5D=This%20is%20a%20new%20reminder&source%5Brecipient_server%5D=1day%40followupthen.com&source%5Brecipients_to%5D=someoneElse%40gmailll.com&source%5Btype%5D=email&subject=Create%20a%20reminder%20from%20the%20API&timezone=America%2FLos_Angeles")
+      .reply(201, {"status":"success","type":"reminder_created","followup":{"valid":true,"created":1501274916,"timezone":"America/Los_Angeles","created_friendly":"Fri, July 28th 2017 1:48pm PDT","due":1501361316,"due_friendly":"Sat, July 29th 2017 1:48pm PDT","format":"1day","completed":false,"completed_on":"","completed_on_friendly":"","tags":[],"suffix_flags":[],"extensions":{"sms":false,"task":false,"recurring":false,"response_detection":false},"user_date_format":"12h","followup_id":1745,"source":{"type":"email","subject":"A new reminder from API","body":"This is a new reminder","body_text":"This is a new reminder","from":"esweetland@gmail.com","external_recipients":["someoneelse@gmailll.com"],"related_contacts":[],"email_method":"bcc"}}}, [ 'Date',
+      'Fri, 28 Jul 2017 20:48:36 GMT',
+      'Server',
+      'Apache/2.4.10 (Debian)',
+      'Cache-Control',
+      'no-cache',
+      'Content-Length',
+      '734',
+      'Connection',
+      'close',
+      'Content-Type',
+      'application/json' ]);
+
+    futClient.createFut({
+      // simulation: 1, //you would leave this off to actually create the FUT
+      source: {
+        subject: "A new reminder from API",
+        body: "This is a new reminder",
+        recipient_server: '1day@followupthen.com',
+        recipients_to: 'someoneElse@gmailll.com',
+        type: "email",
+      },
+      subject: "Create a reminder from the API",
+      timezone: "America/Los_Angeles"
+      }, (err, res) => {
+        if(err) done(err)
+        expect(res).to.be.an('object')
+        expect(res.status).to.equal('success')
+        expect(res.followup.source.email_method).to.equal('bcc')
+        done()
+    })
+  }).timeout(5000)
 
   it('should complete a followup', (done) => {
     //TODO: DRY

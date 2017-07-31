@@ -162,7 +162,7 @@ Fut.prototype.getFut = function(futId, cb) {
  *
  *  simulation : (1|0) : if simulating, no reminders are created, full API response is provided
  *  source[recipient_server] : (string, required) - Intended recipient of this particular message. e.g 1day@localhost See below.
- *  source[recipient_to] : (string) - Emails listed in the to field of the email. e.g 1day@localhost, 2day@localhost
+ *  source[recipients_to] : (string) - Emails listed in the to field of the email. e.g 1day@localhost, 2day@localhost
  *  source[recipients_cc] : (string) - Who is in the cc field
  *  source[recipients_bcc] : (string) - Who is in the bcc field
  *  source[from] : (string) - This can be passed but is always simulation@example.com right now (ok for now).
