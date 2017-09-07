@@ -7,6 +7,7 @@ const querystring = require('querystring');
 const timestamp = require('unix-timestamp');
 timestamp.round = true;
 const crypto = require('crypto');
+const urljoin = require('url-join'); // TODO: Implement on all URLs
 
 function _checkParam(param, paramName) {
   if(!param || (typeof param !== 'string')) {
@@ -269,9 +270,10 @@ Fut.prototype.createFut =  function(params, cb) {
 
   Fut.prototype.saveExtData = function(settings, cb) {
     if(typeof settings != 'object') throw new Error ('settings must be an object');
+
     var requestOptions = {
       method: 'POST',
-      url: this.config.apiHost + '/api/v1/extensions/self/users/self/data/',
+      url: urljoin(this.config.apiHost, '/api/v1/extensions/self/users/self/data/'),
       headers: {
         "Authorization": "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -284,7 +286,7 @@ Fut.prototype.createFut =  function(params, cb) {
 
   Fut.prototype.getExtData = function(cb) {
     var requestOptions = {
-        url: this.config.apiHost + '/api/v1/extensions/self/users/self/data/',
+        url: urljoin(this.config.apiHost, '/api/v1/extensions/self/users/self/data/'),
         headers: {
           "Authorization": "Bearer " + this._accessToken,
           "Content-Type": "application/json"
