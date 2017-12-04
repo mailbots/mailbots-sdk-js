@@ -2,7 +2,7 @@ const request = require('request');
 const requestPromise = require('request-promise');
 // require('request-debug')(request);
 const OAuth2 = require('simple-oauth2');
-const debug  = require('debug')('fut-node');
+const debug  = require('debug')('gopher-node:tests');
 const querystring = require('querystring');
 const timestamp = require('unix-timestamp');
 timestamp.round = true;
@@ -22,15 +22,35 @@ function _makeRequest(requestOptions, cb) {
       if(cb) cb(null, res);
       return Promise.resolve(res);
     }).catch((err) => {
-      debug('Response Error:', err);
+      debug('Response Error:', err.statusCode, err.response.body);
       if(cb) cb(err);
       return Promise.reject(err);
     });
 }
 
+function _serialize (obj) {
+  var str = [];
+  for(var p in obj)
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    }
+  return str.join("&");
+}
+
+
+function _isEmpty(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            return false;
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+}
+
+
 
 function Gopher(config) {
-  if (!(this instanceof Fut)) return new Fut(config);
+  if (!(this instanceof Gopher)) return new Gopher(config);
   _checkParam(config.clientId, 'clientId');
   _checkParam(config.clientSecret, 'clientSecret');
   _checkParam(config.redirectUri, 'redirectUri');
@@ -86,19 +106,19 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
 
 
  /*
-  * Resolve FUT format
+  * Resolve Natural Time Format
   * https://rsweetland.github.io/fut-api-docs/#resolve-format
     args
      params (obj)
       format - (string) – The format, whatever before @followupthen.com, example: 3days, 3weeks, etc.
-      phrasing - `generic` - Choose what phrasing to use when explaining to the user what will happen. Allowed values: generic, if_email, will.
+      (depricated) phrasing - `generic` - Choose what phrasing to use when explaining to the user what will happen. Allowed values: generic, if_email, will.
       method - `to` – Email method: to, cc, bcc
       timezone -  - [Supported Timezones](http://php.net/manual/en/timezones.php). Example: America/Los_Angeles.
   */
-  Gopher.prototype.resolveFormat = function(params, cb) {
+  Gopher.prototype.naturalTime = function(params, cb) {
     var requestOptions = {
       method: 'GET',
-      url: this.config.apiHost + '/api/v1/resolve_fut_format/?' + querystring.stringify(params),
+      url: urljoin(this.config.apiHost, '/api/v3/natural_time', '?' + querystring.stringify(params)),
       headers: {
         "Authorization": "Bearer " + this._accessToken,
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -123,9 +143,9 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
     filters[attributes] - (recurring|t|sms|external)
     filters[list] - (string) - search a specific tag
  */
-Gopher.prototype.getFuts = function(params, cb) {
+Gopher.prototype.getTasks = function(params, cb) {
   var requestOptions = {
-    url: this.config.apiHost + '/api/v1/reminders/?' + querystring.stringify(params),
+    url: urljoin(this.config.apiHost, '/api/v3/tasks/?', querystring.stringify(params)),
     headers: {
       "Authorization": "Bearer " + this._accessToken,
       "Content-Type": "application/json"
@@ -134,20 +154,19 @@ Gopher.prototype.getFuts = function(params, cb) {
   }
   debug('Request options for getting followups:', requestOptions);
   return _makeRequest(requestOptions, cb);
-
 }
 
 
 /*
- * Fetch A Single Followup
+ * Fetch A Single Gopher Task
  * https://github.com/rsweetland/followupthen/wiki/FUT-APIs#get-a-single-reminder
  *
- * (int) futId
+ * (int) taskId
  */
-Gopher.prototype.getFut = function(futId, cb) {
-  if(typeof futId != 'number') throw new Error ('futId must be an integer')
+Gopher.prototype.getTask = function(taskId, cb) {
+  if(typeof taskId != 'number') throw new Error ('taskId must be an integer. This was given instead:', taskId)
   var requestOptions = {
-    url: this.config.apiHost + '/api/v1/reminders/' + futId,
+    url: this.config.apiHost + '/api/v3/tasks/' + taskId + '/',
     headers: {
       "Authorization": "Bearer " + this._accessToken,
       "Content-Type": "application/json"
@@ -175,33 +194,25 @@ Gopher.prototype.getFut = function(futId, cb) {
  * (Note: Can accept either json or form-encoded)
  */
 Gopher.prototype.createFut =  function(params, cb) {
+  let urlParams = {}
+  if(params.verbose) {
+    urlParams.verbose = 1;
+  }
+
   var requestOptions = {
       method: 'POST',
-      url: this.config.apiHost + '/api/v2/reminders/',
+      url: urljoin(this.config.apiHost, '/api/v3/tasks/', querystring.stringify(urlParams)),
       headers: {
         "Authorization": "Bearer " + this._accessToken,
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        // "Content-Type": "application/json"
+        // "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        "Content-Type": "application/json"
       },
       form: params,
       json: true
     }
+
   return _makeRequest(requestOptions, cb)
  }
-
-
- /*
- *
- * Simulate A Followup
- * A more expressive wrapper for createFut({simulate: 1});
- * https://github.com/rsweetland/followupthen/wiki/FUT-APIs#v2-reminder-simulation
- *
- */
- Gopher.prototype.simulateFut = function(params, cb) {
-   if(!params.simulate) params.simulate = 1;
-   return this.createFut(params, cb);
- }
-
 
 
  /*
@@ -218,10 +229,10 @@ Gopher.prototype.createFut =  function(params, cb) {
       content - (string) - New content
       prepend - (string) - Prepended content   curl -X PUT -v --header "Authorization: Bearer ce18290427ff6537d019f58c2c593db4e69199c9" "http://local.followupthen.com/api/v1/reminders/1231/" --data "subject=test_updated_subject&method=to"
   */
-  Gopher.prototype.updateFut = function(futId, params, cb) {
+  Gopher.prototype.updateTask = function(taskId, params, cb) {
     var requestOptions = {
           method: 'PUT',
-          url: this.config.apiHost + '/api/v1/reminders/' + futId + '/',
+          url: urljoin(this.config.apiHost, '/api/v3/tasks/', taskId, '/'),
           headers: {
             "Authorization": "Bearer " + this._accessToken,
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -232,48 +243,13 @@ Gopher.prototype.createFut =  function(params, cb) {
     return _makeRequest(requestOptions, cb);
   }
 
-/*
- * Permenantly deletes a FUT
- * params
- *   complete: 1 - If "this is passed, it marks as "completed" instead of deletes
- *                 see "completeFut".
- */
-  Gopher.prototype.deleteFut = function(params, cb) {
-    if (typeof params.futId !== 'number') eb(new Error("futId must be an integer"));
-    params = Object.assign({complete: false}, params); //delete by default.
-    request.delete({
-        url: this.config.apiHost + '/api/v1/reminders/' + params.futId + '/',
-        headers: {
-          "Authorization": "Bearer " + this._accessToken,
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        form: {
-            complete: params.complete
-        },
-        json: true
-        }, (error, result, body) => {
-          if(error || result.statusCode != 204) {
-           cb(new Error("There was an error completing / deleting your reminder", result + ' ' + body));
-          } else {
-           cb(null, body);
-          }
-        });
-  }
-
-  /*
-   * Completes A Given Followup
-   * "Completing" has different behavior depending on the fut - recurring, task, etc.
-   */
-  Gopher.prototype.completeFut = function(futId, cb) {
-    return this.deleteFut({futId: futId, complete: 1}, cb);
-  }
-
+ 
   Gopher.prototype.saveExtData = function(settings, cb) {
     if(typeof settings != 'object') throw new Error ('settings must be an object');
 
     var requestOptions = {
       method: 'POST',
-      url: urljoin(this.config.apiHost, '/api/v1/extensions/self/users/self/data/'),
+      url: urljoin(this.config.apiHost, '/api/v3/extensions/self/data/'),
       headers: {
         "Authorization": "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -286,7 +262,7 @@ Gopher.prototype.createFut =  function(params, cb) {
 
   Gopher.prototype.getExtData = function(cb) {
     var requestOptions = {
-        url: urljoin(this.config.apiHost, '/api/v1/extensions/self/users/self/data/'),
+        url: urljoin(this.config.apiHost, '/api/v3/extensions/self/data/'),
         headers: {
           "Authorization": "Bearer " + this._accessToken,
           "Content-Type": "application/json"

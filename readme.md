@@ -8,3 +8,7 @@ MIT
 
 ## Contributions
 Contributions are welcome. Feel free to [connect with us on Slack](https://slackin.gopheremail.com) or just issue a PR.
+
+## TODO
+ * Natural time resolver
+ * Invite
