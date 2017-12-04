@@ -3,19 +3,19 @@ var expect = require('chai').expect;
 var request = require('request');
 var nock = require('nock');
 var futTestUtils = require('./futTestUtils');
-var Fut = require('../fut');
+var Gopher = require('../gopher-node');
 var futClient = {};
 
-// Test these endpoints against an instance of the FUT core API by:
-//  1. Modifying this URL point to an install of FUT Core.
+// Test these endpoints against an instance of the Gopher core API by:
+//  1. Modifying this URL point to an install of Gopher Core.
 //  2. Login and copy the value of fut_token from your cookie.
 //  3. Flip the NOCK_OFF switch below.
 //  4. Optoinally turn on the nock recorder mock the request
 // (Note that this will actually modify whichever account is registered)
 // This can also be used to update this test lib when if / when the API changes
-var mockedApiHost = 'http://local.followupthen.com';
-var accessToken = 'cb273cbcfd1dbbbda9967e66db34a8de97abf396';
-// process.env.NOCK_OFF = true;
+var mockedApiHost = 'http://local.gopher.email';
+var accessToken = '4f2988981ad2bca644f9fe336357492574a320a2';
+process.env.NOCK_OFF = true;
 // nock.recorder.rec();
 
 var verifyRequest = {
@@ -27,7 +27,7 @@ var verifyRequest = {
 }
 
 function getFutClient() {
-  var futClient = new Fut(
+  var futClient = new Gopher(
     {
       clientId: 'ext_03112dd8e958113b7be1b406916feb6c',
       clientSecret: '56d277ebce1ec1e834a1bc8a2acf5d53bda591bf00d4cec4faa2bfd45e8a6a98',

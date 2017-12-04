@@ -29,7 +29,7 @@ function _makeRequest(requestOptions, cb) {
 }
 
 
-function Fut(config) {
+function Gopher(config) {
   if (!(this instanceof Fut)) return new Fut(config);
   _checkParam(config.clientId, 'clientId');
   _checkParam(config.clientSecret, 'clientSecret');
@@ -43,10 +43,10 @@ function Fut(config) {
     redirectUri:'',
     scope: '',
     state: '',
-    apiHost: 'https://www.followupthen.com',
-    tokenHost: 'https://www.followupthen.com',
-    tokenPath: 'https://www.followupthen.com/api/v1/oauth2/access_token',
-    authorizePath: 'https://www.followupthen.com/settings/oauth2_authorize'
+    apiHost: 'https://www.gopher.email',
+    tokenHost: 'https://www.gopher.email',
+    tokenPath: 'https://www.gopher.email/api/v1/oauth2/access_token',
+    authorizePath: 'https://www.gopher.email/settings/oauth2_authorize'
   };
 
   this.config = Object.assign(this.configDefaults, this.config);
@@ -65,7 +65,7 @@ function Fut(config) {
  *  Set verifyAge to false when testing / mocking HTTP requests
  *  Copious debugging provided because of possible variations in environments
 */
-Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, rawBody, verifyAge = true) {
+Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, rawBody, verifyAge = true) {
   let generatedSig = crypto.createHmac('sha256', webhookTimestamp + this.config.clientSecret).update(rawBody).digest('hex');
   debug('validateWebhook: rawBody', rawBody);
   debug('validateWebhook: clientSecret', this.config.clientSecret);
@@ -95,7 +95,7 @@ Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, raw
       method - `to` – Email method: to, cc, bcc
       timezone -  - [Supported Timezones](http://php.net/manual/en/timezones.php). Example: America/Los_Angeles.
   */
-  Fut.prototype.resolveFormat = function(params, cb) {
+  Gopher.prototype.resolveFormat = function(params, cb) {
     var requestOptions = {
       method: 'GET',
       url: this.config.apiHost + '/api/v1/resolve_fut_format/?' + querystring.stringify(params),
@@ -123,7 +123,7 @@ Fut.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, raw
     filters[attributes] - (recurring|t|sms|external)
     filters[list] - (string) - search a specific tag
  */
-Fut.prototype.getFuts = function(params, cb) {
+Gopher.prototype.getFuts = function(params, cb) {
   var requestOptions = {
     url: this.config.apiHost + '/api/v1/reminders/?' + querystring.stringify(params),
     headers: {
@@ -144,7 +144,7 @@ Fut.prototype.getFuts = function(params, cb) {
  *
  * (int) futId
  */
-Fut.prototype.getFut = function(futId, cb) {
+Gopher.prototype.getFut = function(futId, cb) {
   if(typeof futId != 'number') throw new Error ('futId must be an integer')
   var requestOptions = {
     url: this.config.apiHost + '/api/v1/reminders/' + futId,
@@ -174,7 +174,7 @@ Fut.prototype.getFut = function(futId, cb) {
  *  timezone: (string) - One of the php supported timezones: http://php.net/manual/en/timezones.php
  * (Note: Can accept either json or form-encoded)
  */
-Fut.prototype.createFut =  function(params, cb) {
+Gopher.prototype.createFut =  function(params, cb) {
   var requestOptions = {
       method: 'POST',
       url: this.config.apiHost + '/api/v2/reminders/',
@@ -197,7 +197,7 @@ Fut.prototype.createFut =  function(params, cb) {
  * https://github.com/rsweetland/followupthen/wiki/FUT-APIs#v2-reminder-simulation
  *
  */
- Fut.prototype.simulateFut = function(params, cb) {
+ Gopher.prototype.simulateFut = function(params, cb) {
    if(!params.simulate) params.simulate = 1;
    return this.createFut(params, cb);
  }
@@ -218,7 +218,7 @@ Fut.prototype.createFut =  function(params, cb) {
       content - (string) - New content
       prepend - (string) - Prepended content   curl -X PUT -v --header "Authorization: Bearer ce18290427ff6537d019f58c2c593db4e69199c9" "http://local.followupthen.com/api/v1/reminders/1231/" --data "subject=test_updated_subject&method=to"
   */
-  Fut.prototype.updateFut = function(futId, params, cb) {
+  Gopher.prototype.updateFut = function(futId, params, cb) {
     var requestOptions = {
           method: 'PUT',
           url: this.config.apiHost + '/api/v1/reminders/' + futId + '/',
@@ -238,7 +238,7 @@ Fut.prototype.createFut =  function(params, cb) {
  *   complete: 1 - If "this is passed, it marks as "completed" instead of deletes
  *                 see "completeFut".
  */
-  Fut.prototype.deleteFut = function(params, cb) {
+  Gopher.prototype.deleteFut = function(params, cb) {
     if (typeof params.futId !== 'number') eb(new Error("futId must be an integer"));
     params = Object.assign({complete: false}, params); //delete by default.
     request.delete({
@@ -264,11 +264,11 @@ Fut.prototype.createFut =  function(params, cb) {
    * Completes A Given Followup
    * "Completing" has different behavior depending on the fut - recurring, task, etc.
    */
-  Fut.prototype.completeFut = function(futId, cb) {
+  Gopher.prototype.completeFut = function(futId, cb) {
     return this.deleteFut({futId: futId, complete: 1}, cb);
   }
 
-  Fut.prototype.saveExtData = function(settings, cb) {
+  Gopher.prototype.saveExtData = function(settings, cb) {
     if(typeof settings != 'object') throw new Error ('settings must be an object');
 
     var requestOptions = {
@@ -284,7 +284,7 @@ Fut.prototype.createFut =  function(params, cb) {
     return _makeRequest(requestOptions, cb)
   }
 
-  Fut.prototype.getExtData = function(cb) {
+  Gopher.prototype.getExtData = function(cb) {
     var requestOptions = {
         url: urljoin(this.config.apiHost, '/api/v1/extensions/self/users/self/data/'),
         headers: {
@@ -302,7 +302,7 @@ Fut.prototype.createFut =  function(params, cb) {
  *
  *
  */
-Fut.prototype.getAuthorizationUri = function() {
+Gopher.prototype.getAuthorizationUri = function() {
   const oauth2 = OAuth2.create({
     client: {
       id: this.config.clientId,
@@ -325,7 +325,7 @@ Fut.prototype.getAuthorizationUri = function() {
 }
 
 
-Fut.prototype.getAccessToken = function(authCode, cb) {
+Gopher.prototype.getAccessToken = function(authCode, cb) {
   return new Promise((resolve, reject) => {
     debug('Auth code from auth uri used to retrive auth token: ', authCode);
 
@@ -365,12 +365,12 @@ Fut.prototype.getAccessToken = function(authCode, cb) {
 }
 
 // If we already have an accessToken stored in a cookie or something, load it here
-Fut.prototype.setAccessToken = function(accessToken) {
+Gopher.prototype.setAccessToken = function(accessToken) {
   this._accessToken = accessToken;
 }
 
-Fut.prototype.showAccessToken = function(accessToken) {
+Gopher.prototype.showAccessToken = function(accessToken) {
   return this._accessToken;
 }
 
-module.exports = Fut;
+module.exports = Gopher;

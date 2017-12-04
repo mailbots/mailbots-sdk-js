@@ -1,16 +1,17 @@
 {
-  "name": "fut-node",
-  "version": "1.0.0",
-  "description": "Simple node client for FollowUpThen API",
-  "main": "fut.js",
+  "name": "gopher-node",
+  "version": "1.0.2",
+  "description": "Node.js client for the Gopher API",
+  "repository": "https://github.com/gopherhq/gopher-node",
+  "main": "gopher-node.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha ./tests"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Reilly Sweetland @rsweetland",
+  "license": "MIT",
   "dependencies": {
     "crypto": "0.0.3",
     "debug": "^2.6.8",
