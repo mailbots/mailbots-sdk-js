@@ -35,6 +35,7 @@ function getFutClient() {
       clientId: 'ext_03112dd8e958113b7be1b406916feb6c',
       clientSecret: '56d277ebce1ec1e834a1bc8a2acf5d53bda591bf00d4cec4faa2bfd45e8a6a98',
       redirectUri:'http://localhost:3002/callback',
+      extensionUrl:'http://gopher-express.glitch.com/',
       scope: 'get_user_info extension_manage_self manage_reminders read_reminders',
       apiHost: mockedApiHost,
       tokenHost: mockedApiHost,
@@ -218,14 +219,31 @@ describe('Tasks', () => {
 
   it('should resolve a natural language timeformat', async () => {
     let format = {
-      format: '1day', 
+      format: '1day',
       method: 'bcc',
-      timezone: 'Amierca/Los_Angeles'
+      timezone: 'America/Los_Angeles'
     };
 
     res = await futClient.naturalTime(format);
+    debug(res);
     expect(res.valid).to.be.true;
     expect(res.recurring).to.be.false;
+  })
+
+  it('should send an invite from an authorized user', async () => {
+    res = await futClient.invite("test@example.com");
+    expect(res).to.be.ok;
+  })
+
+  it('should send an invite from an anonymous user', async () => {
+    futClient._accessToken = null;
+    res = await futClient.invite("test@example.com");
+    expect(res).to.be.ok;
+  })
+
+  it('should send invites to an array of users', async () => {
+    res = await futClient.invite(["blackhole@example.com", "blackhole@example.com"]);
+    expect(res).to.be.ok;
   })
 
   // TODO: Fix after proper errr cases are accounted for.

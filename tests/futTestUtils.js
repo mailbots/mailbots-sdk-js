@@ -6,7 +6,8 @@ module.exports.getFutClient = function () {
     {
       clientId: 'ext_03112dd8e958113b7be1b406916feb6c',
       clientSecret: '56d277ebce1ec1e834a1bc8a2acf5d53bda591bf00d4cec4faa2bfd45e8a6a98',
-      redirectUri:'http://localhost:3003/callback',
+      extensionUrl:'http://subdomain.gopher.email/callback',
+      redirectUri:'http://subdomain.gopher.email/auth/callback',
       scope: 'get_user_info extension_manage_self manage_reminders read_reminders',
       apiHost: 'https://www.followupthen.com',
       tokenHost: 'https://www.followupthen.com',

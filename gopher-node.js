@@ -71,7 +71,7 @@ function Gopher(config) {
 
   this.config = Object.assign(this.configDefaults, this.config);
   this.config.state = Math.random().toString(36).substring(7);
-  debug('settings: ', this.config);
+  // debug('settings: ', this.config);
 
   // Bearer token used in Auth header: curl url -h "Authorization: Bearer accessToken"
   // Set this with setAccessToken method below after fetching from proper Uri
@@ -125,6 +125,30 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
       },
       json: true
     }
+    return _makeRequest(requestOptions, cb);
+  }
+
+
+  Gopher.prototype.invite = function(emails, cb) {
+    var extensionName = this.config.extensionUrl.split('.')[0].replace(/^.*\/\//, ''); //TODO: Make extension name (ie, subdomain) explicit
+    var requestBody = {
+      extension: extensionName,
+      email_address: emails
+    }
+    var requestOptions = {
+      method: 'POST',
+      url: urljoin(this.config.apiHost, '/api/v3/invites/'),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+      },
+      form: requestBody,
+      json: true
+    }
+
+    if (this._accessToken) {
+      Object.assign(requestOptions.headers, {"Authorization": "Bearer " + this._accessToken});
+    }
+
     return _makeRequest(requestOptions, cb);
   }
 
