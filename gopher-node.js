@@ -22,7 +22,7 @@ function _makeRequest(requestOptions, cb) {
       if(cb) cb(null, res);
       return Promise.resolve(res);
     }).catch((err) => {
-      debug('Response Error:', err.statusCode, err.response.body);
+      debug('Response Error:', err, err);
       if(cb) cb(err);
       return Promise.reject(err);
     });
@@ -207,6 +207,36 @@ Gopher.prototype.createTask =  function(params, cb) {
           json: true
         }
     return _makeRequest(requestOptions, cb);
+  }
+
+  /**
+   * Trigger a Gopher Task
+   */
+  Gopher.prototype.triggerTask = function(params, cb) {
+    if(!params.trigger_url) {
+      return new Error("trigger_url is required");
+    }
+
+    var requestOptions = {
+          method: 'POST',
+          url: params.trigger_url,
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+          },
+          json: true
+    }
+
+    if(params.payload) {
+      Object.assign(requestOptions, { form: params.payload});
+    }
+
+    if (this._accessToken) {
+        Object.assign(requestOptions, {"Authorization": "Bearer " + this._accessToken});
+    }
+
+
+    return _makeRequest(requestOptions);
+  
   }
 
   /*

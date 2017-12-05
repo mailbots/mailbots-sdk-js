@@ -21,34 +21,13 @@ var accessToken = '4f2988981ad2bca644f9fe336357492574a320a2';
 var exampleTask = {};
 var throttleTests = false;
 
-// process.env.NOCK_OFF = true; //uncomment to hit a live API
 // futTestUtils.recordNockMocks(); // regenerate tests/nockMocks.js
-// throttleTests = true; // uncomment if you're hitting the live API
+process.env.NOCK_OFF = true; //uncomment to hit a live API
+throttleTests = true; // uncomment if you're hitting the live API
 
-
-var verifyRequest = {
-  reqheaders: {
-    authorization: function(header) {
-      return (header === "Bearer " + accessToken);
-    }
-  }
-}
 
 function getGopherClient() {
-  var gopherClient = new Gopher(
-    {
-      clientId: 'ext_03112dd8e958113b7be1b406916feb6c',
-      clientSecret: '56d277ebce1ec1e834a1bc8a2acf5d53bda591bf00d4cec4faa2bfd45e8a6a98',
-      redirectUri:'http://localhost:3002/callback',
-      extensionUrl:'http://gopher-express.glitch.com/',
-      scope: 'get_user_info extension_manage_self manage_reminders read_reminders',
-      apiHost: apiHost,
-      tokenHost: apiHost,
-      tokenPath: apiHost + '/api/v1/oauth2/access_token',
-      authorizePath: apiHost + '/settings/oauth2_authorize'
-  });
-  gopherClient.setAccessToken(accessToken);
-  return gopherClient;
+  return futTestUtils.getGopherClient(accessToken);
 }
 
 function getExampleTask() {
@@ -122,14 +101,13 @@ describe('Tasks', function () {
     })
   }).timeout(5000)  
 
-  xit('should get a list of followups with async/await', async () => {
-      await gopherClient.getTasks({limit: 1}).then((res) => {
-        expect(res.status).to.equal('success');
-        expect(res.tasks).to.be.an('array');
-        expect(res.tasks[0]).to.have.property('reference_email');
-        exampleTask = res.tasks[0];
-      });
-  })
+  it('should get a list of followups with async/await', async () => {
+      let res = await gopherClient.getTasks({limit: 1}); 
+      expect(res.status).to.equal('success');
+      expect(res.tasks).to.be.an('array');
+      expect(res.tasks[0]).to.have.property('reference_email');
+      exampleTask = res.tasks[0];
+    });
 
   it('should get a list of followups with a cb', (done) => {
     gopherClient.getTasks({limit: 1}, (err, res) => {
@@ -321,6 +299,11 @@ describe('Tasks', function () {
     } catch (error) {
       return Promise.resolve(error);
     }
+  });
+
+  it('should be able to trigger a Gopher task', async () => {
+    let res = await gopherClient.triggerTask({trigger_url: exampleTask.trigger_url});
+    expect(res).to.be.ok;
   });
 
 });
