@@ -5,21 +5,26 @@ var nock = require('nock');
 var futTestUtils = require('./futTestUtils');
 var debug = require('debug')('gopher-node');
 var Gopher = require('../gopher-node');
-var futClient = {};
+var gopherClient = {};
 
-// Test these endpoints against an instance of the Gopher core API by:
+
+// Test against an instance of the Gopher core API by:
 //  1. Modifying this URL point to an install of Gopher Core.
-//  2. Login and copy the value of fut_token from your cookie.
+//  2. Login and copy the value of gopherToken from your cookie.
 //  3. Flip the NOCK_OFF switch below.
-//  4. Optoinally turn on the nock recorder mock the request
+//  4. Throttle API calls
+//  4. Optionally uncomment the nock recorder to cache / mock the network requests to nockMock.js
 // (Note that this will actually modify whichever account is registered)
-// This can also be used to update this test lib when if / when the API changes
-var mockedApiHost = 'http://local.gopher.email';
+
+var apiHost = 'http://local.gopher.email';
 var accessToken = '4f2988981ad2bca644f9fe336357492574a320a2';
 var exampleTask = {};
+var throttleTests = false;
 
-process.env.NOCK_OFF = true;
-// nock.recorder.rec();
+// process.env.NOCK_OFF = true; //uncomment to hit a live API
+// futTestUtils.recordNockMocks(); // regenerate tests/nockMocks.js
+// throttleTests = true; // uncomment if you're hitting the live API
+
 
 var verifyRequest = {
   reqheaders: {
@@ -29,22 +34,21 @@ var verifyRequest = {
   }
 }
 
-function getFutClient() {
-  var futClient = new Gopher(
+function getGopherClient() {
+  var gopherClient = new Gopher(
     {
       clientId: 'ext_03112dd8e958113b7be1b406916feb6c',
       clientSecret: '56d277ebce1ec1e834a1bc8a2acf5d53bda591bf00d4cec4faa2bfd45e8a6a98',
       redirectUri:'http://localhost:3002/callback',
       extensionUrl:'http://gopher-express.glitch.com/',
       scope: 'get_user_info extension_manage_self manage_reminders read_reminders',
-      apiHost: mockedApiHost,
-      tokenHost: mockedApiHost,
-      tokenPath: mockedApiHost + '/api/v1/oauth2/access_token',
-      authorizePath: mockedApiHost + '/settings/oauth2_authorize'
+      apiHost: apiHost,
+      tokenHost: apiHost,
+      tokenPath: apiHost + '/api/v1/oauth2/access_token',
+      authorizePath: apiHost + '/settings/oauth2_authorize'
   });
-  futClient.setAccessToken(accessToken);
-  // futClient.setAccessToken('7297f3ee08fb6f6b8c509844f90de7f0820de7fa');
-  return futClient;
+  gopherClient.setAccessToken(accessToken);
+  return gopherClient;
 }
 
 function getExampleTask() {
@@ -52,7 +56,7 @@ function getExampleTask() {
     return Promise.resolve(exampleTask); 
   }
   
-  return futClient.createFut({
+  return gopherClient.createTask({
       "task": {
       "command": "{{example_email_cmd}}",
       "reminder_timeformat": "1sec",
@@ -80,26 +84,18 @@ function getExampleTask() {
 
 }
 
-describe('Tasks', () => {
-  
-  beforeEach(async () => {
-    futClient = getFutClient();
-    await getExampleTask();
-  });
+describe('Tasks', function () {
+  this.timeout(5000);
 
-  it('test should not create an example task if one has been loaded', (done) => {
-    // exampleTask loaded because it's called in beforeEach 
-    getExampleTask().then((res) => {
-      expect(res.id).to.equal(exampleTask.id);
-      done();
-    }).catch((err) => {
-      done(new Error("Error getting example task"));
-    })
-  })
+  beforeEach(async () => {
+      if (throttleTests) await futTestUtils.sleep(1000);
+      gopherClient = getGopherClient();
+      await getExampleTask();
+  });
 
   it('should create a Gopher Task', (done) => {
     //TODO: This creates a successful Gopher Task despite the Extension endpoint failing.
-    futClient.createFut({
+    gopherClient.createTask({
       "task": {
       "command": "{{example_email_cmd}}",
       "reminder_timeformat": "1sec",
@@ -126,8 +122,117 @@ describe('Tasks', () => {
     })
   }).timeout(5000)  
 
+  xit('should get a list of followups with async/await', async () => {
+      await gopherClient.getTasks({limit: 1}).then((res) => {
+        expect(res.status).to.equal('success');
+        expect(res.tasks).to.be.an('array');
+        expect(res.tasks[0]).to.have.property('reference_email');
+        exampleTask = res.tasks[0];
+      });
+  })
+
+  it('should get a list of followups with a cb', (done) => {
+    gopherClient.getTasks({limit: 1}, (err, res) => {
+      if(err) done(err);
+      expect(res.tasks).to.be.an('array');
+      expect(res.tasks[0]).to.have.property('reference_email');
+      done();
+    })
+  })
+
+  it('should get a list of followups with a promise', (done) => {
+      gopherClient.getTasks({limit: 1}).then((res) => {
+        expect(res.status).to.equal('success');
+        expect(res.tasks).to.be.an('array');
+        expect(res.tasks[0]).to.have.property('reference_email');
+        exampleTask = res.tasks[0];
+        done();
+      }).catch((err) => {
+        done(err);
+      })
+  })
+
+  it('should get a single task', (done) => {
+      if(!exampleTask) return done(new Error("This test needs to be run as part of the suite."));
+      gopherClient.getTask(exampleTask.id, (err, res) => {
+      done()
+      })
+  })
+
+  it('should update a fut', (done) => {
+      if(!exampleTask.hasOwnProperty('id'))  {
+        done("Example Task doens't exist", exampleTask);
+      }
+      gopherClient.updateTask(exampleTask.id, {
+          task: {
+            reference_email: {
+              body: 'something else new'
+          }
+        }
+      }).then((res) => {
+        expect(res).to.be.an('object');
+        done();
+      }).catch((err) => {
+        done(new Error("Error updating followup", err));
+      })
+  }).timeout(5000);
+
+  it('should let an extension save data', (done) => {
+    gopherClient.saveExtData({three:'more'}, (err, res) => {
+      expect(res).to.be.an('object')
+      expect(res.data.three).to.equal('more')
+      done()
+    })
+  })
+
+  it('should let an extension get data', (done) => {
+      gopherClient.getExtData((err, res) => {
+        expect(res).to.be.an('object')
+        expect(res.data.three).to.equal('more')
+        done()
+      })
+  })
+
+  it('should resolve a natural language timeformat', async () => {
+    let format = {
+      format: '1day',
+      method: 'bcc',
+      timezone: 'America/Los_Angeles'
+    };
+
+    res = await gopherClient.naturalTime(format);
+    debug(res);
+    expect(res.valid).to.be.true;
+    expect(res.recurring).to.be.false;
+  })
+
+  it('should send an invite from an authorized user', async () => {
+    res = await gopherClient.invite("test@example.com");
+    expect(res).to.be.ok;
+  })
+
+  it('should send an invite from an anonymous user', async () => {
+    gopherClient._accessToken = null;
+    res = await gopherClient.invite("test@example.com");
+    expect(res).to.be.ok;
+  })
+
+  it('should send invites to an array of users', async () => {
+    res = await gopherClient.invite(["blackhole@example.com", "blackhole@example.com"]);
+    expect(res).to.be.ok;
+  })
+
+  it('test should not create an example task if one has been loaded', (done) => {
+    getExampleTask().then((res) => {     // exampleTask called newly in beforeEach()
+      expect(res.id).to.equal(exampleTask.id);
+      done();
+    }).catch((err) => {
+      done(new Error("Error getting example task"));
+    })
+  })
+
   it('should return 400 when a Gopher command is invoked that does not exist', (done) => {
-    futClient.createFut({
+    gopherClient.createTask({
       "task": {
       "command": "foo32rfadf",
       "reminder_timeformat": "1sec",
@@ -153,102 +258,10 @@ describe('Tasks', () => {
         expect(err.response.body.type).to.equal('gopher_command_not_found');
         done();
     });
-  }).timeout(5000)
-
-  it('should get a list of followups with a cb', (done) => {
-    futClient.getTasks({limit: 1}, (err, res) => {
-      if(err) done(err);
-      expect(res.tasks).to.be.an('array');
-      expect(res.tasks[0]).to.have.property('reference_email');
-      done();
-    })
-  })
-
-  it('should get a list of followups with a promise', (done) => {
-      futClient.getTasks({limit: 1}).then((res) => {
-        expect(res.status).to.equal('success');
-        expect(res.tasks).to.be.an('array');
-        expect(res.tasks[0]).to.have.property('reference_email');
-        exampleTask = res.tasks[0];
-        done();
-      }).catch((err) => {
-        done(err);
-      })
-  })
-
-  it('should get a single task', (done) => {
-      if(!exampleTask) return done(new Error("This test needs to be run as part of the suite."));
-      futClient.getTask(exampleTask.id, (err, res) => {
-      done()
-      })
-  })
-
-  it('should update a fut', (done) => {
-      if(!exampleTask.hasOwnProperty('id'))  {
-        done("Example Task doens't exist", exampleTask);
-      }
-      futClient.updateTask(exampleTask.id, {
-          task: {
-            reference_email: {
-              body: 'something else new'
-          }
-        }
-      }).then((res) => {
-        expect(res).to.be.an('object');
-        done();
-      }).catch((err) => {
-        done(new Error("Error updating followup", err));
-      })
-  }).timeout(5000);
-
-  it('should let an extension save data', (done) => {
-    futClient.saveExtData({three:'more'}, (err, res) => {
-      expect(res).to.be.an('object')
-      expect(res.data.three).to.equal('more')
-      done()
-    })
-  })
-
-  it('should let an extension get data', (done) => {
-      futClient.getExtData((err, res) => {
-        expect(res).to.be.an('object')
-        expect(res.data.three).to.equal('more')
-        done()
-      })
-  })
-
-  it('should resolve a natural language timeformat', async () => {
-    let format = {
-      format: '1day',
-      method: 'bcc',
-      timezone: 'America/Los_Angeles'
-    };
-
-    res = await futClient.naturalTime(format);
-    debug(res);
-    expect(res.valid).to.be.true;
-    expect(res.recurring).to.be.false;
-  })
-
-  it('should send an invite from an authorized user', async () => {
-    res = await futClient.invite("test@example.com");
-    expect(res).to.be.ok;
-  })
-
-  it('should send an invite from an anonymous user', async () => {
-    futClient._accessToken = null;
-    res = await futClient.invite("test@example.com");
-    expect(res).to.be.ok;
-  })
-
-  it('should send invites to an array of users', async () => {
-    res = await futClient.invite(["blackhole@example.com", "blackhole@example.com"]);
-    expect(res).to.be.ok;
-  })
-
+  });
   // TODO: Fix after proper errr cases are accounted for.
   xit('should create a task with verbose output', (done) => {
-    futClient.createFut({
+    gopherClient.createTask({
       "verbose": 1,
       "task": {
         "command": "{{example_email_cmd}}",
@@ -280,7 +293,7 @@ describe('Tasks', () => {
 
   xit('should archive a Gopher Task', async () => {
     try {
-      let res = await futClient.createFut({
+      let res = await gopherClient.createTask({
         "task": {
           "command": "{{example_email_cmd}}",
           "reminder_timeformat": "1sec",
@@ -303,7 +316,7 @@ describe('Tasks', () => {
         
       let task = res.task;
 
-      let resCompleted = await futClient.deleteFut(task.id);
+      let resCompleted = await gopherClient.deleteFut(task.id);
       
     } catch (error) {
       return Promise.resolve(error);

@@ -1,4 +1,5 @@
 var nock = require('nock')
+let fs = require('fs');
 
 module.exports.getFutClient = function () {
   var Fut = require('../gopher-node');
@@ -16,4 +17,22 @@ module.exports.getFutClient = function () {
   });
   futClient.setAccessToken('4f2988981ad2bca644f9fe336357492574a320a2');
   return futClient;
+}
+
+module.exports.recordNockMocks = function () {  
+  function customNockLogger(output) {
+    fs.appendFileSync('./tests/nockMocks.js', output, (err, success) => {if(err) console.log('Error writing to network mock file:', err)});
+    console.log('request added to nock mocks...');
+  }
+
+  if(fs.existsSync('./tests/nockMocks.js')) {
+    fs.unlinkSync('./tests/nockMocks.js');
+  }
+  fs.appendFileSync('./tests/nockMocks.js', `//auto-generated file \nvar nock = require('nock');`);
+  nock.recorder.rec({use_separator: false, logging: customNockLogger });
+}
+
+module.exports.sleep = function sleep (time) {
+  console.log('sleeping for', time);
+  return new Promise((resolve) => setTimeout(resolve, time));
 }

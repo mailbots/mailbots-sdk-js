@@ -7,11 +7,11 @@ const querystring = require('querystring');
 const timestamp = require('unix-timestamp');
 timestamp.round = true;
 const crypto = require('crypto');
-const urljoin = require('url-join'); // TODO: Implement on all URLs
+const urljoin = require('url-join');
 
 function _checkParam(param, paramName) {
   if(!param || (typeof param !== 'string')) {
-    throw new Error('\''+ paramName + '\' is required to connect to FollowUpThen');
+    throw new Error('\''+ paramName + '\' is required to connect to Gopher');
   }
 }
 
@@ -37,18 +37,6 @@ function _serialize (obj) {
   return str.join("&");
 }
 
-
-function _isEmpty(obj) {
-    for(var prop in obj) {
-        if(obj.hasOwnProperty(prop))
-            return false;
-    }
-
-    return JSON.stringify(obj) === JSON.stringify({});
-}
-
-
-
 function Gopher(config) {
   if (!(this instanceof Gopher)) return new Gopher(config);
   _checkParam(config.clientId, 'clientId');
@@ -71,19 +59,15 @@ function Gopher(config) {
 
   this.config = Object.assign(this.configDefaults, this.config);
   this.config.state = Math.random().toString(36).substring(7);
-  // debug('settings: ', this.config);
+  debug('settings: ', this.config);
 
   // Bearer token used in Auth header: curl url -h "Authorization: Bearer accessToken"
-  // Set this with setAccessToken method below after fetching from proper Uri
   this._accessToken = '';
-
 }
 
 
 /*
- *  Validates signature on webhook from FUT the webhook from FUT is valid.
- *  Set verifyAge to false when testing / mocking HTTP requests
- *  Copious debugging provided because of possible variations in environments
+ *  Validates webhook signature. Set verifyAge to false when testing / mocking HTTP requests
 */
 Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, rawBody, verifyAge = true) {
   let generatedSig = crypto.createHmac('sha256', webhookTimestamp + this.config.clientSecret).update(rawBody).digest('hex');
@@ -106,14 +90,7 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
 
 
  /*
-  * Resolve Natural Time Format
-  * https://rsweetland.github.io/fut-api-docs/#resolve-format
-    args
-     params (obj)
-      format - (string) – The format, whatever before @followupthen.com, example: 3days, 3weeks, etc.
-      (depricated) phrasing - `generic` - Choose what phrasing to use when explaining to the user what will happen. Allowed values: generic, if_email, will.
-      method - `to` – Email method: to, cc, bcc
-      timezone -  - [Supported Timezones](http://php.net/manual/en/timezones.php). Example: America/Los_Angeles.
+  * Resolve Natural Time Format (ex: {naturaltime}@ext.gopher.email)
   */
   Gopher.prototype.naturalTime = function(params, cb) {
     var requestOptions = {
@@ -128,7 +105,10 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
     return _makeRequest(requestOptions, cb);
   }
 
-
+ /*
+  * Invite users to this extension. If an Auth token is included, the invitation email
+  * includes the name of the inviting person.
+  */
   Gopher.prototype.invite = function(emails, cb) {
     var extensionName = this.config.extensionUrl.split('.')[0].replace(/^.*\/\//, ''); //TODO: Make extension name (ie, subdomain) explicit
     var requestBody = {
@@ -154,18 +134,7 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
 
 
 /*
- * Fetch Followups
- * https://github.com/rsweetland/followupthen/wiki/FUT-APIs#get-a-list-of-reminders
- *
-    order_by - (created) – Sorted by created. Allowed value: created.
-    order_dir - (asc|desc) - Order direction : ascending or descending.
-    include_recently_completed - (0|1) - The response will include recently completed reminders.
-    limit - (number) - maximum reminders returned.
-    page - (number) - page number.
-    search - (string) - Search a specific keyword.
-    filters[time] - (today|tomorrow|this_week|completed)
-    filters[attributes] - (recurring|t|sms|external)
-    filters[list] - (string) - search a specific tag
+ * Get List of Gopher Tasks
  */
 Gopher.prototype.getTasks = function(params, cb) {
   var requestOptions = {
@@ -183,9 +152,6 @@ Gopher.prototype.getTasks = function(params, cb) {
 
 /*
  * Fetch A Single Gopher Task
- * https://github.com/rsweetland/followupthen/wiki/FUT-APIs#get-a-single-reminder
- *
- * (int) taskId
  */
 Gopher.prototype.getTask = function(taskId, cb) {
   if(typeof taskId != 'number') throw new Error ('taskId must be an integer. This was given instead:', taskId)
@@ -201,23 +167,9 @@ Gopher.prototype.getTask = function(taskId, cb) {
 }
 
 /*
- * Create A Followup
- * https://github.com/rsweetland/followupthen/wiki/FUT-APIs#v2-reminder-simulation
- *
- *  simulation : (1|0) : if simulating, no reminders are created, full API response is provided
- *  source[recipient_server] : (string, required) - Intended recipient of this particular message. e.g 1day@localhost See below.
- *  source[recipients_to] : (string) - Emails listed in the to field of the email. e.g 1day@localhost, 2day@localhost
- *  source[recipients_cc] : (string) - Who is in the cc field
- *  source[recipients_bcc] : (string) - Who is in the bcc field
- *  source[from] : (string) - This can be passed but is always simulation@example.com right now (ok for now).
- *  source[body] : (string) - Email message body
- *  source[type]: (email | api) - API interactions suppress certain emails - and provide different information.
- *  subscription_plan: (string) - The simulated user's subscription plan
- *  subject: (string) - Email subject
- *  timezone: (string) - One of the php supported timezones: http://php.net/manual/en/timezones.php
- * (Note: Can accept either json or form-encoded)
+ * Create A Gopher Task
  */
-Gopher.prototype.createFut =  function(params, cb) {
+Gopher.prototype.createTask =  function(params, cb) {
   let urlParams = {}
   if(params.verbose) {
     urlParams.verbose = 1;
@@ -240,18 +192,8 @@ Gopher.prototype.createFut =  function(params, cb) {
 
 
  /*
-  * Update A Followup
-  * https://github.com/rsweetland/followupthen/wiki/FUT-APIs#update-a-single-reminder
-    args
-     futId (int)
-     params (obj)
-      reschedule - (1|0) – Flag to reschedule reminder
-      deliver_now - 1 | null - Flag to deliver the reminder now
-      fut_format - (string) – New format
-      method - (to|cc) - Email method
-      subject - (string) - New subject
-      content - (string) - New content
-      prepend - (string) - Prepended content   curl -X PUT -v --header "Authorization: Bearer ce18290427ff6537d019f58c2c593db4e69199c9" "http://local.followupthen.com/api/v1/reminders/1231/" --data "subject=test_updated_subject&method=to"
+  * Update A Gopher Task
+  * Used to save data against the task, update content, followup time and more
   */
   Gopher.prototype.updateTask = function(taskId, params, cb) {
     var requestOptions = {
@@ -267,7 +209,9 @@ Gopher.prototype.createFut =  function(params, cb) {
     return _makeRequest(requestOptions, cb);
   }
 
- 
+  /*
+  * Save Gopher Extension Data which is then sent with every webhook related to that extension.
+  */ 
   Gopher.prototype.saveExtData = function(settings, cb) {
     if(typeof settings != 'object') throw new Error ('settings must be an object');
 
@@ -284,6 +228,9 @@ Gopher.prototype.createFut =  function(params, cb) {
     return _makeRequest(requestOptions, cb)
   }
 
+  /*
+  * Get Gopher Extension-Wide Data
+  */ 
   Gopher.prototype.getExtData = function(cb) {
     var requestOptions = {
         url: urljoin(this.config.apiHost, '/api/v3/extensions/self/data/'),
@@ -297,10 +244,7 @@ Gopher.prototype.createFut =  function(params, cb) {
   }
 
 /*
- *
- *  Auth
- *
- *
+ *  Auth: Build initial AOuth2 login link
  */
 Gopher.prototype.getAuthorizationUri = function() {
   const oauth2 = OAuth2.create({
@@ -324,7 +268,9 @@ Gopher.prototype.getAuthorizationUri = function() {
   return {state: this.config.state, uri: authorizationUri};
 }
 
-
+/*
+ *  Auth: After user has Authorized extension with Gopher, fetch access token
+ */
 Gopher.prototype.getAccessToken = function(authCode, cb) {
   return new Promise((resolve, reject) => {
     debug('Auth code from auth uri used to retrive auth token: ', authCode);
@@ -364,13 +310,11 @@ Gopher.prototype.getAccessToken = function(authCode, cb) {
 
 }
 
-// If we already have an accessToken stored in a cookie or something, load it here
+/*
+ *  Auth: Manually set access token if we have it (ie, in a cookie, webhook, etc)
+ */
 Gopher.prototype.setAccessToken = function(accessToken) {
   this._accessToken = accessToken;
-}
-
-Gopher.prototype.showAccessToken = function(accessToken) {
-  return this._accessToken;
 }
 
 module.exports = Gopher;

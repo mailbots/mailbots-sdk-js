@@ -1,14 +1,18 @@
 {
   "name": "gopher-node",
-  "version": "1.0.2",
+  "version": "0.0.0-development",
   "description": "Node.js client for the Gopher API",
-  "repository": "https://github.com/gopherhq/gopher-node",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gopherhq/gopher-node.git"
+  },
   "main": "gopher-node.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./tests"
+    "test": "./node_modules/mocha/bin/mocha ./tests",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "author": "Reilly Sweetland @rsweetland",
   "license": "MIT",
@@ -25,6 +29,7 @@
   "devDependencies": {
     "chai": "^4.0.2",
     "mocha": "^3.4.2",
-    "nock": "^9.0.13"
+    "nock": "^9.0.13",
+    "semantic-release": "^8.2.0"
   }
 }
