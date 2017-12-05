@@ -1,6 +1,6 @@
 var nock = require('nock')
 var fs = require('fs');
-var Gopher = require('../gopher-node');
+var Gopher = require('../gopherhq-node');
 
 var apiHost = 'http://local.gopher.email';
 var accessToken = '4f2988981ad2bca644f9fe336357492574a320a2';
@@ -22,7 +22,7 @@ module.exports.getGopherClient = function (accessToken) {
   return gopherClient;
 }
 
-module.exports.recordNockMocks = function () { 
+module.exports.recordNockMocks = function () {
   function customNockLogger(output) {
     fs.appendFileSync('./tests/nockMocks.js', output, (err, success) => {if(err) console.log('Error writing to network mock file:', err)});
     console.log('request added to nock mocks...');

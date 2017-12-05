@@ -2,9 +2,9 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var request = require('request');
 var nock = require('nock');
-var futTestUtils = require('./futTestUtils');
-var debug = require('debug')('gopher-node');
-var Gopher = require('../gopher-node');
+var futTestUtils = require('./gopherTestUtils');
+var debug = require('debug')('gopherhq-node:tests');
+var Gopher = require('../gopherhq-node');
 var gopherClient = {};
 
 
@@ -22,8 +22,8 @@ var exampleTask = {};
 var throttleTests = false;
 
 // futTestUtils.recordNockMocks(); // regenerate tests/nockMocks.js
-process.env.NOCK_OFF = true; //uncomment to hit a live API
-throttleTests = true; // uncomment if you're hitting the live API
+// process.env.NOCK_OFF = true; //uncomment to hit a live API
+// throttleTests = true; // uncomment if you're hitting the live API
 
 
 function getGopherClient() {

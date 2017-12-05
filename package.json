@@ -1,12 +1,12 @@
 {
-  "name": "gopher-node",
+  "name": "gopherhq-node",
   "version": "0.0.0-development",
-  "description": "Node.js client for the Gopher API",
+  "description": "Node.js client for the Gopher Email API",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gopherhq/gopher-node.git"
+    "url": "https://github.com/gopherhq/gopherhq-node.git"
   },
-  "main": "gopher-node.js",
+  "main": "gopherhq-node.js",
   "directories": {
     "test": "tests"
   },
