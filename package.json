@@ -1,6 +1,6 @@
 {
   "name": "gopherhq-node",
-  "version": "0.0.0-development",
+  "version": "0.0.1-development",
   "description": "Node.js client for the Gopher Email API",
   "repository": {
     "type": "git",
@@ -8,10 +8,10 @@
   },
   "main": "gopherhq-node.js",
   "directories": {
-    "test": "tests"
+    "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./tests",
+    "test": "./node_modules/mocha/bin/mocha ./test",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "commit": "git-cz"
   },
@@ -31,6 +31,7 @@
     "chai": "^4.0.2",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.1.0",
+    "dotenv": "4.0.0",
     "mocha": "^3.4.2",
     "nock": "^9.0.13",
     "semantic-release": "^8.2.0"

@@ -16,8 +16,6 @@ var gopherClient = {};
 //  4. Optionally uncomment the nock recorder to cache / mock the network requests to nockMock.js
 // (Note that this will actually modify whichever account is registered)
 
-var apiHost = 'http://local.gopher.email';
-var accessToken = '4f2988981ad2bca644f9fe336357492574a320a2';
 var exampleTask = {};
 var throttleTests = false;
 
@@ -27,7 +25,7 @@ var throttleTests = false;
 
 
 function getGopherClient() {
-  return futTestUtils.getGopherClient(accessToken);
+  return futTestUtils.getGopherClient();
 }
 
 function getExampleTask() {
