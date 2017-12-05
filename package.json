@@ -12,7 +12,8 @@
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha ./tests",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "commit": "git-cz"
   },
   "author": "Reilly Sweetland @rsweetland",
   "license": "MIT",
@@ -28,8 +29,13 @@
   },
   "devDependencies": {
     "chai": "^4.0.2",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.1.0",
     "mocha": "^3.4.2",
     "nock": "^9.0.13",
     "semantic-release": "^8.2.0"
+  },
+  "czConfig": {
+    "path": "node_modules/cz-conventional-changelog"
   }
 }
