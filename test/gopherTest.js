@@ -1,3 +1,4 @@
+require('dotenv').config();
 var mocha = require('mocha');
 var expect = require('chai').expect;
 var request = require('request');
@@ -35,11 +36,11 @@ function getExampleTask() {
   
   return gopherClient.createTask({
       "task": {
-      "command": "{{example_email_cmd}}",
+      "command": process.env.EXAMPLE_COMMAND,
       "reminder_timeformat": "1sec",
       "reference_email": {
-        "server_recipient": "{{example_email_cmd}}",
-        "to": ["{{example_email_cmd}}"],
+        "server_recipient": process.env.EXAMPLE_COMMAND,
+        "to": [process.env.EXAMPLE_COMMAND],
         "cc": [],
         "bcc": [],
         "from": "bar@bar.email",
@@ -62,7 +63,7 @@ function getExampleTask() {
 }
 
 describe('Tasks', function () {
-  this.timeout(5000);
+  this.timeout(10000);
 
   beforeEach(async () => {
       if (throttleTests) await futTestUtils.sleep(1000);
@@ -74,11 +75,11 @@ describe('Tasks', function () {
     //TODO: This creates a successful Gopher Task despite the Extension endpoint failing.
     gopherClient.createTask({
       "task": {
-      "command": "{{example_email_cmd}}",
+      "command": process.env.EXAMPLE_COMMAND,
       "reminder_timeformat": "1sec",
       "reference_email": {
-        "server_recipient": "{{example_email_cmd}}",
-        "to": ["{{example_email_cmd}}"],
+        "server_recipient": process.env.EXAMPLE_COMMAND,
+        "to": [process.env.EXAMPLE_COMMAND],
         "cc": [],
         "bcc": [],
         "from": "bar@bar.email",
@@ -207,44 +208,16 @@ describe('Tasks', function () {
     })
   })
 
-  it('should return 400 when a Gopher command is invoked that does not exist', (done) => {
-    gopherClient.createTask({
-      "task": {
-      "command": "foo32rfadf",
-      "reminder_timeformat": "1sec",
-      "reference_email": {
-        "server_recipient": "foo32rfadf@foo32rfadf.gopher.email",
-        "to": ["foo@ffoo32rfadfoo.gopher.email"],
-        "cc": [],
-        "bcc": [],
-        "from": "bar@bar.email",
-        "subject": "Test1",
-        "html": "Test1",
-        "text": "Test1",
-        "attachments": []
-      },
-        "private_data": {
-            "privatedata1": "Value1"
-        }
-      }
-    }).then((res) => {
-        done(new Error('Incorrectly returned successful response'));
-    }).catch((err) => {
-        expect(err.statusCode).to.equal(400);
-        expect(err.response.body.type).to.equal('gopher_command_not_found');
-        done();
-    });
-  });
   // TODO: Fix after proper errr cases are accounted for.
-  xit('should create a task with verbose output', (done) => {
+  it('should create a task with verbose output', (done) => {
     gopherClient.createTask({
       "verbose": 1,
       "task": {
-        "command": "{{example_email_cmd}}",
+        "command": process.env.EXAMPLE_COMMAND,
         "reminder_timeformat": "1sec",
         "reference_email": {
-          "server_recipient": "{{example_email_cmd}}",
-          "to": ["{{example_email_cmd}}"],
+          "server_recipient": process.env.EXAMPLE_COMMAND,
+          "to": [process.env.EXAMPLE_COMMAND],
           "cc": [],
           "bcc": [],
           "from": "bar@bar.email",
@@ -261,8 +234,8 @@ describe('Tasks', function () {
           if(err) done(err)
           expect(res).to.be.an('object')
           expect(res.status).to.equal('success')
-          expect(res.followup.source.email_method).to.equal('to')
-          done()
+          expect.res.messages[0].type.to.equal("email");
+          done();
       })
     });
 
@@ -271,11 +244,11 @@ describe('Tasks', function () {
     try {
       let res = await gopherClient.createTask({
         "task": {
-          "command": "{{example_email_cmd}}",
+          "command": process.env.EXAMPLE_COMMAND,
           "reminder_timeformat": "1sec",
           "reference_email": {
-            "server_recipient": "{{example_email_cmd}}",
-            "to": ["{{example_email_cmd}}"],
+            "server_recipient": process.env.EXAMPLE_COMMAND,
+            "to": [process.env.EXAMPLE_COMMAND],
             "cc": [],
             "bcc": [],
             "from": "bar@bar.email",

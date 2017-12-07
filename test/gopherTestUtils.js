@@ -12,6 +12,7 @@ module.exports.getGopherClient = function () {
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       redirectUri: process.env.REDIRECT_URI,
+      extensionName: process.env.EXTENSION_NAME,
       extensionUrl: process.env.REDIRECT_URI,
       scope: process.env.SCOPE,
       apiHost: apiHost,

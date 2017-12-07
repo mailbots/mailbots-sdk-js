@@ -10,3 +10,6 @@ MIT
 
 ## Contributions
 Contributions are welcome. Feel free to [connect with us on Slack](https://slackin.gopheremail.com) or just create a PR.
+
+## Todo
+ * Set up local example extension for testing

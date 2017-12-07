@@ -110,9 +110,8 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
   * includes the name of the inviting person.
   */
   Gopher.prototype.invite = function(emails, cb) {
-    var extensionName = this.config.extensionUrl.split('.')[0].replace(/^.*\/\//, ''); //TODO: Make extension name (ie, subdomain) explicit
     var requestBody = {
-      extension: extensionName,
+      extension: this.config.extensionName,
       email_address: emails
     }
     var requestOptions = {
@@ -174,19 +173,19 @@ Gopher.prototype.createTask =  function(params, cb) {
   if(params.verbose) {
     urlParams.verbose = 1;
   }
-
+  let serializedParams = querystring.stringify(urlParams);
+  let qs = serializedParams ?  '?' + serializedParams : '';
   var requestOptions = {
       method: 'POST',
-      url: urljoin(this.config.apiHost, '/api/v3/tasks/', querystring.stringify(urlParams)),
+      url: this.config.apiHost + '/api/v3/tasks/' + qs,
       headers: {
         "Authorization": "Bearer " + this._accessToken,
         // "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
         "Content-Type": "application/json"
       },
-      form: params,
+      body: params,
       json: true
     }
-
   return _makeRequest(requestOptions, cb)
  }
 
