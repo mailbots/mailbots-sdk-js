@@ -105,13 +105,17 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
     return _makeRequest(requestOptions, cb);
   }
 
+
+
  /*
   * Invite users to this extension. If an Auth token is included, the invitation email
   * includes the name of the inviting person.
   */
   Gopher.prototype.invite = function(emails, cb) {
+    debugger;
     var requestBody = {
-      extension: this.config.extensionName,
+      // extension: this.config.extensionName,
+      client_id: this.config.clientId,
       email_address: emails
     }
     var requestOptions = {

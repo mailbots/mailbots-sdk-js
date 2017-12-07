@@ -2,6 +2,7 @@ require('dotenv').config({path: './test/.env'});
 var nock = require('nock')
 var fs = require('fs');
 var Gopher = require('../gopherhq-node');
+var join = require('path').join;
 
 var apiHost = process.env.API_HOST;
 var accessToken = process.env.ACCESS_TOKEN;
@@ -25,15 +26,16 @@ module.exports.getGopherClient = function () {
 }
 
 module.exports.recordNockMocks = function () {
+  let mockRequestsFile = join(__dirname,  './nockMocks.js');
   function customNockLogger(output) {
-    fs.appendFileSync('./tests/nockMocks.js', output, (err, success) => {if(err) console.log('Error writing to network mock file:', err)});
+    fs.appendFileSync(mockRequestsFile, output, (err, success) => {if(err) console.log('Error writing to network mock file:', err)});
     console.log('request added to nock mocks...');
   }
 
-  if(fs.existsSync('./tests/nockMocks.js')) {
-    fs.unlinkSync('./tests/nockMocks.js');
+  if(fs.existsSync(mockRequestsFile)) {
+    fs.unlinkSync(mockRequestsFile);
   }
-  fs.appendFileSync('./tests/nockMocks.js', `//auto-generated file \nvar nock = require('nock');`);
+  fs.appendFileSync(mockRequestsFile, `//auto-generated file \nvar nock = require('nock');`);
   nock.recorder.rec({use_separator: false, logging: customNockLogger });
 }
 
