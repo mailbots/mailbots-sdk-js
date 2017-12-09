@@ -3,7 +3,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var request = require('request');
 var nock = require('nock');
-var futTestUtils = require('./gopherTestUtils');
+var gopherTestUtils = require('./gopherTestUtils');
 var debug = require('debug')('gopherhq-node:tests');
 var Gopher = require('../gopherhq-node');
 var gopherClient = {};
@@ -20,13 +20,13 @@ var gopherClient = {};
 var exampleTask = {};
 var throttleTests = false;
 
-futTestUtils.recordNockMocks(); // regenerate tests/nockMocks.js
+gopherTestUtils.recordNockMocks(); // regenerate tests/nockMocks.js
 process.env.NOCK_OFF = true; //uncomment to hit a live API
 throttleTests = true; // uncomment if you're hitting the live API
 
 
 function getGopherClient() {
-  return futTestUtils.getGopherClient();
+  return gopherTestUtils.getGopherClient();
 }
 
 function getExampleTask() {
@@ -66,7 +66,7 @@ describe('Tasks', function () {
   this.timeout(10000);
 
   beforeEach(async () => {
-      if (throttleTests) await futTestUtils.sleep(1000);
+      if (throttleTests) await gopherTestUtils.sleep(1000);
       gopherClient = getGopherClient();
       await getExampleTask();
   });

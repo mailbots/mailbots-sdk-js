@@ -1,6 +1,6 @@
 {
   "name": "gopherhq-node",
-  "version": "0.0.4-development",
+  "version": "0.0.5-development",
   "description": "Node.js client for the Gopher Email API",
   "repository": {
     "type": "git",

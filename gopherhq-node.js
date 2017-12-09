@@ -98,7 +98,7 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
       url: urljoin(this.config.apiHost, '/api/v1/natural_time', '?' + querystring.stringify(params)),
       headers: {
         "Authorization": "Bearer " + this._accessToken,
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        "Content-Type": "application/json; charset=UTF-8"
       },
       json: true
     }
@@ -121,7 +121,7 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
       method: 'POST',
       url: urljoin(this.config.apiHost, '/api/v1/invites/'),
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        "Content-Type": "application/json; charset=UTF-8"
       },
       form: requestBody,
       json: true
@@ -183,7 +183,7 @@ Gopher.prototype.createTask =  function(params, cb) {
       url: this.config.apiHost + '/api/v1/tasks/' + qs,
       headers: {
         "Authorization": "Bearer " + this._accessToken,
-        // "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        // "Content-Type": "application/json; charset=UTF-8"
         "Content-Type": "application/json"
       },
       body: params,
@@ -203,7 +203,7 @@ Gopher.prototype.createTask =  function(params, cb) {
           url: urljoin(this.config.apiHost, '/api/v1/tasks/', taskId, '/'),
           headers: {
             "Authorization": "Bearer " + this._accessToken,
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            "Content-Type": "application/json; charset=UTF-8"
           },
           form: params,
           json: true
@@ -223,7 +223,7 @@ Gopher.prototype.createTask =  function(params, cb) {
           method: 'POST',
           url: params.trigger_url,
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            "Content-Type": "application/json; charset=UTF-8"
           },
           json: true
     }
@@ -233,12 +233,9 @@ Gopher.prototype.createTask =  function(params, cb) {
     }
 
     if (this._accessToken) {
-        Object.assign(requestOptions, {"Authorization": "Bearer " + this._accessToken});
+        Object.assign(requestOptions.headers, { "Authorization": "Bearer " + this._accessToken});
     }
-
-
     return _makeRequest(requestOptions);
-  
   }
 
   /*
