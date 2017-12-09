@@ -95,7 +95,7 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
   Gopher.prototype.naturalTime = function(params, cb) {
     var requestOptions = {
       method: 'GET',
-      url: urljoin(this.config.apiHost, '/api/v3/natural_time', '?' + querystring.stringify(params)),
+      url: urljoin(this.config.apiHost, '/api/v1/natural_time', '?' + querystring.stringify(params)),
       headers: {
         "Authorization": "Bearer " + this._accessToken,
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -112,7 +112,6 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
   * includes the name of the inviting person.
   */
   Gopher.prototype.invite = function(emails, cb) {
-    debugger;
     var requestBody = {
       // extension: this.config.extensionName,
       client_id: this.config.clientId,
@@ -120,7 +119,7 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
     }
     var requestOptions = {
       method: 'POST',
-      url: urljoin(this.config.apiHost, '/api/v3/invites/'),
+      url: urljoin(this.config.apiHost, '/api/v1/invites/'),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
@@ -141,7 +140,7 @@ Gopher.prototype.validateWebhook = function(webhookSignature, webhookTimestamp, 
  */
 Gopher.prototype.getTasks = function(params, cb) {
   var requestOptions = {
-    url: urljoin(this.config.apiHost, '/api/v3/tasks/?', querystring.stringify(params)),
+    url: urljoin(this.config.apiHost, '/api/v1/tasks/?', querystring.stringify(params)),
     headers: {
       "Authorization": "Bearer " + this._accessToken,
       "Content-Type": "application/json"
@@ -159,7 +158,7 @@ Gopher.prototype.getTasks = function(params, cb) {
 Gopher.prototype.getTask = function(taskId, cb) {
   if(typeof taskId != 'number') throw new Error ('taskId must be an integer. This was given instead:', taskId)
   var requestOptions = {
-    url: this.config.apiHost + '/api/v3/tasks/' + taskId + '/',
+    url: this.config.apiHost + '/api/v1/tasks/' + taskId + '/',
     headers: {
       "Authorization": "Bearer " + this._accessToken,
       "Content-Type": "application/json"
@@ -181,7 +180,7 @@ Gopher.prototype.createTask =  function(params, cb) {
   let qs = serializedParams ?  '?' + serializedParams : '';
   var requestOptions = {
       method: 'POST',
-      url: this.config.apiHost + '/api/v3/tasks/' + qs,
+      url: this.config.apiHost + '/api/v1/tasks/' + qs,
       headers: {
         "Authorization": "Bearer " + this._accessToken,
         // "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -201,7 +200,7 @@ Gopher.prototype.createTask =  function(params, cb) {
   Gopher.prototype.updateTask = function(taskId, params, cb) {
     var requestOptions = {
           method: 'PUT',
-          url: urljoin(this.config.apiHost, '/api/v3/tasks/', taskId, '/'),
+          url: urljoin(this.config.apiHost, '/api/v1/tasks/', taskId, '/'),
           headers: {
             "Authorization": "Bearer " + this._accessToken,
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -250,7 +249,7 @@ Gopher.prototype.createTask =  function(params, cb) {
 
     var requestOptions = {
       method: 'POST',
-      url: urljoin(this.config.apiHost, '/api/v3/extensions/self/data/'),
+      url: urljoin(this.config.apiHost, '/api/v1/extensions/self/data/'),
       headers: {
         "Authorization": "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -266,7 +265,7 @@ Gopher.prototype.createTask =  function(params, cb) {
   */ 
   Gopher.prototype.getExtData = function(cb) {
     var requestOptions = {
-        url: urljoin(this.config.apiHost, '/api/v3/extensions/self/data/'),
+        url: urljoin(this.config.apiHost, '/api/v1/extensions/self/data/'),
         headers: {
           "Authorization": "Bearer " + this._accessToken,
           "Content-Type": "application/json"

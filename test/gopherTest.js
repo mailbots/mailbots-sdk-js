@@ -20,9 +20,9 @@ var gopherClient = {};
 var exampleTask = {};
 var throttleTests = false;
 
-// futTestUtils.recordNockMocks(); // regenerate tests/nockMocks.js
-// process.env.NOCK_OFF = true; //uncomment to hit a live API
-// throttleTests = true; // uncomment if you're hitting the live API
+futTestUtils.recordNockMocks(); // regenerate tests/nockMocks.js
+process.env.NOCK_OFF = true; //uncomment to hit a live API
+throttleTests = true; // uncomment if you're hitting the live API
 
 
 function getGopherClient() {
