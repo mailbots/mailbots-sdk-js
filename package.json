@@ -7,19 +7,26 @@
     "type": "git",
     "url": "https://github.com/gopherhq/gopherhq-node.git"
   },
-  "main": "gopherhq-node.js",
+  "main": "lib/gopherhq-node.js",
   "directories": {
     "test": "test"
   },
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./test",
-    "semantic-release":
-      "semantic-release pre && npm publish && semantic-release post",
+    "test": "mocha -w --require babel-register --require babel-polyfill",
+    "babel": "rimraf lib && babel --out-dir lib src",
+    "watch": "webpack-dev-server",
+    "build": "TARGET=browser webpack --config ./build/webpack.config.js",
+    "build-min": "webpack --config ./build/min.config.js",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "commit": "git-cz"
   },
   "author": "Reilly Sweetland @rsweetland",
   "license": "MIT",
   "dependencies": {
+    "axios": "0.17.1",
     "crypto": "0.0.3",
     "debug": "^2.6.8",
     "querystring": "^0.2.0",
@@ -30,14 +37,22 @@
     "url-join": "^2.0.2"
   },
   "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-loader": "6.4.1",
+    "babel-preset-env": "1.6.1",
     "chai": "^4.0.2",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.1.0",
     "dotenv": "4.0.0",
     "mocha": "^3.4.2",
     "nock": "^9.0.13",
+    "node-libs-browser": "2.1.0",
     "request-debug": "0.2.0",
-    "semantic-release": "^8.2.0"
+    "rimraf": "2.6.2",
+    "semantic-release": "^8.2.0",
+    "webpack": "3.10.0",
+    "webpack-dev-server": "2.10.1"
   },
   "czConfig": {
     "path": "node_modules/cz-conventional-changelog"
