@@ -11,20 +11,20 @@
   "directories": {
     "test": "test"
   },
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "scripts": {
     "test": "mocha -w --require babel-register --require babel-polyfill",
-    "babel": "rimraf lib && babel --out-dir lib src",
-    "dist": "npm run babel && dist-it lib/gopherhq-node.js gopherhq-client.js",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "commit": "git-cz"
+    "test:inspect":
+      "mocha --inspect --require babel-register --require babel-polyfill",
+    "test:build":
+      "REBUILD_MOCKS=true mocha --inspect --require babel-register --require babel-polyfill",
+    "babel": "rimraf lib && babel --out-dir lib src"
   },
   "author": "Reilly Sweetland @rsweetland",
   "license": "MIT",
   "dependencies": {
     "axios": "0.17.1",
+    "base-64": "0.1.0",
     "crypto": "0.0.3",
     "debug": "^2.6.8",
     "querystring": "^0.2.0",
@@ -39,17 +39,10 @@
     "babel-core": "6.26.0",
     "babel-preset-env": "1.6.1",
     "chai": "^4.0.2",
-    "commitizen": "^2.9.6",
-    "cz-conventional-changelog": "^2.1.0",
     "dotenv": "4.0.0",
     "mocha": "^3.4.2",
     "nock": "^9.0.13",
     "node-libs-browser": "2.1.0",
-    "request-debug": "0.2.0",
-    "rimraf": "2.6.2",
-    "semantic-release": "^8.2.0"
-  },
-  "czConfig": {
-    "path": "node_modules/cz-conventional-changelog"
+    "rimraf": "2.6.2"
   }
 }
