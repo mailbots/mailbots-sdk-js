@@ -6,17 +6,20 @@
     "type": "git",
     "url": "https://github.com/gopherhq/gopherhq-node.git"
   },
-  "main": "gopherhq-node.js",
+  "main": "lib/gopherhq-node.js",
   "directories": {
     "test": "test"
   },
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "test": "mocha -w --require babel-register --require babel-polyfill",
+    "babel": "rimraf lib && babel --out-dir lib src",
     "watch": "webpack-dev-server",
     "build": "TARGET=browser webpack --config ./build/webpack.config.js",
     "build-min": "webpack --config ./build/min.config.js",
-    "semantic-release":
-      "semantic-release pre && npm publish && semantic-release post",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "commit": "git-cz"
   },
   "author": "Reilly Sweetland @rsweetland",
@@ -33,6 +36,7 @@
     "url-join": "^2.0.2"
   },
   "devDependencies": {
+    "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-loader": "6.4.1",
     "babel-preset-env": "1.6.1",
@@ -44,6 +48,7 @@
     "nock": "^9.0.13",
     "node-libs-browser": "2.1.0",
     "request-debug": "0.2.0",
+    "rimraf": "2.6.2",
     "semantic-release": "^8.2.0",
     "webpack": "3.10.0",
     "webpack-dev-server": "2.10.1"
