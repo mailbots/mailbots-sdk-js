@@ -1,13 +1,7 @@
-//const request = require("request");
-//const requestPromise = require("request-promise");
-// require('request-debug')(request);
 let OAuth2;
 if (!global.document) {
   OAuth2 = require("simple-oauth2");
 }
-
-import Debug from "debug";
-const debug = Debug("gopherhq-node");
 
 import querystring from "querystring";
 
@@ -16,37 +10,15 @@ timestamp.round = true;
 
 import crypto from "crypto";
 import urljoin from "url-join";
-import axios from "axios";
-// import GopherTasks from "./tasks"
 
-/**
- * Requests abstracted to this method..not sure how to make this ES6-cool just yet ; )
- */
-const _makeRequest = (requestOptions, cb) => {
-  debug("Request", requestOptions);
-  return axios(requestOptions)
-    .then(res => {
-      debug("Response Ok:", res);
-      if (cb) cb(null, res.data);
-      return Promise.resolve(res.data);
-    })
-    .catch(err => {
-      debug("Response Error:", err);
-      if (cb) cb(err);
-      return Promise.reject(err);
-    });
-}
-
-const _checkParam = (param, paramName) => {
-  if (!param || typeof param !== "string") {
-    throw new Error(`'${paramName}' is required to connect to Gopher`);
-  }
-}
+import GopherTasks from "./tasks"; // let's test
+import { debug, _makeRequest, _checkParam, _extend } from "./util"
 
 /**
  * Traditional constructor (es5)
  */
 class Gopher {
+  // The constructor should remain here, obviously
   constructor(config) {
     if (!(this instanceof Gopher)) return new Gopher(config);
     _checkParam(config.clientId, "clientId");
@@ -73,6 +45,14 @@ class Gopher {
     // Bearer token used in Auth header: curl url -h "Authorization: Bearer accessToken"
     this._accessToken = "";
   }
+// then, whatever you want to split, you can move in separate files, the way we moved Tasks
+
+// If you have an inheritation case (e.g. Person --> Student)
+// class Person { sayHello () {}}
+// class Student extends { doHomework () {}}
+// yes, I'm familiar...and we don't have that situation
+// so what you propose here is perfect
+// reviewing a few other methods to see if I have other questions
 
   /*
    *  Validates webhook signature. Set verifyAge to false when testing / mocking HTTP requests
@@ -151,133 +131,6 @@ class Gopher {
     return _makeRequest(requestOptions, cb);
   }
 
-  /*
-   * Get List of Gopher Tasks
-   */
-  getTasks(params, cb) {
-    const requestOptions = {
-      url: urljoin(
-        this.config.apiHost,
-        "/api/v1/tasks/?",
-        querystring.stringify(params)
-      ),
-      headers: {
-        Authorization: `Bearer ${this._accessToken}`,
-        "Content-Type": "application/json"
-      },
-      json: true
-    };
-    debug("Request options for getting followups:", requestOptions);
-    return _makeRequest(requestOptions, cb);
-  }
-
-  /*
-   * Fetch A Single Gopher Task
-   */
-  getTask(taskId, cb) {
-    if (typeof taskId != "number")
-      throw new Error(
-        "taskId must be an integer. This was given instead:",
-        taskId
-      );
-    const requestOptions = {
-      url: `${this.config.apiHost}/api/v1/tasks/${taskId}/`,
-      headers: {
-        Authorization: `Bearer ${this._accessToken}`,
-        "Content-Type": "application/json"
-      },
-      json: true
-    };
-    return _makeRequest(requestOptions, cb);
-  }
-
-  /*
-   * Create A Gopher Task
-   */
-  createTask(params, cb) {
-    let urlParams = {};
-    if (params.verbose) {
-      urlParams.verbose = 1;
-    }
-    let serializedParams = querystring.stringify(urlParams);
-    let qs = serializedParams ? `?${serializedParams}` : "";
-    const requestOptions = {
-      method: "POST",
-      url: `${this.config.apiHost}/api/v1/tasks/${qs}`,
-      headers: {
-        Authorization: `Bearer ${this._accessToken}`,
-        // "Content-Type": "application/json; charset=UTF-8"
-        "Content-Type": "application/json"
-      },
-      data: params,
-      json: true
-    };
-    return _makeRequest(requestOptions, cb);
-  }
-
-  /*
-    * Update A Gopher Task
-    * Used to save data against the task, update content, followup time and more
-    */
-  updateTask(taskId, params, cb) {
-    const requestOptions = {
-      method: "PUT",
-      url: urljoin(this.config.apiHost, "/api/v1/tasks/", taskId, "/"),
-      headers: {
-        Authorization: `Bearer ${this._accessToken}`,
-        "Content-Type": "application/json; charset=UTF-8"
-      },
-      data: params,
-      json: true
-    };
-    return _makeRequest(requestOptions, cb);
-  }
-
-  /*
-    * Delete / Archive A Gopher Task
-    */
-  archiveTask(taskId, cb) {
-    const requestOptions = {
-      method: "DELETE",
-      url: urljoin(this.config.apiHost, "/api/v1/tasks/", taskId, "/"),
-      headers: {
-        Authorization: `Bearer ${this._accessToken}`,
-        "Content-Type": "application/json; charset=UTF-8"
-      },
-      data: { task: { permanent } },
-      json: true
-    };
-    return _makeRequest(requestOptions, cb);
-  }
-
-  /**
-   * Trigger a Gopher Task
-   */
-  triggerTask(params, cb) {
-    if (!params.trigger_url) {
-      return new Error("trigger_url is required");
-    }
-
-    const requestOptions = {
-      method: "POST",
-      url: params.trigger_url,
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8"
-      },
-      json: true
-    };
-
-    if (params.payload) {
-      Object.assign(requestOptions, { form: params.payload });
-    }
-
-    if (this._accessToken) {
-      Object.assign(requestOptions.headers, {
-        Authorization: `Bearer ${this._accessToken}`
-      });
-    }
-    return _makeRequest(requestOptions);
-  }
 
   /*
    * Save Gopher Extension Data which is then sent with every webhook related to that extension.
@@ -396,17 +249,7 @@ class Gopher {
   }
 }
 
-// if we module.exports = Gopher, it won't be in the ES6 way, but it will work with both: require('...') and import foo from "..." :)
-//export default Gopher; /// cool, so, when you do export default, either you do in the other file: require(...).default or import foo from "..."
-module.exports = Gopher; //messy, but I'd rather have it work both i guess this is enough, but then remove default from the other file. Can we leave both statements and have them both work? I think in the babelified file only one will remain or it will be duplicated, i recommend only one of them...
-// So, this one should be enough I guess. but do check it.
-// I think this works with both:
-// Gopher = require("...")
-//import Gopher from "..."
-// you don't need default in this case. cool
-// perfect..
-// next question:
-// I have a number of additions to this class, I want to break it down...what is the best way?
-// For example, a file for "tasks", another for "auth", another for "extensions".
-// Different classes?
-// I think we can extend it
+_extend(Gopher, GopherTasks)
+
+// Not in the ES6 way, but works with both: require('...') and import foo from "..."
+module.exports = Gopher;
