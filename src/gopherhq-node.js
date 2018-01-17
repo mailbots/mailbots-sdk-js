@@ -1,9 +1,11 @@
 //const request = require("request");
 //const requestPromise = require("request-promise");
 // require('request-debug')(request);
-const OAuth2 = require("simple-oauth2");
+if (process.env.CONTEXT !== "browser") {
+  // const OAuth2 = require("simple-oauth2");
+}
 const debug = require("debug")("gopherhq-node");
-const querystring = require("querystring");
+import querystring from "querystring";
 const timestamp = require("unix-timestamp");
 timestamp.round = true;
 const crypto = require("crypto");

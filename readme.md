@@ -16,5 +16,6 @@ Contributions are welcome. Feel free to [connect with us on Slack](https://slack
 
 ## Todo
 
-* Set up local example extension for testing
-
+* How to automatically-exclue OAuth2 lib?
+* Use npm browser field to allow require('gopherhq-node')
+* 

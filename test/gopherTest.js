@@ -188,25 +188,25 @@ describe("Tasks", function() {
       timezone: "America/Los_Angeles"
     };
 
-    res = await gopherClient.naturalTime(format);
+    let res = await gopherClient.naturalTime(format);
     debug(res);
     expect(res.valid).to.be.true;
     expect(res.recurring).to.be.false;
   });
 
   it("should send an invite from an authorized user", async () => {
-    res = await gopherClient.invite("test@example.com");
+    let res = await gopherClient.invite("test@example.com");
     expect(res.status).to.equal("success");
   });
 
   it("should send an invite from an anonymous user", async () => {
     gopherClient._accessToken = null;
-    res = await gopherClient.invite("test@example.com");
+    let res = await gopherClient.invite("test@example.com");
     expect(res.status).to.equal("success");
   });
 
   it("should send invites to an array of users", async () => {
-    res = await gopherClient.invite([
+    let res = await gopherClient.invite([
       "blackhole@example.com",
       "blackhole2@example.com"
     ]);

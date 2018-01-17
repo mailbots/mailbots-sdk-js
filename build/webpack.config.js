@@ -1,13 +1,13 @@
 module.exports = {
-	entry: "./gopherhq-node.js",
+	entry: "./src/gopherhq-node.js",
 	output: {
-		filename: "./gopherhq-client.js"
+		filename: "./dist/gopherhq-client.js"
 	},
 	module: {
 		rules: [{ test: /\.js$/, use: "babel-loader" }]
 	},
 	node: {
-		//fs: "mock",
+		// fs: "empty",
 		global: true,
 		process: true,
 		Buffer: true
