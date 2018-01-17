@@ -1,8 +1,8 @@
 //const request = require("request");
 //const requestPromise = require("request-promise");
 // require('request-debug')(request);
-if (process.env.CONTEXT !== "browser") {
-  // const OAuth2 = require("simple-oauth2");
+if (!global.document) {
+  const OAuth2 = require("simple-oauth2");
 }
 const debug = require("debug")("gopherhq-node");
 import querystring from "querystring";
@@ -379,3 +379,4 @@ Gopher.prototype.setAccessToken = function(accessToken) {
 
 global.Gopher = Gopher;
 export default Gopher;
+module.exports = Gopher;
