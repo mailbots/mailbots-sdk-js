@@ -5,7 +5,7 @@ var request = require("request");
 var nock = require("nock");
 var gopherTestUtils = require("./gopherTestUtils");
 var debug = require("debug")("gopherhq-node:tests");
-var Gopher = require("../gopherhq-node");
+var Gopher = require("../src/gopherhq-node"); // now I'll pull up my react app to test in there...
 var gopherClient = {};
 
 // Test against an instance of the Gopher core API by:

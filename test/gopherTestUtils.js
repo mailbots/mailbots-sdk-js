@@ -1,7 +1,7 @@
 require("dotenv").config({ path: "./test/.env" });
 var nock = require("nock");
 var fs = require("fs");
-var Gopher = require("../gopherhq-node");
+var Gopher = require("../src/gopherhq-node");
 var join = require("path").join;
 
 var apiHost = process.env.API_HOST;
