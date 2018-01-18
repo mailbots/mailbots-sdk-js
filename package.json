@@ -1,7 +1,7 @@
 {
   "name": "gopherhq-node",
   "version": "0.0.6-development",
-  "description": "Node.js client for the Gopher Email API",
+  "description": "Gopher Email API client for the browser and node.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/gopherhq/gopherhq-node.git"
@@ -17,7 +17,8 @@
       "mocha --inspect --require babel-register --require babel-polyfill",
     "test:build":
       "REBUILD_MOCKS=true mocha --inspect --require babel-register --require babel-polyfill",
-    "babel": "rimraf lib && babel --out-dir lib src"
+    "babel": "rimraf lib && babel --out-dir lib src",
+    "prepublishOnly": "npm run build"
   },
   "author": "Reilly Sweetland @rsweetland",
   "license": "MIT",
