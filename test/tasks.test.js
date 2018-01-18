@@ -1,73 +1,26 @@
-require("dotenv").config();
-var mocha = require("mocha");
-var expect = require("chai").expect;
-var request = require("request");
-var nock = require("nock");
-var gopherTestUtils = require("./gopherTestUtils");
-var debug = require("debug")("gopherhq-node:tests");
-var Gopher = require("../src/gopherhq-node"); // now I'll pull up my react app to test in there...
-var gopherClient = {};
+import {
+  getGopherClient,
+  sleep,
+  signWebhook,
+  getExampleTask
+} from "./testUtils/gopherTestUtils";
 
-// Test against an instance of the Gopher core API by:
-//  1. Modifying this URL point to an install of Gopher Core.
-//  2. Login and copy the value of gopherToken from your cookie.
-//  3. Flip the NOCK_OFF switch below.
-//  4. Throttle API calls
-//  4. Optionally uncomment the nock recorder to cache / mock the network requests to nockMock.js
-// (Note that this will actually modify whichever account is registered)
+import "./testUtils/nockMocks";
+import mocha from "mocha";
+import { expect } from "chai";
+import Gopher from "../src/gopherhq-node";
+import timestamp from "unix-timestamp";
 
-var exampleTask = {};
-var throttleTests = false;
+timestamp.round = true;
+const debug = require("debug")("gopherhq-node");
 
-// gopherTestUtils.recordNockMocks(); // regenerate tests/nockMocks.js
-// process.env.NOCK_OFF = true; //uncomment to hit a live API
-// throttleTests = true; // uncomment if you're hitting the live API
-
-function getGopherClient() {
-  return gopherTestUtils.getGopherClient();
-}
-
-function getExampleTask() {
-  if (exampleTask.hasOwnProperty("id")) {
-    return Promise.resolve(exampleTask);
-  }
-
-  return gopherClient
-    .createTask({
-      task: {
-        command: process.env.EXAMPLE_COMMAND,
-        reminder_timeformat: "1sec",
-        reference_email: {
-          server_recipient: process.env.EXAMPLE_COMMAND,
-          to: [process.env.EXAMPLE_COMMAND],
-          cc: [],
-          bcc: [],
-          from: "bar@bar.email",
-          subject: "Test1",
-          html: "Test1",
-          text: "Test1",
-          attachments: []
-        },
-        private_data: {
-          privatedata1: "Value1"
-        }
-      }
-    })
-    .then(res => {
-      exampleTask = res.task;
-      return res;
-    })
-    .catch(err => {
-      return new Error("error creating example task");
-    });
-}
+let gopherClient = getGopherClient();
+let exampleTask = {};
 
 describe("Tasks", function() {
-  this.timeout(5000);
   beforeEach(async () => {
-    if (throttleTests) await gopherTestUtils.sleep(1000);
-    gopherClient = getGopherClient();
-    await getExampleTask();
+    if (process.env.BUILD_MOCKS) await sleep(1000);
+    exampleTask = await getExampleTask();
   });
 
   it("should create a Gopher Task", done => {
@@ -142,7 +95,7 @@ describe("Tasks", function() {
     });
   });
 
-  it("should update a fut", done => {
+  it("should update a task", done => {
     if (!exampleTask.hasOwnProperty("id")) {
       done("Example Task doens't exist", exampleTask);
     }
@@ -159,12 +112,12 @@ describe("Tasks", function() {
         done();
       })
       .catch(err => {
-        done(new Error("Error updating followup", err));
+        done(new Error(err));
       });
   }).timeout(5000);
 
   it("should let an extension save data", done => {
-    gopherClient.saveExtData({ three: "more" }, (err, res) => {
+    gopherClient.saveUserData({ three: "more" }, (err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.data.three).to.equal("more");
@@ -173,7 +126,7 @@ describe("Tasks", function() {
   });
 
   it("should let an extension get data", done => {
-    gopherClient.getExtData((err, res) => {
+    gopherClient.getUserData((err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.data.three).to.equal("more");
@@ -221,7 +174,7 @@ describe("Tasks", function() {
         done();
       })
       .catch(err => {
-        done(new Error("Error getting example task"));
+        done(new Error(err));
       });
   });
 
@@ -259,7 +212,7 @@ describe("Tasks", function() {
   //   );
   // });
 
-  it("should archive a Gopher Task", async () => {
+  it("should archive a task", async () => {
     try {
       let res = await gopherClient.createTask({
         task: {
@@ -290,10 +243,25 @@ describe("Tasks", function() {
     }
   });
 
-  xit("should be able to trigger a Gopher task", async () => {
-    let res = await gopherClient.triggerTask({
+  xit("should trigger a task", async done => {
+    try {
+      let res = await gopherClient.triggerTask({
+        trigger_url: exampleTask.trigger_url
+      });
+    } catch (e) {
+      done(e);
+    }
+    expect(res).to.be.ok;
+  });
+
+  xit("should trigger an extension", async () => {
+    let res = await gopherClient.triggerExtension({
       trigger_url: exampleTask.trigger_url
     });
     expect(res).to.be.ok;
+  });
+
+  it("should build a login URL", () => {
+    expect(gopherClient.getAuthorizationUri().uri).to.be.a("string");
   });
 });

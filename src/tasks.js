@@ -1,6 +1,6 @@
 import querystring from "querystring";
 import urljoin from "url-join";
-import { _makeRequest, _checkParam, debug } from "./util"
+import { _makeRequest, _checkParam, debug } from "./util";
 
 export default {
   /*
@@ -128,6 +128,26 @@ export default {
         Authorization: `Bearer ${this._accessToken}`
       });
     }
+    console.log(requestOptions);
     return _makeRequest(requestOptions);
+  },
+
+  /*
+   * Resolve Natural Time Format (ex: {naturaltime}@ext.gopher.email)
+   */
+  naturalTime(params, cb) {
+    const requestOptions = {
+      method: "GET",
+      url: urljoin(
+        this.config.apiHost,
+        "/api/v1/natural_time",
+        `?${querystring.stringify(params)}`
+      ),
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`,
+        "Content-Type": "application/json; charset=UTF-8"
+      }
+    };
+    return _makeRequest(requestOptions, cb);
   }
-}
+};
