@@ -1,7 +1,7 @@
 require("dotenv").config({ path: "./test/.env" });
 import nock from "nock";
 import fs from "fs";
-import Gopher from "../../src/gopherhq-node.js";
+import Gopher from "../../src/gopherhq.js";
 import { join } from "path";
 require("./nockMocks");
 import crypto from "crypto";
@@ -12,11 +12,12 @@ let exampleTask = {};
 let gopherClient = {};
 
 /**
- * Mock API Requests
- * We use Nock to mock network requests to ensure speedy tests.
+ * Simulate API Requests
+ * We use Nock to mock network requests to make our tests speedy.
+ * By default this is on, so testing the API never actually hits Gopher.
  * To run tests against an instance of Gopher and rebuild the mocks:
- *   1. Modify your .env to point to an install of Gopher. Copy access token from cookie
- *   2. `npm test:build` This will delete nockMocks.js and repopulate
+ *   1. Modify your .env to point to an install of Gopher. (Copy access token from cookie.)
+ *   2. `npm test:build` This will delete and rebuild nockMocks.js
  */
 
 function recordNockMocks() {

@@ -2,10 +2,10 @@ import { getGopherClient, getExampleTask } from "./testUtils/gopherTestUtils";
 import "./testUtils/nockMocks";
 import mocha from "mocha";
 import { expect } from "chai";
-import Gopher from "../src/gopherhq-node";
+import Gopher from "../src/gopherhq";
 import timestamp from "unix-timestamp";
 
-const debug = require("debug")("gopherhq-node");
+const debug = require("debug")("gopherhq");
 timestamp.round = true;
 
 let gopherClient = getGopherClient();

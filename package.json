@@ -1,35 +1,32 @@
 {
-  "name": "gopherhq-node",
-  "version": "0.0.7-development",
-  "description":
-    "Node.js client for the Gopher Email API (Depricated in favor of https://www.npmjs.com/package/gopherhq)",
+  "name": "gopherhq",
+  "version": "0.0.8-beta",
+  "description": "Gopher Email API client for the browser and node.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gopherhq/gopherhq-node.git"
+    "url": "https://github.com/gopherhq/gopherhq-js.git"
   },
-  "main": "lib/gopherhq-node.js",
+  "main": "lib/gopherhq.js",
   "directories": {
     "test": "test"
   },
-  "files": ["lib"],
+  "files": ["lib", "readme"],
   "scripts": {
-    "test": "mocha -w --require babel-register --require babel-polyfill",
-    "test:inspect":
-      "mocha --inspect --require babel-register --require babel-polyfill",
-    "test:build":
-      "REBUILD_MOCKS=true mocha --inspect --require babel-register --require babel-polyfill",
-    "babel": "rimraf lib && babel --out-dir lib src"
+    "test": "mocha --require babel-register --require babel-polyfill",
+    "test:watch": "npm t -- -w",
+    "test:inspect": "npm t -- --inspect-brk",
+    "test:build": "REBUILD_MOCKS=true npm t",
+    "build": "rimraf lib && babel --out-dir lib src",
+    "prepublishOnly": "npm run build",
+    "prepush": "npm test"
   },
   "author": "Reilly Sweetland @rsweetland",
   "license": "MIT",
   "dependencies": {
     "axios": "0.17.1",
-    "base-64": "0.1.0",
     "crypto": "0.0.3",
     "debug": "^2.6.8",
     "querystring": "^0.2.0",
-    "request": "^2.81.0",
-    "request-promise": "^4.2.1",
     "simple-oauth2": "^1.2.0",
     "unix-timestamp": "^0.2.0",
     "url-join": "^2.0.2"
@@ -40,6 +37,7 @@
     "babel-preset-env": "1.6.1",
     "chai": "^4.0.2",
     "dotenv": "4.0.0",
+    "husky": "0.14.3",
     "mocha": "^3.4.2",
     "nock": "^9.0.13",
     "node-libs-browser": "2.1.0",

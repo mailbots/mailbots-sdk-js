@@ -1,7 +1,7 @@
 import Debug from "debug";
 import axios from "axios";
 
-export const debug = Debug("gopherhq-node");
+export const debug = Debug("gopherhq");
 
 export const _makeRequest = (requestOptions, cb) => {
   debug("Request", requestOptions);
