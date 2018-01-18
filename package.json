@@ -1,7 +1,8 @@
 {
   "name": "gopherhq-node",
-  "version": "0.0.5-development",
-  "description": "Node.js client for the Gopher Email API",
+  "version": "0.0.7-development",
+  "description":
+    "Node.js client for the Gopher Email API (Depricated in favor of https://www.npmjs.com/package/gopherhq)",
   "repository": {
     "type": "git",
     "url": "https://github.com/gopherhq/gopherhq-node.git"
@@ -12,7 +13,8 @@
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha ./test",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "semantic-release":
+      "semantic-release pre && npm publish && semantic-release post",
     "commit": "git-cz"
   },
   "author": "Reilly Sweetland @rsweetland",
