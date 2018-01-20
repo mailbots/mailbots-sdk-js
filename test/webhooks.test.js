@@ -1,4 +1,9 @@
-import { getGopherClient, signWebhook } from "./testUtils/gopherTestUtils";
+import {
+  getGopherClient,
+  signWebhook,
+  beforeEachTest,
+  testConfig
+} from "./testUtils/gopherTestUtils";
 import "./testUtils/nockMocks";
 import mocha from "mocha";
 import { expect } from "chai";
@@ -10,7 +15,10 @@ const debug = require("debug")("gopherhq");
 
 let gopherClient = getGopherClient();
 
-describe("Webhooks", () => {
+describe("Webhooks", function() {
+  testConfig.call(this);
+  beforeEach(beforeEachTest);
+
   it("should validate a proper webhook", () => {
     let webhookTimestamp = timestamp.now();
     let rawBody = JSON.stringify({ foo: "bar" });

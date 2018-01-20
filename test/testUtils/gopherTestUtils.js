@@ -34,12 +34,15 @@ function recordNockMocks() {
   }
   fs.appendFileSync(
     mockRequestsFile,
-    `//auto-generated file \nvar nock = require('nock');`
+    `//auto-generated file
+    \nvar nock = require('nock');
+    \n//pass through unhandled requests
+    \nnock("http://local.gopher.email:80", { allowUnmocked: true }).get("/fdsa").reply(200, 'ok');` // allow unmocked requests to pass through
   );
   nock.recorder.rec({ use_separator: false, logging: customNockLogger });
 }
 
-if (process.env.BUILD_MOCKS) {
+if (process.env.REBUILD_MOCKS) {
   recordNockMocks(); // regenerate tests/nockMocks.js. TODO: Better switch to regenerate test. Note that user email address must also be new.
   process.env.NOCK_OFF = true; //uncomment to hit a live API
 }
@@ -64,7 +67,7 @@ module.exports.getGopherClient = function() {
   return gopherClient;
 };
 
-module.exports.getExampleTask = function() {
+module.exports.getExampleTask = async function() {
   if (exampleTask.hasOwnProperty("id")) {
     return Promise.resolve(exampleTask);
   }
@@ -109,6 +112,19 @@ module.exports.signWebhook = function(webhook) {
 };
 
 module.exports.sleep = function sleep(time) {
-  console.log("sleeping for", time);
+  console.log("...sleeping");
   return new Promise(resolve => setTimeout(resolve, time));
+};
+
+module.exports.beforeEachTest = async function() {
+  if (process.env.THROTTLE) await module.exports.sleep(500);
+};
+
+// make sure to bind 'this'. ex: testConfig.call(this)
+module.exports.testConfig = function() {
+  this.timeout(40000);
+};
+
+module.exports.getRandomString = function() {
+  return Math.floor(Math.random() * 100000000).toString(16);
 };

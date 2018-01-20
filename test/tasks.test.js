@@ -1,8 +1,9 @@
 import {
   getGopherClient,
-  sleep,
   signWebhook,
-  getExampleTask
+  getExampleTask,
+  beforeEachTest,
+  testConfig
 } from "./testUtils/gopherTestUtils";
 
 import "./testUtils/nockMocks";
@@ -18,44 +19,40 @@ let gopherClient = getGopherClient();
 let exampleTask = {};
 
 describe("Tasks", function() {
-  beforeEach(async () => {
-    if (process.env.BUILD_MOCKS) await sleep(1000);
-    exampleTask = await getExampleTask();
-  });
+  testConfig.call(this);
+  beforeEach(beforeEachTest);
 
-  it("should create a Gopher Task", done => {
-    //TODO: This creates a successful Gopher Task despite the Extension endpoint failing.
-    gopherClient.createTask(
-      {
-        task: {
-          command: process.env.EXAMPLE_COMMAND,
-          reminder_timeformat: "1sec",
-          reference_email: {
-            server_recipient: process.env.EXAMPLE_COMMAND,
-            to: [process.env.EXAMPLE_COMMAND],
-            cc: [],
-            bcc: [],
-            from: "bar@bar.email",
-            subject: "Test1",
-            html: "Test1",
-            text: "Test1",
-            attachments: []
-          },
-          private_data: {
-            privatedata1: "Value1"
-          }
+  it("should create a task", done => {
+    let taskPayload = {
+      task: {
+        command: process.env.EXAMPLE_COMMAND,
+        reminder_timeformat: "15min",
+        reference_email: {
+          server_recipient: process.env.EXAMPLE_COMMAND,
+          to: [process.env.EXAMPLE_COMMAND],
+          cc: [],
+          bcc: [],
+          from: "bar@bar.email",
+          subject: "Test1",
+          html: "Test1",
+          text: "Test1",
+          attachments: []
+        },
+        private_data: {
+          privatedata1: "Value1"
         }
-      },
-      (err, res) => {
-        if (err) done(err);
-        expect(res).to.be.an("object");
-        expect(res.status).to.equal("success");
-        done();
       }
-    );
-  }).timeout(5000);
+    };
+    //TODO: This creates a successful Gopher Task despite the Extension endpoint failing.
+    gopherClient.createTask(taskPayload, (err, res) => {
+      if (err) done(err);
+      expect(res).to.be.an("object");
+      expect(res.status).to.equal("success");
+      done();
+    });
+  }).timeout(50000);
 
-  it("should get a list of followups with async/await", async () => {
+  it("should get a list of tasks with async/await", async () => {
     let res = await gopherClient.getTasks({ limit: 1 });
     expect(res.status).to.equal("success");
     expect(res.tasks).to.be.an("array");
@@ -63,7 +60,7 @@ describe("Tasks", function() {
     exampleTask = res.tasks[0];
   });
 
-  it("should get a list of followups with a cb", done => {
+  it("should get a list of tasks with a cb", done => {
     gopherClient.getTasks({ limit: 1 }, (err, res) => {
       if (err) done(err);
       expect(res.tasks).to.be.an("array");
@@ -72,7 +69,7 @@ describe("Tasks", function() {
     });
   });
 
-  it("should get a list of followups with a promise", done => {
+  it("should get a list of tasks with a promise", done => {
     gopherClient
       .getTasks({ limit: 1 })
       .then(res => {
@@ -114,7 +111,7 @@ describe("Tasks", function() {
       .catch(err => {
         done(new Error(err));
       });
-  }).timeout(5000);
+  });
 
   it("should let an extension save data", done => {
     gopherClient.saveUserData({ three: "more" }, (err, res) => {
@@ -166,7 +163,7 @@ describe("Tasks", function() {
     expect(res.status).to.equal("success");
   });
 
-  it("test should not create an example task if one has been loaded", done => {
+  xit("test should not create an example task if one has been loaded", done => {
     getExampleTask()
       .then(res => {
         // exampleTask called newly in beforeEach()
@@ -263,5 +260,31 @@ describe("Tasks", function() {
 
   it("should build a login URL", () => {
     expect(gopherClient.getAuthorizationUri().uri).to.be.a("string");
+  });
+
+  xit("should let admin app send a simulated email", async () => {
+    let res = await gopherClient.devSendAction({
+      action: {
+        format:
+          "a+notifications.off+t.1960+gopher-express-local+c39a2e@followupthen.com"
+      },
+      reference_email: {
+        method: "",
+        server_recipient:
+          "a+notifications.off+t.1960+gopher-express-local+c39a2e@followupthen.com",
+        to: [
+          "a+notifications.off+t.1960+gopher-express-local+c39a2e@followupthen.com"
+        ],
+        cc: [],
+        bcc: [],
+        from: "esweetland@gmail.com",
+        subject: "Email Action Subject",
+        html: "Email Action Body HTML",
+        text: "Email Action Body Text",
+        attachments: []
+      }
+    });
+
+    expect(res.status).to.equal("error");
   });
 });

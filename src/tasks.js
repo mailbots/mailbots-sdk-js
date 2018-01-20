@@ -128,7 +128,6 @@ export default {
         Authorization: `Bearer ${this._accessToken}`
       });
     }
-    console.log(requestOptions);
     return _makeRequest(requestOptions);
   },
 
@@ -147,6 +146,24 @@ export default {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json; charset=UTF-8"
       }
+    };
+    return _makeRequest(requestOptions, cb);
+  },
+
+  /*
+   * Developer can simulate an action email with this method 
+   * (For use only by Gopher Admin app in developer sandbox)
+   * TODO
+   */
+  devSendAction(params, cb) {
+    const requestOptions = {
+      method: "POST",
+      url: urljoin(this.config.apiHost, "/api/v1/actions/?verbose=1"),
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`,
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+      data: params
     };
     return _makeRequest(requestOptions, cb);
   }

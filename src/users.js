@@ -132,5 +132,21 @@ export default {
 		}
 
 		return _makeRequest(requestOptions, cb);
+	},
+
+	/*
+   * Get logs
+   */
+	getLogs(params, cb) {
+		const requestOptions = {
+			method: "GET",
+			url: urljoin(this.config.apiHost, "/api/v1/logs"),
+			headers: {
+				Authorization: `Bearer ${this._accessToken}`,
+				"Content-Type": "application/json"
+			}
+		};
+
+		return _makeRequest(requestOptions, cb);
 	}
 };

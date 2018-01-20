@@ -7,7 +7,13 @@ export const _makeRequest = (requestOptions, cb) => {
   debug("Request", requestOptions);
   return axios(requestOptions)
     .then(res => {
-      debug("Response Ok:", res);
+      debug("Response Ok");
+      // Add http statusCode to response object
+      if (res.data === "") {
+        res.data = { statusCode: res.status };
+      } else {
+        res.data.statusCode = res.status;
+      }
       if (cb) cb(null, res.data);
       return Promise.resolve(res.data);
     })

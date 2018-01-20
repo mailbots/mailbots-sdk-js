@@ -7,7 +7,8 @@ timestamp.round = true;
 import Tasks from "./tasks";
 import Users from "./users";
 import Webhooks from "./webhooks";
-import Auth from "./Auth";
+import Auth from "./auth";
+import Extensions from "./extensions";
 
 import { debug, _makeRequest, _checkParam, _extend } from "./util";
 
@@ -52,6 +53,7 @@ _extend(Gopher, Tasks);
 _extend(Gopher, Users);
 _extend(Gopher, Webhooks);
 _extend(Gopher, Auth);
+_extend(Gopher, Extensions);
 
 // Not in the ES6 way, but works with both: require('...') and import foo from "..."
 module.exports = Gopher;

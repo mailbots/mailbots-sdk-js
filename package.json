@@ -14,8 +14,9 @@
   "scripts": {
     "test": "mocha --require babel-register --require babel-polyfill",
     "test:watch": "npm t -- -w",
+    "test:watch:live": "NOCK_OFF=true npm t -- -w",
     "test:inspect": "npm t -- --inspect-brk",
-    "test:build": "REBUILD_MOCKS=true npm t",
+    "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t",
     "build": "rimraf lib && babel --out-dir lib src",
     "prepublishOnly": "npm run build",
     "prepush": "npm test"

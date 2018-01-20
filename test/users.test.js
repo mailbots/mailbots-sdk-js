@@ -1,4 +1,9 @@
-import { getGopherClient, getExampleTask } from "./testUtils/gopherTestUtils";
+import {
+	getGopherClient,
+	getExampleTask,
+	beforeEachTest,
+	testConfig
+} from "./testUtils/gopherTestUtils";
 import "./testUtils/nockMocks";
 import mocha from "mocha";
 import { expect } from "chai";
@@ -10,9 +15,12 @@ timestamp.round = true;
 
 let gopherClient = getGopherClient();
 
-describe("Users", () => {
+describe("Users", function() {
+	testConfig.call(this);
+	beforeEach(beforeEachTest);
+
 	let userEmail;
-	if (process.env.BUILD_MOCKS) {
+	if (process.env.REBUILD_MOCKS) {
 		userEmail = Math.floor(Math.random() * 10000) + "@example.com";
 	} else {
 		userEmail = "4068@example.com"; //: Math.floor(Math.random() * 10000) + "@example.com";
@@ -43,6 +51,21 @@ describe("Users", () => {
 		let res = await gopherClient.resetPassword({
 			email: userEmail
 		});
-		expect(res.success).to.be.true;
+		expect(res.status).to.equal("success");
+	});
+
+	it("should get user logs", async () => {
+		let res = await gopherClient.getLogs();
+		expect(res.logs).to.be.an("array");
+	});
+
+	it("should get user data", async () => {
+		let res = await gopherClient.getUserData();
+		expect(res.statusCode).to.equal(200);
+	});
+
+	it("should save user data", async () => {
+		let res = await gopherClient.saveUserData({ foo: "bar" });
+		expect(res.statusCode).to.equal(200);
 	});
 });
