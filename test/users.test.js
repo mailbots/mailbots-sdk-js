@@ -38,6 +38,11 @@ describe("Users", function() {
 		expect(createRes.status).to.equal("success");
 	});
 
+	it("should get the logged in user", async () => {
+		let createRes = await gopherClient.getLoggedInUser();
+		expect(createRes.status).to.equal("success");
+	});
+
 	it("should login a new user", async () => {
 		let loginRes = await gopherClient.login({
 			email: userEmail,

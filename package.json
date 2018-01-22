@@ -17,7 +17,7 @@
     "test:watch:live": "NOCK_OFF=true npm t -- -w",
     "test:inspect": "npm t -- --inspect-brk",
     "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t",
-    "build": "rimraf lib && babel --out-dir lib src",
+    "build": "rimraf lib && babel --require babel-polyfill --out-dir lib src",
     "prepublishOnly": "npm run build",
     "prepush": "npm test"
   },
@@ -27,6 +27,7 @@
     "axios": "0.17.1",
     "crypto": "0.0.3",
     "debug": "^2.6.8",
+    "qs": "6.5.1",
     "querystring": "^0.2.0",
     "simple-oauth2": "^1.2.0",
     "unix-timestamp": "^0.2.0",

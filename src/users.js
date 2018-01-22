@@ -50,6 +50,24 @@ export default {
 	},
 
 	/**
+	 * Login
+	 * (Gopher Admin Only)
+	 */
+	getLoggedInUser(params, cb) {
+		if (params) throw "getLoggedInUser does not accept params";
+
+		const requestOptions = {
+			method: "GET",
+			url: urljoin(this.config.apiHost, "/api/v1/users/self/"),
+			headers: {
+				Authorization: `Bearer ${this._accessToken}`,
+				"Content-Type": "application/json"
+			}
+		};
+		return _makeRequest(requestOptions, cb);
+	},
+
+	/**
 	 * Reset Password
 	 * (Gopher Admin Only)
 	 */

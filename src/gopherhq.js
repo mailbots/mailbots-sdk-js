@@ -12,10 +12,21 @@ import Extensions from "./extensions";
 
 import { debug, _makeRequest, _checkParam, _extend } from "./util";
 
+let OAuth2;
+let context = "browser";
+if (!global.document) {
+  context = "server";
+  OAuth2 = require("simple-oauth2");
+}
+
 class Gopher {
   constructor(config) {
     if (!(this instanceof Gopher)) return new Gopher(config);
     _checkParam(config.clientId, "clientId");
+
+    if (context == "browser" && this.clientSecret) {
+      throw "SECURITY ERROR: clientSecret should only be stored the server.";
+    }
 
     this.config = config;
     this.configDefaults = {
@@ -46,6 +57,24 @@ class Gopher {
    */
   setAccessToken(accessToken) {
     this._accessToken = accessToken;
+  }
+
+  /**
+   * Populates an OAuth2 client that should ONLY BE USED ON THE SERVER.
+   * @return oauth2 client (simple-oauth2)
+   */
+  _getSecureOAuthClient() {
+    return OAuth2.create({
+      client: {
+        id: this.config.clientId,
+        secret: this.config.clientSecret
+      },
+      auth: {
+        tokenHost: this.config.tokenHost,
+        tokenPath: this.config.tokenPath,
+        authorizePath: this.config.authorizePath
+      }
+    });
   }
 }
 

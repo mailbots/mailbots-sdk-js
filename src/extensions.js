@@ -1,5 +1,6 @@
 import querystring from "querystring";
 import urljoin from "url-join";
+import qs from "qs";
 import { _makeRequest, _checkParam, debug } from "./util";
 
 export default {
@@ -47,9 +48,10 @@ export default {
   * Get a list of extensions (Admin only)
   */
   getExtensions(params, cb) {
+    const queryString = params ? qs.stringify(params) : "";
     const requestOptions = {
       method: "GET",
-      url: urljoin(`${this.config.apiHost}/api/v1/extensions`),
+      url: urljoin(`${this.config.apiHost}/api/v1/extensions?${queryString}`),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json"
@@ -85,7 +87,9 @@ export default {
   * Get a list of extensions (Admin only)
   */
   uninstallExtension(params, cb) {
-    // throw "`extensionid` is required to uninstall";
+    if (!params.extensionid) {
+      throw "extensionid is required to uninstall";
+    }
 
     const requestOptions = {
       method: "DELETE",

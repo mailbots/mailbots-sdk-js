@@ -26,14 +26,14 @@ export default {
   /*
    * Fetch A Single Gopher Task
    */
-  getTask(taskId, cb) {
-    if (typeof taskId != "number")
+  getTask(params, cb) {
+    if (typeof params.taskid != "number")
       throw new Error(
         "taskId must be an integer. This was given instead:",
         taskId
       );
     const requestOptions = {
-      url: `${this.config.apiHost}/api/v1/tasks/${taskId}/`,
+      url: `${this.config.apiHost}/api/v1/tasks/${params.taskid}/`,
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json"
@@ -115,12 +115,15 @@ export default {
       url: params.trigger_url,
       headers: {
         "Content-Type": "application/json; charset=UTF-8"
-      },
-      json: true
+      }
     };
 
     if (params.payload) {
-      Object.assign(requestOptions, { form: params.payload });
+      Object.assign(requestOptions, { data: params.payload });
+    }
+
+    if (params.verbose) {
+      requestOptions.url += "?verbose=1";
     }
 
     if (this._accessToken) {
@@ -128,6 +131,7 @@ export default {
         Authorization: `Bearer ${this._accessToken}`
       });
     }
+    debugger;
     return _makeRequest(requestOptions);
   },
 
@@ -163,7 +167,10 @@ export default {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json; charset=UTF-8"
       },
-      data: params
+      data: JSON.stringify({
+        action: params.action,
+        reference_email: params.reference_email
+      })
     };
     return _makeRequest(requestOptions, cb);
   }

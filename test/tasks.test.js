@@ -87,7 +87,7 @@ describe("Tasks", function() {
   it("should get a single task", done => {
     if (!exampleTask)
       return done(new Error("This test needs to be run as part of the suite."));
-    gopherClient.getTask(exampleTask.id, (err, res) => {
+    gopherClient.getTask({ taskid: exampleTask.id }, (err, res) => {
       done();
     });
   });
@@ -256,10 +256,6 @@ describe("Tasks", function() {
       trigger_url: exampleTask.trigger_url
     });
     expect(res).to.be.ok;
-  });
-
-  it("should build a login URL", () => {
-    expect(gopherClient.getAuthorizationUri().uri).to.be.a("string");
   });
 
   xit("should let admin app send a simulated email", async () => {
