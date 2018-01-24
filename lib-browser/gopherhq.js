@@ -48,10 +48,9 @@ _unixTimestamp2.default.round = true;
 
 var OAuth2 = void 0;
 var context = "browser";
-if (!global.document) {
-  context = "server";
-  OAuth2 = require("simple-oauth2");
-}
+var server = false;
+
+// block removed by babel it's being build for the client (see package.json)
 
 var Gopher = function () {
   function Gopher(config) {

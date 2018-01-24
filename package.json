@@ -1,26 +1,28 @@
 {
   "name": "gopherhq",
-  "version": "0.0.9-beta",
+  "version": "0.0.10-beta",
   "description": "Gopher Email API client for the browser and node.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/gopherhq/gopherhq-js.git"
   },
-  "main": "lib/gopherhq.js",
+  "main": "lib-node/gopherhq.js",
+  "browser": "lib-browser/gopherhq.js",
   "directories": {
     "test": "test"
   },
-  "files": [
-    "lib",
-    "readme"
-  ],
+  "files": ["lib", "readme"],
   "scripts": {
-    "test": "NOCK_OFF=true mocha --require babel-register --require babel-polyfill",
+    "test":
+      "NOCK_OFF=true mocha --require babel-register --require babel-polyfill",
     "test:watch": "npm t -- -w",
     "test:watch:local": "THROTTLE=false npm t -- -w",
     "test:inspect": "npm t -- --inspect-brk",
     "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t",
-    "build": "rimraf lib && babel --require babel-polyfill --out-dir lib src",
+    "build": "npm run build:node && npm run build:browser",
+    "build:node": "rimraf lib-node && SERVER=true babel --out-dir lib-node src",
+    "build:browser":
+      "rimraf lib-browser && SERVER=false babel --out-dir lib-browser src",
     "prepublishOnly": "npm run build",
     "prepush": "npm test"
   },
@@ -39,6 +41,11 @@
   "devDependencies": {
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
+    "babel-plugin-conditional-compile": "0.0.5",
+    "babel-plugin-inline-replace-variables": "1.3.1",
+    "babel-plugin-minify-dead-code-elimination": "0.2.0",
+    "babel-plugin-preval": "1.6.3",
+    "babel-plugin-transform-define": "1.3.0",
     "babel-preset-env": "1.6.1",
     "chai": "^4.0.2",
     "dotenv": "4.0.0",

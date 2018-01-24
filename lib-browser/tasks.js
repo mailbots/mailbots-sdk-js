@@ -116,7 +116,7 @@ exports.default = {
   /**
    * Trigger a Gopher Task
    */
-  triggerTask: function triggerTask(params, cb) {
+  triggerTask: function triggerTask(params) {
     if (!params.trigger_url) {
       return new Error("trigger_url is required");
     }

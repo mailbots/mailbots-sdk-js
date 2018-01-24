@@ -14,7 +14,10 @@ import { debug, _makeRequest, _checkParam, _extend } from "./util";
 
 let OAuth2;
 let context = "browser";
-if (!global.document) {
+let server = false;
+
+// block removed by babel it's being build for the client (see package.json)
+if (process.env.SERVER) {
   context = "server";
   OAuth2 = require("simple-oauth2");
 }
