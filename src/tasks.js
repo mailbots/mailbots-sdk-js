@@ -131,7 +131,6 @@ export default {
         Authorization: `Bearer ${this._accessToken}`
       });
     }
-    debugger;
     return _makeRequest(requestOptions);
   },
 
