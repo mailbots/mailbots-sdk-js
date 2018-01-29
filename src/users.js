@@ -1,5 +1,6 @@
 import urljoin from "url-join";
 import { debug, _makeRequest } from "./util";
+import querystring from "querystring";
 
 export default {
 	/**
@@ -156,9 +157,12 @@ export default {
    * Get logs
    */
 	getLogs(params, cb) {
+		//TODO: Implement new log filtering format
+		let qs = "?type[webhook]=1&type[submit_failed]=1";
+
 		const requestOptions = {
 			method: "GET",
-			url: urljoin(this.config.apiHost, "/api/v1/logs"),
+			url: urljoin(this.config.apiHost, "/api/v1/logs" + qs),
 			headers: {
 				Authorization: `Bearer ${this._accessToken}`,
 				"Content-Type": "application/json"
