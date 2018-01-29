@@ -12,6 +12,10 @@ var _urlJoin2 = _interopRequireDefault(_urlJoin);
 
 var _util = require("./util");
 
+var _querystring = require("querystring");
+
+var _querystring2 = _interopRequireDefault(_querystring);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -170,14 +174,17 @@ exports.default = {
    * Get logs
    */
 	getLogs: function getLogs(params, cb) {
+
 		var requestOptions = {
 			method: "GET",
-			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/logs"),
+			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/logs" + "?type[webhook]=1&type[submit_failed]=1"),
 			headers: {
 				Authorization: "Bearer " + this._accessToken,
 				"Content-Type": "application/json"
 			}
 		};
+		//TODO: Implement new log filtering format
+
 
 		return (0, _util._makeRequest)(requestOptions, cb);
 	}
