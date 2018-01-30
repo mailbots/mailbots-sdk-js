@@ -89,3 +89,4 @@ _extend(Gopher, Extensions);
 
 // Not in the ES6 way, but works with both: require('...') and import foo from "..."
 module.exports = Gopher;
+window.Gopher = Gopher;
