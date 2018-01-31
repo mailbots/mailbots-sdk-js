@@ -46,21 +46,19 @@ describe("Extensions", function() {
 				webhook_version: 1
 			}
 		});
-		debugger;
-		expect(createRes.status).to.equal("success");
+		expect(createRes.statusCode).to.equal(201);
 		extensionId = createRes.extension.id;
 	});
 
 	it("should update an extension", async () => {
-		debugger;
-		let createRes = await gopherClient.updateExtension({
+		let res = await gopherClient.updateExtension({
 			extension: {
 				extensionid: extensionId,
 				description: "updated",
 				name: getRandomString()
 			}
 		});
-		expect(createRes.status).to.equal("success");
+		expect(res.statusCode).to.equal(200);
 	});
 
 	it("should get a list of extensions", async () => {
@@ -74,7 +72,7 @@ describe("Extensions", function() {
 		let res = await gopherClient.getExtension({
 			extensionid: extensionId
 		});
-		expect(res.status).to.equal("success");
+		expect(res.statusCode).to.equal(200);
 		expect(res.extension).to.have.property("name");
 	});
 

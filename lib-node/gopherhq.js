@@ -59,9 +59,8 @@ var Gopher = function () {
     _classCallCheck(this, Gopher);
 
     if (!(this instanceof Gopher)) return new Gopher(config);
-    (0, _util._checkParam)(config.clientId, "clientId");
 
-    if (context == "browser" && this.clientSecret) {
+    if (context === "browser" && this.clientSecret) {
       throw "SECURITY ERROR: clientSecret should only be stored the server.";
     }
 
@@ -106,6 +105,11 @@ var Gopher = function () {
   }, {
     key: "_getSecureOAuthClient",
     value: function _getSecureOAuthClient() {
+      (0, _util._checkParam)(this.config.clientSecret, "clientSecret");
+      (0, _util._checkParam)(this.config.clientId, "clientId");
+      (0, _util._checkParam)(this.config.redirectUri, "redirectUri");
+      (0, _util._checkParam)(this.config.scope, "scope");
+
       return OAuth2.create({
         client: {
           id: this.config.clientId,
@@ -129,5 +133,8 @@ var Gopher = function () {
 (0, _util._extend)(Gopher, _auth2.default);
 (0, _util._extend)(Gopher, _extensions2.default);
 
-// Not in the ES6 way, but works with both: require('...') and import foo from "..."
 module.exports = Gopher;
+
+global.window = {};
+
+window.Gopher = Gopher;

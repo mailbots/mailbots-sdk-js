@@ -35,12 +35,12 @@ describe("Users", function() {
 			name: "",
 			timezone: ""
 		});
-		expect(createRes.status).to.equal("success");
+		expect(createRes.statusCode).to.equal(200);
 	});
 
 	it("should get the logged in user", async () => {
 		let createRes = await gopherClient.getLoggedInUser();
-		expect(createRes.status).to.equal("success");
+		expect(createRes.statusCode).to.equal(200);
 	});
 
 	it("should login a new user", async () => {
@@ -48,7 +48,7 @@ describe("Users", function() {
 			email: userEmail,
 			password: password
 		});
-		expect(loginRes.status).to.equal("success");
+		expect(loginRes.statusCode).to.equal(200);
 		expect(loginRes.user.token).to.have.property("access_token");
 	});
 
@@ -56,7 +56,7 @@ describe("Users", function() {
 		let res = await gopherClient.resetPassword({
 			email: userEmail
 		});
-		expect(res.status).to.equal("success");
+		expect(res.statusCode).to.equal(200);
 	});
 
 	it("should get user logs", async () => {
@@ -65,12 +65,12 @@ describe("Users", function() {
 	});
 
 	it("should get user data", async () => {
-		let res = await gopherClient.getUserData();
+		let res = await gopherClient.getExtensionData();
 		expect(res.statusCode).to.equal(200);
 	});
 
 	it("should save user data", async () => {
-		let res = await gopherClient.saveUserData({ foo: "bar" });
+		let res = await gopherClient.saveExtensionData({ foo: "bar" });
 		expect(res.statusCode).to.equal(200);
 	});
 });

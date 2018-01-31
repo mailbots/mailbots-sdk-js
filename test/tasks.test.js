@@ -47,14 +47,14 @@ describe("Tasks", function() {
     gopherClient.createTask(taskPayload, (err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
-      expect(res.status).to.equal("success");
+      expect(res.statusCode).to.equal(201);
       done();
     });
   }).timeout(50000);
 
   it("should get a list of tasks with async/await", async () => {
     let res = await gopherClient.getTasks({ limit: 1 });
-    expect(res.status).to.equal("success");
+    expect(res.statusCode).to.equal(200);
     expect(res.tasks).to.be.an("array");
     expect(res.tasks[0]).to.have.property("reference_email");
     exampleTask = res.tasks[0];
@@ -73,7 +73,7 @@ describe("Tasks", function() {
     gopherClient
       .getTasks({ limit: 1 })
       .then(res => {
-        expect(res.status).to.equal("success");
+        expect(res.statusCode).to.equal(200);
         expect(res.tasks).to.be.an("array");
         expect(res.tasks[0]).to.have.property("reference_email");
         exampleTask = res.tasks[0];
@@ -86,8 +86,9 @@ describe("Tasks", function() {
 
   it("should get a single task", done => {
     if (!exampleTask)
-      return done(new Error("This test needs to be run as part of the suite."));
-    gopherClient.getTask({ taskid: exampleTask.id }, (err, res) => {
+      return done("Example task does not exist. Run as part of the suite");
+    gopherClient.getTask({ id: exampleTask.id }, (err, res) => {
+      if (err) done(err);
       done();
     });
   });
@@ -97,8 +98,9 @@ describe("Tasks", function() {
       done("Example Task doens't exist", exampleTask);
     }
     gopherClient
-      .updateTask(exampleTask.id, {
+      .updateTask({
         task: {
+          id: exampleTask.id,
           reference_email: {
             body: "something else new"
           }
@@ -109,12 +111,12 @@ describe("Tasks", function() {
         done();
       })
       .catch(err => {
-        done(new Error(err));
+        done(err);
       });
   });
 
   it("should let an extension save data", done => {
-    gopherClient.saveUserData({ three: "more" }, (err, res) => {
+    gopherClient.saveExtensionData({ three: "more" }, (err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.data.three).to.equal("more");
@@ -123,7 +125,7 @@ describe("Tasks", function() {
   });
 
   it("should let an extension get data", done => {
-    gopherClient.getUserData((err, res) => {
+    gopherClient.getExtensionData((err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.data.three).to.equal("more");
@@ -146,13 +148,13 @@ describe("Tasks", function() {
 
   it("should send an invite from an authorized user", async () => {
     let res = await gopherClient.invite("test@example.com");
-    expect(res.status).to.equal("success");
+    expect(res.statusCode).to.equal(200);
   });
 
   it("should send an invite from an anonymous user", async () => {
     gopherClient._accessToken = null;
     let res = await gopherClient.invite("test@example.com");
-    expect(res.status).to.equal("success");
+    expect(res.statusCode).to.equal(200);
   });
 
   it("should send invites to an array of users", async () => {
@@ -160,7 +162,7 @@ describe("Tasks", function() {
       "blackhole@example.com",
       "blackhole2@example.com"
     ]);
-    expect(res.status).to.equal("success");
+    expect(res.statusCode).to.equal(200);
   });
 
   xit("test should not create an example task if one has been loaded", done => {

@@ -68,9 +68,7 @@ exports.default = {
   * Login
   * (Gopher Admin Only)
   */
-	getLoggedInUser: function getLoggedInUser(params, cb) {
-		if (params) throw "getLoggedInUser does not accept params";
-
+	getLoggedInUser: function getLoggedInUser(cb) {
 		var requestOptions = {
 			method: "GET",
 			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/users/self/"),
@@ -109,7 +107,7 @@ exports.default = {
    * Save Gopher Extension Data which is then sent with every webhook related to that extension.
    */
 
-	saveUserData: function saveUserData(data, cb) {
+	saveExtensionData: function saveExtensionData(data, cb) {
 		if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
 
 		var requestOptions = {
@@ -128,7 +126,7 @@ exports.default = {
 	/*
    * Get Gopher Extension-Wide Data
    */
-	getUserData: function getUserData(cb) {
+	getExtensionData: function getExtensionData(cb) {
 		var requestOptions = {
 			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
 			headers: {
@@ -174,7 +172,6 @@ exports.default = {
    * Get logs
    */
 	getLogs: function getLogs(params, cb) {
-
 		var requestOptions = {
 			method: "GET",
 			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/logs" + "?type[webhook]=1&type[submit_failed]=1"),

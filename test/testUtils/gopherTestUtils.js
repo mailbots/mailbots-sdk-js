@@ -1,7 +1,7 @@
 require("dotenv").config({ path: "./test/.env" });
 import nock from "nock";
 import fs from "fs";
-import Gopher from "../../lib-node/gopherhq.js"; //TODO test different versions
+import Gopher from "../../src/gopherhq.js"; //TODO test browser + node versions separately
 import { join } from "path";
 require("./nockMocks");
 import crypto from "crypto";

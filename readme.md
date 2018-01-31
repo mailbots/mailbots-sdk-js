@@ -35,7 +35,13 @@ var task = {
 gopherClient.createTask(task, function(err, res) { console.log(err || res)});
 
 // promises work, too.
-let res = await gopherClient.createTask(task);
+let res = gopherClient.createTask(task)
+	.then(function(res) {
+		console.log(res);
+	})
+	.catch(function(err) {
+		console.log(err);
+	});
 
 // along with async/await magic, of course ✨
 let res = await gopherClient.createTask(task); //in async function

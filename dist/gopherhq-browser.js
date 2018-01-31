@@ -6473,9 +6473,12 @@ var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
     if (cb) cb(null, res.data);
     return Promise.resolve(res.data);
   }).catch(function (err) {
-    debug("Response Error:", err);
-    if (cb) cb(err);
-    return Promise.reject(err);
+    if (err.response.data) {
+      err.response.data.statusCode = err.response.status;
+    }
+    debug("Response Error:", err.response.data);
+    if (cb) cb(err.response.data);
+    return Promise.reject(err.response.data);
   });
 };
 
@@ -13829,9 +13832,8 @@ var Gopher = function () {
     _classCallCheck(this, Gopher);
 
     if (!(this instanceof Gopher)) return new Gopher(config);
-    (0, _util._checkParam)(config.clientId, "clientId");
 
-    if (context == "browser" && this.clientSecret) {
+    if (context === "browser" && this.clientSecret) {
       throw "SECURITY ERROR: clientSecret should only be stored the server.";
     }
 
@@ -13876,6 +13878,11 @@ var Gopher = function () {
   }, {
     key: "_getSecureOAuthClient",
     value: function _getSecureOAuthClient() {
+      (0, _util._checkParam)(this.config.clientSecret, "clientSecret");
+      (0, _util._checkParam)(this.config.clientId, "clientId");
+      (0, _util._checkParam)(this.config.redirectUri, "redirectUri");
+      (0, _util._checkParam)(this.config.scope, "scope");
+
       return OAuth2.create({
         client: {
           id: this.config.clientId,
@@ -13899,8 +13906,8 @@ var Gopher = function () {
 (0, _util._extend)(Gopher, _auth2.default);
 (0, _util._extend)(Gopher, _extensions2.default);
 
-// Not in the ES6 way, but works with both: require('...') and import foo from "..."
 module.exports = Gopher;
+
 window.Gopher = Gopher;
 
 /***/ }),
@@ -22555,9 +22562,9 @@ exports.default = {
    * Fetch A Single Gopher Task
    */
   getTask: function getTask(params, cb) {
-    if (typeof params.taskid != "number") throw new Error("taskId must be an integer. This was given instead:", taskId);
+    if (typeof params.id != "number") throw "id must be an integer. This was given instead: " + params.id;
     var requestOptions = {
-      url: this.config.apiHost + "/api/v1/tasks/" + params.taskid + "/",
+      url: this.config.apiHost + "/api/v1/tasks/" + params.id + "/",
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -22597,10 +22604,11 @@ exports.default = {
     * Update A Gopher Task
     * Used to save data against the task, update content, followup time and more
     */
-  updateTask: function updateTask(taskId, params, cb) {
+  updateTask: function updateTask(params, cb) {
+    if (!params.task.id) throw "taskid is required to update a task";
     var requestOptions = {
       method: "PUT",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", taskId, "/"),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id, "/"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json; charset=UTF-8"
@@ -24157,9 +24165,7 @@ exports.default = {
   * Login
   * (Gopher Admin Only)
   */
-	getLoggedInUser: function getLoggedInUser(params, cb) {
-		if (params) throw "getLoggedInUser does not accept params";
-
+	getLoggedInUser: function getLoggedInUser(cb) {
 		var requestOptions = {
 			method: "GET",
 			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/users/self/"),
@@ -24198,7 +24204,7 @@ exports.default = {
    * Save Gopher Extension Data which is then sent with every webhook related to that extension.
    */
 
-	saveUserData: function saveUserData(data, cb) {
+	saveExtensionData: function saveExtensionData(data, cb) {
 		if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
 
 		var requestOptions = {
@@ -24217,7 +24223,7 @@ exports.default = {
 	/*
    * Get Gopher Extension-Wide Data
    */
-	getUserData: function getUserData(cb) {
+	getExtensionData: function getExtensionData(cb) {
 		var requestOptions = {
 			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
 			headers: {
@@ -24263,7 +24269,6 @@ exports.default = {
    * Get logs
    */
 	getLogs: function getLogs(params, cb) {
-
 		var requestOptions = {
 			method: "GET",
 			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/logs" + "?type[webhook]=1&type[submit_failed]=1"),
@@ -24336,22 +24341,23 @@ var _util = __webpack_require__(14);
 
 module.exports = {
 	/**
-  *  Auth: Build initial AOuth2 login link (Node Only)
+  *  Auth: Build initial AOuth2 login link
   */
 	getAuthorizationUri: function getAuthorizationUri() {
-		(0, _util._checkParam)(this.config.clientSecret, "clientSecret");
+		(0, _util._checkParam)(this.config.clientId, "clientId");
 		(0, _util._checkParam)(this.config.redirectUri, "redirectUri");
 		(0, _util._checkParam)(this.config.scope, "scope");
 
 		var oauth2 = this._getSecureOAuthClient();
+		var state = Math.floor(Math.random() * 1000000000).toString(16);
 
 		var authorizationUri = oauth2.authorizationCode.authorizeURL({
 			redirect_uri: this.config.redirectUri,
 			scope: this.config.scope,
-			state: this.config.state
+			state: state
 		});
-		(0, _util.debug)("auth uri: ", authorizationUri);
-		return { state: this.config.state, uri: authorizationUri };
+		(0, _util.debug)("auth uri: ", authorizationUri, "state", state);
+		return { uri: authorizationUri, state: state };
 	},
 
 

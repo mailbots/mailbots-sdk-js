@@ -18,9 +18,12 @@ export const _makeRequest = (requestOptions, cb) => {
       return Promise.resolve(res.data);
     })
     .catch(err => {
-      debug("Response Error:", err);
-      if (cb) cb(err);
-      return Promise.reject(err);
+      if (err.response.data) {
+        err.response.data.statusCode = err.response.status;
+      }
+      debug("Response Error:", err.response.data);
+      if (cb) cb(err.response.data);
+      return Promise.reject(err.response.data);
     });
 };
 

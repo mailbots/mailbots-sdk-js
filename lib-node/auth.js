@@ -4,22 +4,23 @@ var _util = require("./util");
 
 module.exports = {
 	/**
-  *  Auth: Build initial AOuth2 login link (Node Only)
+  *  Auth: Build initial AOuth2 login link
   */
 	getAuthorizationUri: function getAuthorizationUri() {
-		(0, _util._checkParam)(this.config.clientSecret, "clientSecret");
+		(0, _util._checkParam)(this.config.clientId, "clientId");
 		(0, _util._checkParam)(this.config.redirectUri, "redirectUri");
 		(0, _util._checkParam)(this.config.scope, "scope");
 
 		var oauth2 = this._getSecureOAuthClient();
+		var state = Math.floor(Math.random() * 1000000000).toString(16);
 
 		var authorizationUri = oauth2.authorizationCode.authorizeURL({
 			redirect_uri: this.config.redirectUri,
 			scope: this.config.scope,
-			state: this.config.state
+			state: state
 		});
-		(0, _util.debug)("auth uri: ", authorizationUri);
-		return { state: this.config.state, uri: authorizationUri };
+		(0, _util.debug)("auth uri: ", authorizationUri, "state", state);
+		return { uri: authorizationUri, state: state };
 	},
 
 

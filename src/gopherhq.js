@@ -25,9 +25,8 @@ if (process.env.SERVER) {
 class Gopher {
   constructor(config) {
     if (!(this instanceof Gopher)) return new Gopher(config);
-    _checkParam(config.clientId, "clientId");
 
-    if (context == "browser" && this.clientSecret) {
+    if (context === "browser" && this.clientSecret) {
       throw "SECURITY ERROR: clientSecret should only be stored the server.";
     }
 
@@ -67,6 +66,11 @@ class Gopher {
    * @return oauth2 client (simple-oauth2)
    */
   _getSecureOAuthClient() {
+    _checkParam(this.config.clientSecret, "clientSecret");
+    _checkParam(this.config.clientId, "clientId");
+    _checkParam(this.config.redirectUri, "redirectUri");
+    _checkParam(this.config.scope, "scope");
+
     return OAuth2.create({
       client: {
         id: this.config.clientId,
@@ -87,6 +91,9 @@ _extend(Gopher, Webhooks);
 _extend(Gopher, Auth);
 _extend(Gopher, Extensions);
 
-// Not in the ES6 way, but works with both: require('...') and import foo from "..."
 module.exports = Gopher;
+
+if (process.env.SERVER) {
+  global.window = {};
+}
 window.Gopher = Gopher;

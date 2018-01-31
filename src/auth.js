@@ -2,22 +2,23 @@ import { _checkParam, debug } from "./util";
 
 module.exports = {
 	/**
-	 *  Auth: Build initial AOuth2 login link (Node Only)
+	 *  Auth: Build initial AOuth2 login link
 	 */
 	getAuthorizationUri() {
-		_checkParam(this.config.clientSecret, "clientSecret");
+		_checkParam(this.config.clientId, "clientId");
 		_checkParam(this.config.redirectUri, "redirectUri");
 		_checkParam(this.config.scope, "scope");
 
-		let oauth2 = this._getSecureOAuthClient();
+		const oauth2 = this._getSecureOAuthClient();
+		const state = Math.floor(Math.random() * 1000000000).toString(16);
 
 		const authorizationUri = oauth2.authorizationCode.authorizeURL({
 			redirect_uri: this.config.redirectUri,
 			scope: this.config.scope,
-			state: this.config.state
+			state: state
 		});
-		debug("auth uri: ", authorizationUri);
-		return { state: this.config.state, uri: authorizationUri };
+		debug("auth uri: ", authorizationUri, "state", state);
+		return { uri: authorizationUri, state: state };
 	},
 
 	/*

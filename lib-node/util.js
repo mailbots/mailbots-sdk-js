@@ -30,9 +30,12 @@ var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
     if (cb) cb(null, res.data);
     return Promise.resolve(res.data);
   }).catch(function (err) {
-    debug("Response Error:", err);
-    if (cb) cb(err);
-    return Promise.reject(err);
+    if (err.response.data) {
+      err.response.data.statusCode = err.response.status;
+    }
+    debug("Response Error:", err.response.data);
+    if (cb) cb(err.response.data);
+    return Promise.reject(err.response.data);
   });
 };
 

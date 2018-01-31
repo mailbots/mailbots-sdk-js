@@ -38,9 +38,9 @@ exports.default = {
    * Fetch A Single Gopher Task
    */
   getTask: function getTask(params, cb) {
-    if (typeof params.taskid != "number") throw new Error("taskId must be an integer. This was given instead:", taskId);
+    if (typeof params.id != "number") throw "id must be an integer. This was given instead: " + params.id;
     var requestOptions = {
-      url: this.config.apiHost + "/api/v1/tasks/" + params.taskid + "/",
+      url: this.config.apiHost + "/api/v1/tasks/" + params.id + "/",
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -80,10 +80,11 @@ exports.default = {
     * Update A Gopher Task
     * Used to save data against the task, update content, followup time and more
     */
-  updateTask: function updateTask(taskId, params, cb) {
+  updateTask: function updateTask(params, cb) {
+    if (!params.task.id) throw "taskid is required to update a task";
     var requestOptions = {
       method: "PUT",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", taskId, "/"),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id, "/"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json; charset=UTF-8"
