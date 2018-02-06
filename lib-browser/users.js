@@ -163,26 +163,6 @@ exports.default = {
 				Authorization: "Bearer " + this._accessToken
 			});
 		}
-
-		return (0, _util._makeRequest)(requestOptions, cb);
-	},
-
-
-	/*
-   * Get logs
-   */
-	getLogs: function getLogs(params, cb) {
-		var requestOptions = {
-			method: "GET",
-			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/logs" + "?type[webhook]=1&type[submit_failed]=1"),
-			headers: {
-				Authorization: "Bearer " + this._accessToken,
-				"Content-Type": "application/json"
-			}
-		};
-		//TODO: Implement new log filtering format
-
-
 		return (0, _util._makeRequest)(requestOptions, cb);
 	}
 };

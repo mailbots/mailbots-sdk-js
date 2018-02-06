@@ -9,6 +9,7 @@ import Users from "./users";
 import Webhooks from "./webhooks";
 import Auth from "./auth";
 import Extensions from "./extensions";
+import Logs from "./logs";
 
 import { debug, _makeRequest, _checkParam, _extend } from "./util";
 
@@ -90,6 +91,7 @@ _extend(Gopher, Users);
 _extend(Gopher, Webhooks);
 _extend(Gopher, Auth);
 _extend(Gopher, Extensions);
+_extend(Gopher, Logs);
 
 module.exports = Gopher;
 

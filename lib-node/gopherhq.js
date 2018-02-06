@@ -38,6 +38,10 @@ var _extensions = require("./extensions");
 
 var _extensions2 = _interopRequireDefault(_extensions);
 
+var _logs = require("./logs");
+
+var _logs2 = _interopRequireDefault(_logs);
+
 var _util = require("./util");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -132,6 +136,7 @@ var Gopher = function () {
 (0, _util._extend)(Gopher, _webhooks2.default);
 (0, _util._extend)(Gopher, _auth2.default);
 (0, _util._extend)(Gopher, _extensions2.default);
+(0, _util._extend)(Gopher, _logs2.default);
 
 module.exports = Gopher;
 
