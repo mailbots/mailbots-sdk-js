@@ -30,12 +30,11 @@ var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
     if (cb) cb(null, res.data);
     return Promise.resolve(res.data);
   }).catch(function (err) {
-    if (err.response.data) {
-      err.response.data.statusCode = err.response.status;
-    }
-    debug("Response Error:", err.response.data);
-    if (cb) cb(err.response.data);
-    return Promise.reject(err.response.data);
+    debug("Response Error:", err);
+    var friendlyMessage = err.response.hasOwnProperty("data") ? err.response.data.message : false;
+    var errorResponse = friendlyMessage || err.statusText || err.message || err.statusCode;
+    if (cb) cb(errorResponse);
+    return errorResponse;
   });
 };
 

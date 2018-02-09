@@ -18,12 +18,14 @@ export const _makeRequest = (requestOptions, cb) => {
       return Promise.resolve(res.data);
     })
     .catch(err => {
-      if (err.response.data) {
-        err.response.data.statusCode = err.response.status;
-      }
-      debug("Response Error:", err.response.data);
-      if (cb) cb(err.response.data);
-      return Promise.reject(err.response.data);
+      debug("Response Error:", err);
+      let friendlyMessage = err.response.hasOwnProperty("data")
+        ? err.response.data.message
+        : false;
+      let errorResponse =
+        friendlyMessage || err.statusText || err.message || err.statusCode;
+      if (cb) cb(errorResponse);
+      return errorResponse;
     });
 };
 
