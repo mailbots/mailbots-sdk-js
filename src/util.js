@@ -1,13 +1,12 @@
 import Debug from "debug";
 import axios from "axios";
 
-export const debug = Debug("gopherhq");
+export const debug = Debug("gopherhq:request");
 
 export const _makeRequest = (requestOptions, cb) => {
   debug("Request", requestOptions);
   return axios(requestOptions)
     .then(res => {
-      debug("Response Ok");
       // Add http statusCode to response object
       if (res.data === "") {
         res.data = { statusCode: res.status };
@@ -15,17 +14,24 @@ export const _makeRequest = (requestOptions, cb) => {
         res.data.statusCode = res.status;
       }
       if (cb) cb(null, res.data);
-      return Promise.resolve(res.data);
+      return res.data;
     })
     .catch(err => {
-      debug("Response Error:", err);
-      let friendlyMessage = err.response.hasOwnProperty("data")
-        ? err.response.data.message
-        : false;
+      let friendlyMessage;
+      if (
+        typeof err.response !== "undefined" &&
+        typeof err.response.data !== "undefined"
+      ) {
+        friendlyMessage =
+          err.response.data.message ||
+          err.response.data.type ||
+          err.response.data.status ||
+          null;
+      }
       let errorResponse =
         friendlyMessage || err.statusText || err.message || err.statusCode;
-      if (cb) cb(errorResponse);
-      return errorResponse;
+      if (cb) cb(new Error(errorResponse));
+      return new Error(errorResponse);
     });
 };
 

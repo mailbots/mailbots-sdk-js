@@ -97,4 +97,17 @@ describe("Extensions", function() {
       expect(e).to.contain("extensionid is required");
     }
   });
+
+  it("should return instanceof Error when API responsd with an error", async () => {
+    try {
+      let res = await gopherClient.getExtension({
+        extensionid: 1234
+      });
+      console.log(res);
+      expect(e).to.be.instanceof(Error);
+      expect(e).to.contain("not found");
+    } catch (e) {
+      expect(e).to.be.empty;
+    }
+  });
 });

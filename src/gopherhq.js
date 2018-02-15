@@ -84,6 +84,13 @@ class Gopher {
       }
     });
   }
+
+  /**
+   * Expose for use by inherited classes (ex: GopherAdminClient)
+   */
+  makeRequest(requestOptions, cb) {
+    return _makeRequest(requestOptions, cb);
+  }
 }
 
 _extend(Gopher, Tasks);

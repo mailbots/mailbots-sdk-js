@@ -5289,7 +5289,7 @@ var elliptic = exports;
 elliptic.version = __webpack_require__(135).version;
 elliptic.utils = __webpack_require__(136);
 elliptic.rand = __webpack_require__(63);
-elliptic.curve = __webpack_require__(27);
+elliptic.curve = __webpack_require__(26);
 elliptic.curves = __webpack_require__(141);
 
 // Protocols
@@ -6072,7 +6072,7 @@ module.exports = g;
 
 
 var Buffer = __webpack_require__(1).Buffer;
-var Transform = __webpack_require__(23).Transform;
+var Transform = __webpack_require__(22).Transform;
 var StringDecoder = __webpack_require__(34).StringDecoder;
 var inherits = __webpack_require__(0);
 
@@ -6206,7 +6206,7 @@ module.exports = CipherBase;
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(24);
+var processNextTick = __webpack_require__(23);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -6323,12 +6323,11 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var debug = exports.debug = (0, _debug2.default)("gopherhq");
+var debug = exports.debug = (0, _debug2.default)("gopherhq:request");
 
 var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
   debug("Request", requestOptions);
   return (0, _axios2.default)(requestOptions).then(function (res) {
-    debug("Response Ok");
     // Add http statusCode to response object
     if (res.data === "") {
       res.data = { statusCode: res.status };
@@ -6336,13 +6335,15 @@ var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
       res.data.statusCode = res.status;
     }
     if (cb) cb(null, res.data);
-    return Promise.resolve(res.data);
+    return res.data;
   }).catch(function (err) {
-    debug("Response Error:", err);
-    var friendlyMessage = err.response.hasOwnProperty("data") ? err.response.data.message : false;
+    var friendlyMessage = void 0;
+    if (typeof err.response !== "undefined" && typeof err.response.data !== "undefined") {
+      friendlyMessage = err.response.data.message || err.response.data.type || err.response.data.status || null;
+    }
     var errorResponse = friendlyMessage || err.statusText || err.message || err.statusCode;
-    if (cb) cb(errorResponse);
-    return errorResponse;
+    if (cb) cb(new Error(errorResponse));
+    return new Error(errorResponse);
   });
 };
 
@@ -6882,16 +6883,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 "use strict";
 
 
-exports.decode = exports.parse = __webpack_require__(85);
-exports.encode = exports.stringify = __webpack_require__(86);
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7018,7 +7009,7 @@ Stream.prototype.pipe = function (dest, options) {
 };
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7066,7 +7057,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7119,7 +7110,7 @@ function EVP_BytesToKey(password, salt, keyBits, ivLen) {
 module.exports = EVP_BytesToKey;
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7343,7 +7334,7 @@ AES.prototype.scrub = function () {
 module.exports.AES = AES;
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7357,7 +7348,7 @@ curve.mont = __webpack_require__(139);
 curve.edwards = __webpack_require__(140);
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7475,6 +7466,16 @@ function decrypt(data, password) {
   return Buffer.concat(out);
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.decode = exports.parse = __webpack_require__(85);
+exports.encode = exports.stringify = __webpack_require__(86);
 
 /***/ }),
 /* 29 */
@@ -8260,7 +8261,7 @@ exports.PassThrough = __webpack_require__(96);
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(24);
+var processNextTick = __webpack_require__(23);
 /*</replacement>*/
 
 module.exports = Writable;
@@ -9565,7 +9566,7 @@ module.exports = Array.isArray || function (arr) {
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(24);
+var processNextTick = __webpack_require__(23);
 /*</replacement>*/
 
 module.exports = Readable;
@@ -10567,7 +10568,7 @@ module.exports = __webpack_require__(31).EventEmitter;
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(24);
+var processNextTick = __webpack_require__(23);
 /*</replacement>*/
 
 // undocumented cb() API, needed for core, not for public API
@@ -11523,7 +11524,7 @@ module.exports = {"aes-128-ecb":{"cipher":"AES","key":128,"iv":0,"mode":"ECB","t
 "use strict";
 
 
-var aes = __webpack_require__(26);
+var aes = __webpack_require__(25);
 var Buffer = __webpack_require__(1).Buffer;
 var Transform = __webpack_require__(10);
 var inherits = __webpack_require__(0);
@@ -11648,7 +11649,7 @@ module.exports = StreamCipher;
 "use strict";
 
 
-var aes = __webpack_require__(26);
+var aes = __webpack_require__(25);
 var Buffer = __webpack_require__(1).Buffer;
 var Transform = __webpack_require__(10);
 var inherits = __webpack_require__(0);
@@ -13776,7 +13777,7 @@ module.exports = {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _querystring = __webpack_require__(22);
+var _querystring = __webpack_require__(28);
 
 var _querystring2 = _interopRequireDefault(_querystring);
 
@@ -13897,6 +13898,16 @@ var Gopher = function () {
           authorizePath: this.config.authorizePath
         }
       });
+    }
+
+    /**
+     * Expose for use by inherited classes (ex: GopherAdminClient)
+     */
+
+  }, {
+    key: "makeRequest",
+    value: function makeRequest(requestOptions, cb) {
+      return (0, _util._makeRequest)(requestOptions, cb);
     }
   }]);
 
@@ -14356,7 +14367,7 @@ module.exports = function (buf, fn) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
-var Transform = __webpack_require__(23).Transform;
+var Transform = __webpack_require__(22).Transform;
 var inherits = __webpack_require__(0);
 
 function HashBase(blockSize) {
@@ -15447,7 +15458,7 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
 "use strict";
 
 
-var ebtk = __webpack_require__(25);
+var ebtk = __webpack_require__(24);
 var aes = __webpack_require__(36);
 var DES = __webpack_require__(120);
 var desModes = __webpack_require__(126);
@@ -15682,7 +15693,7 @@ module.exports = MD5;
 
 
 var Buffer = __webpack_require__(1).Buffer;
-var Transform = __webpack_require__(23).Transform;
+var Transform = __webpack_require__(22).Transform;
 var inherits = __webpack_require__(0);
 
 function throwIfNotStringOrBuffer(val, prefix) {
@@ -15789,8 +15800,8 @@ var AuthCipher = __webpack_require__(59);
 var Buffer = __webpack_require__(1).Buffer;
 var StreamCipher = __webpack_require__(60);
 var Transform = __webpack_require__(10);
-var aes = __webpack_require__(26);
-var ebtk = __webpack_require__(25);
+var aes = __webpack_require__(25);
+var ebtk = __webpack_require__(24);
 var inherits = __webpack_require__(0);
 
 function Cipher(mode, key, iv) {
@@ -16189,8 +16200,8 @@ var Buffer = __webpack_require__(1).Buffer;
 var MODES = __webpack_require__(37);
 var StreamCipher = __webpack_require__(60);
 var Transform = __webpack_require__(10);
-var aes = __webpack_require__(26);
-var ebtk = __webpack_require__(25);
+var aes = __webpack_require__(25);
+var ebtk = __webpack_require__(24);
 var inherits = __webpack_require__(0);
 
 function Decipher(mode, key, iv) {
@@ -17274,7 +17285,7 @@ function formatReturnValue(bn, enc) {
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
 var createHash = __webpack_require__(15);
-var stream = __webpack_require__(23);
+var stream = __webpack_require__(22);
 var inherits = __webpack_require__(0);
 var sign = __webpack_require__(134);
 var verify = __webpack_require__(170);
@@ -17378,7 +17389,7 @@ var createHmac = __webpack_require__(50);
 var crt = __webpack_require__(39);
 var EC = __webpack_require__(4).ec;
 var BN = __webpack_require__(3);
-var parseKeys = __webpack_require__(28);
+var parseKeys = __webpack_require__(27);
 var curves = __webpack_require__(72);
 
 function sign(hash, key, hashType, signType, tag) {
@@ -17977,7 +17988,7 @@ BasePoint.prototype.dblp = function (k) {
 "use strict";
 
 
-var curve = __webpack_require__(27);
+var curve = __webpack_require__(26);
 var elliptic = __webpack_require__(4);
 var BN = __webpack_require__(3);
 var inherits = __webpack_require__(0);
@@ -18846,7 +18857,7 @@ JPoint.prototype.isInfinity = function () {
 "use strict";
 
 
-var curve = __webpack_require__(27);
+var curve = __webpack_require__(26);
 var BN = __webpack_require__(3);
 var inherits = __webpack_require__(0);
 var Base = curve.base;
@@ -19027,7 +19038,7 @@ Point.prototype.getX = function () {
 "use strict";
 
 
-var curve = __webpack_require__(27);
+var curve = __webpack_require__(26);
 var elliptic = __webpack_require__(4);
 var BN = __webpack_require__(3);
 var inherits = __webpack_require__(0);
@@ -21915,7 +21926,7 @@ module.exports = {"2.16.840.1.101.3.4.1.1":"aes-128-ecb","2.16.840.1.101.3.4.1.2
 var findProc = /Proc-Type: 4,ENCRYPTED\n\r?DEK-Info: AES-((?:128)|(?:192)|(?:256))-CBC,([0-9A-H]+)\n\r?\n\r?([0-9A-z\n\r\+\/\=]+)\n\r?/m;
 var startRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----\n/m;
 var fullRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----\n\r?([0-9A-z\n\r\+\/\=]+)\n\r?-----END \1-----$/m;
-var evp = __webpack_require__(25);
+var evp = __webpack_require__(24);
 var ciphers = __webpack_require__(36);
 module.exports = function (okey, password) {
   var key = okey.toString();
@@ -21953,7 +21964,7 @@ module.exports = function (okey, password) {
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var BN = __webpack_require__(3);
 var EC = __webpack_require__(4).ec;
-var parseKeys = __webpack_require__(28);
+var parseKeys = __webpack_require__(27);
 var curves = __webpack_require__(72);
 
 function verify(sig, hash, key, signType, tag) {
@@ -22187,7 +22198,7 @@ exports.publicDecrypt = function (key, buf) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
-var parseKeys = __webpack_require__(28);
+var parseKeys = __webpack_require__(27);
 var randomBytes = __webpack_require__(13);
 var createHash = __webpack_require__(15);
 var mgf = __webpack_require__(73);
@@ -22291,7 +22302,7 @@ function nonZero(len) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
-var parseKeys = __webpack_require__(28);
+var parseKeys = __webpack_require__(27);
 var mgf = __webpack_require__(73);
 var xor = __webpack_require__(74);
 var bn = __webpack_require__(3);
@@ -22532,7 +22543,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _querystring = __webpack_require__(22);
+var _querystring = __webpack_require__(28);
 
 var _querystring2 = _interopRequireDefault(_querystring);
 
@@ -24102,7 +24113,7 @@ module.exports = function (callback) {
 /* WEBPACK VAR INJECTION */(function(Buffer, process) {
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -24113,159 +24124,155 @@ var _urlJoin2 = _interopRequireDefault(_urlJoin);
 
 var _util = __webpack_require__(12);
 
-var _querystring = __webpack_require__(22);
-
-var _querystring2 = _interopRequireDefault(_querystring);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-	/**
-  * Create a new user
-  * (Gopher Admin Only)
-  */
+  /**
+   * Create a new user
+   * (Gopher Admin Only)
+   */
 
-	createUser: function createUser(data, cb) {
-		if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
-		var basicAuthToken = new Buffer(process.env.ADMIN_CLIENT_ID + ":" + process.env.ADMIN_CLIENT_SECRET).toString("base64");
+  createUser: function createUser(data, cb) {
+    if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
+    var basicAuthToken = new Buffer(process.env.ADMIN_CLIENT_ID + ":" + process.env.ADMIN_CLIENT_SECRET).toString("base64");
 
-		var requestOptions = {
-			method: "POST",
-			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/auth/register"),
-			headers: {
-				Authorization: "Basic " + basicAuthToken,
-				"Content-Type": "application/json"
-			},
-			data: data
-		};
+    var requestOptions = {
+      method: "POST",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/auth/register"),
+      headers: {
+        Authorization: "Basic " + basicAuthToken,
+        "Content-Type": "application/json"
+      },
+      data: data
+    };
 
-		return (0, _util._makeRequest)(requestOptions, cb);
-	},
-
-
-	/**
-  * Login
-  * (Gopher Admin Only)
-  */
-	login: function login(data, cb) {
-		if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
-		var basicAuthToken = new Buffer(process.env.ADMIN_CLIENT_ID + ":" + process.env.ADMIN_CLIENT_SECRET).toString("base64");
-
-		var requestOptions = {
-			method: "POST",
-			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/auth/login"),
-			headers: {
-				Authorization: "Basic " + basicAuthToken,
-				"Content-Type": "application/json"
-			},
-			data: data
-		};
-
-		return (0, _util._makeRequest)(requestOptions, cb);
-	},
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
 
 
-	/**
-  * Login
-  * (Gopher Admin Only)
-  */
-	getLoggedInUser: function getLoggedInUser(cb) {
-		var requestOptions = {
-			method: "GET",
-			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/users/self/"),
-			headers: {
-				Authorization: "Bearer " + this._accessToken,
-				"Content-Type": "application/json"
-			}
-		};
-		return (0, _util._makeRequest)(requestOptions, cb);
-	},
+  /**
+   * Login
+   * (Gopher Admin Only)
+   */
+  login: function login(data, cb) {
+    if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
+    var basicAuthToken = new Buffer(process.env.ADMIN_CLIENT_ID + ":" + process.env.ADMIN_CLIENT_SECRET).toString("base64");
+
+    var requestOptions = {
+      method: "POST",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/auth/login"),
+      headers: {
+        Authorization: "Basic " + basicAuthToken,
+        "Content-Type": "application/json"
+      },
+      data: data
+    };
+
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
 
 
-	/**
-  * Reset Password
-  * (Gopher Admin Only)
-  */
-	resetPassword: function resetPassword(data, cb) {
-		if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
-		var basicAuthToken = new Buffer(process.env.ADMIN_CLIENT_ID + ":" + process.env.ADMIN_CLIENT_SECRET).toString("base64");
-
-		var requestOptions = {
-			method: "POST",
-			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/auth/forgot_password"),
-			headers: {
-				Authorization: "Basic " + basicAuthToken,
-				"Content-Type": "application/json"
-			},
-			data: data
-		};
-
-		return (0, _util._makeRequest)(requestOptions, cb);
-	},
+  /**
+   * Login
+   * (Gopher Admin Only)
+   */
+  getLoggedInUser: function getLoggedInUser(cb) {
+    var requestOptions = {
+      method: "GET",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/users/self/"),
+      headers: {
+        Authorization: "Bearer " + this._accessToken,
+        "Content-Type": "application/json"
+      }
+    };
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
 
 
-	/*
+  /**
+   * Reset Password
+   * (Gopher Admin Only)
+   */
+  resetPassword: function resetPassword(data, cb) {
+    if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
+    var basicAuthToken = new Buffer(process.env.ADMIN_CLIENT_ID + ":" + process.env.ADMIN_CLIENT_SECRET).toString("base64");
+
+    var requestOptions = {
+      method: "POST",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/auth/forgot_password"),
+      headers: {
+        Authorization: "Basic " + basicAuthToken,
+        "Content-Type": "application/json"
+      },
+      data: data
+    };
+
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
+
+
+  /*
    * Save Gopher Extension Data which is then sent with every webhook related to that extension.
    */
 
-	saveExtensionData: function saveExtensionData(data, cb) {
-		if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
+  saveExtensionData: function saveExtensionData(data, cb) {
+    if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
 
-		var requestOptions = {
-			method: "POST",
-			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
-			headers: {
-				Authorization: "Bearer " + this._accessToken,
-				"Content-Type": "application/json"
-			},
-			data: data
-		};
-		return (0, _util._makeRequest)(requestOptions, cb);
-	},
+    var requestOptions = {
+      method: "POST",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
+      headers: {
+        Authorization: "Bearer " + this._accessToken,
+        "Content-Type": "application/json"
+      },
+      data: data
+    };
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
 
 
-	/*
+  /*
    * Get Gopher Extension-Wide Data
    */
-	getExtensionData: function getExtensionData(cb) {
-		var requestOptions = {
-			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
-			headers: {
-				Authorization: "Bearer " + this._accessToken,
-				"Content-Type": "application/json"
-			},
-			json: true
-		};
-		return (0, _util._makeRequest)(requestOptions, cb);
-	},
+  getExtensionData: function getExtensionData(cb) {
+    var requestOptions = {
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
+      headers: {
+        Authorization: "Bearer " + this._accessToken,
+        "Content-Type": "application/json"
+      },
+      json: true
+    };
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
 
 
-	/*
+  /*
    * Invite users to this extension. If an Auth token is included, the invitation email
    * includes the name of the inviting person.
    */
-	invite: function invite(emails, cb) {
-		var requestBody = {
-			// extension: this.config.extensionName,
-			client_id: this.config.clientId,
-			email_address: emails
-		};
-		var requestOptions = {
-			method: "POST",
-			url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/invites/"),
-			headers: {
-				"Content-Type": "application/json; charset=UTF-8"
-			},
-			data: requestBody
-		};
+  invite: function invite(emails, cb) {
+    var requestBody = {
+      // extension: this.config.extensionName,
+      client_id: this.config.clientId,
+      email_address: emails
+    };
+    var requestOptions = {
+      method: "POST",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/invites/"),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+      data: requestBody
+    };
 
-		if (this._accessToken) {
-			Object.assign(requestOptions.headers, {
-				Authorization: "Bearer " + this._accessToken
-			});
-		}
-		return (0, _util._makeRequest)(requestOptions, cb);
-	}
+    if (this._accessToken) {
+      Object.assign(requestOptions.headers, {
+        Authorization: "Bearer " + this._accessToken
+      });
+    }
+    return (0, _util._makeRequest)(requestOptions, cb);
+  }
 };
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer, __webpack_require__(5)))
 
@@ -24378,7 +24385,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _querystring = __webpack_require__(22);
+var _querystring = __webpack_require__(28);
 
 var _querystring2 = _interopRequireDefault(_querystring);
 

@@ -15,12 +15,11 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var debug = exports.debug = (0, _debug2.default)("gopherhq");
+var debug = exports.debug = (0, _debug2.default)("gopherhq:request");
 
 var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
   debug("Request", requestOptions);
   return (0, _axios2.default)(requestOptions).then(function (res) {
-    debug("Response Ok");
     // Add http statusCode to response object
     if (res.data === "") {
       res.data = { statusCode: res.status };
@@ -28,13 +27,15 @@ var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
       res.data.statusCode = res.status;
     }
     if (cb) cb(null, res.data);
-    return Promise.resolve(res.data);
+    return res.data;
   }).catch(function (err) {
-    debug("Response Error:", err);
-    var friendlyMessage = err.response.hasOwnProperty("data") ? err.response.data.message : false;
+    var friendlyMessage = void 0;
+    if (typeof err.response !== "undefined" && typeof err.response.data !== "undefined") {
+      friendlyMessage = err.response.data.message || err.response.data.type || err.response.data.status || null;
+    }
     var errorResponse = friendlyMessage || err.statusText || err.message || err.statusCode;
-    if (cb) cb(errorResponse);
-    return errorResponse;
+    if (cb) cb(new Error(errorResponse));
+    return new Error(errorResponse);
   });
 };
 

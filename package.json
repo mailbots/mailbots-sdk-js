@@ -1,6 +1,6 @@
 {
   "name": "gopherhq",
-  "version": "0.0.14-beta",
+  "version": "0.0.15-beta",
   "description": "Gopher Email API client for the browser and node.js",
   "repository": {
     "type": "git",
@@ -11,21 +11,21 @@
   "directories": {
     "test": "test"
   },
-  "files": [
-    "lib-browser",
-    "lib-node",
-    "dist",
-    "readme"
-  ],
+  "files": ["lib-browser", "lib-node", "dist", "readme"],
   "scripts": {
-    "test": "NOCK_OFF=true SERVER=true mocha --require babel-register --require babel-polyfill",
+    "test":
+      "NOCK_OFF=true SERVER=true mocha --require babel-register --require babel-polyfill",
     "test:watch": "npm t -- -w",
     "test:watch:local": "npm t -- -w",
     "test:inspect": "npm t -- --inspect-brk",
     "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t",
-    "build": "npm run build:node && npm run build:browser && npm run build:dist",
+    "build":
+      "npm run build:node && npm run build:browser && npm run build:dist",
+    "build:watch":
+      "concurrently \"npm run build:node -- --watch\" \"npm run build:browser -- --watch\"",
     "build:node": "rimraf lib-node && SERVER=true babel --out-dir lib-node src",
-    "build:browser": "rimraf lib-browser && SERVER=false babel --out-dir lib-browser src",
+    "build:browser":
+      "rimraf lib-browser && SERVER=false babel --out-dir lib-browser src",
     "build:dist": "rimraf dist && SERVER=false webpack",
     "prepublishOnly": "npm run build",
     "prepush": "npm test"
@@ -34,6 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "0.17.1",
+    "concurrently": "3.5.1",
     "crypto": "0.0.3",
     "debug": "^2.6.8",
     "qs": "6.5.1",

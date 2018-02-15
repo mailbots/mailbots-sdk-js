@@ -124,6 +124,16 @@ var Gopher = function () {
         }
       });
     }
+
+    /**
+     * Expose for use by inherited classes (ex: GopherAdminClient)
+     */
+
+  }, {
+    key: "makeRequest",
+    value: function makeRequest(requestOptions, cb) {
+      return (0, _util._makeRequest)(requestOptions, cb);
+    }
   }]);
 
   return Gopher;
