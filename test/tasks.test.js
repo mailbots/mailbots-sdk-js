@@ -53,9 +53,18 @@ describe("Tasks", function() {
   }).timeout(50000);
 
   it("should get a list of tasks with async/await", async () => {
+    let res = await gopherClient.getTasks();
+    expect(res.statusCode).to.equal(200);
+    expect(res.tasks).to.be.an("array");
+    expect(res.tasks[0]).to.have.property("reference_email");
+    exampleTask = res.tasks[0];
+  });
+
+  it("should get a filtered list of tasks", async () => {
     let res = await gopherClient.getTasks({ limit: 1 });
     expect(res.statusCode).to.equal(200);
     expect(res.tasks).to.be.an("array");
+    expect(res.tasks.length).to.equal(1);
     expect(res.tasks[0]).to.have.property("reference_email");
     exampleTask = res.tasks[0];
   });

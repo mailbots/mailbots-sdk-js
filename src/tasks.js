@@ -7,12 +7,9 @@ export default {
    * Get List of Gopher Tasks
    */
   getTasks(params, cb) {
+    let qs = params ? `?${querystring.stringify(params)}` : "";
     const requestOptions = {
-      url: urljoin(
-        this.config.apiHost,
-        "/api/v1/tasks/?",
-        querystring.stringify(params)
-      ),
+      url: urljoin(this.config.apiHost, "/api/v1/tasks", qs),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json"

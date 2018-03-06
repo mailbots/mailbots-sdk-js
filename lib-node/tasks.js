@@ -21,8 +21,9 @@ exports.default = {
    * Get List of Gopher Tasks
    */
   getTasks: function getTasks(params, cb) {
+    var qs = params ? "?" + _querystring2.default.stringify(params) : "";
     var requestOptions = {
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/?", _querystring2.default.stringify(params)),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks", qs),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
