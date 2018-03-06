@@ -124,6 +124,48 @@ describe("Tasks", function() {
       });
   });
 
+  it("should update reminder_timeformat for a task", done => {
+    if (!exampleTask.hasOwnProperty("id")) {
+      done(new Error("Example Task doens't exist"), exampleTask);
+    }
+    gopherClient
+      .updateTask({
+        task: {
+          id: exampleTask.id,
+          reminder_timeformat: "1day"
+        }
+      })
+      .then(res => {
+        expect(res).to.be.an("object");
+        expect(res.task.reminder_timeformat).to.equal("1day");
+        done();
+      })
+      .catch(err => {
+        done(err);
+      });
+  });
+
+  it("should fail to update an unsupported reminder_timeformat for a task", done => {
+    if (!exampleTask.hasOwnProperty("id")) {
+      done(new Error("Example Task doens't exist"), exampleTask);
+    }
+    gopherClient
+      .updateTask({
+        task: {
+          id: exampleTask.id,
+          reminder_timeformat: "invalid_jibberish"
+        }
+      })
+      .then(res => {
+        expect(res).to.be.instanceOf(Error);
+        done();
+      })
+      .catch(err => {
+        console.log(err);
+        done(err);
+      });
+  });
+
   it("should let an extension save data", done => {
     gopherClient.saveExtensionData({ three: "more" }, (err, res) => {
       if (err) done(err);
