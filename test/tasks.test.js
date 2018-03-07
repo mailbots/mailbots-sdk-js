@@ -3,7 +3,8 @@ import {
   signWebhook,
   getExampleTask,
   beforeEachTest,
-  testConfig
+  testConfig,
+  getRandomString
 } from "./testUtils/gopherTestUtils";
 
 import "./testUtils/nockMocks";
@@ -335,5 +336,41 @@ describe("Tasks", function() {
     });
 
     expect(res.status).to.equal("error");
+  });
+});
+
+describe.only("Task Filters", function() {
+  let testExtension1 = null;
+  let testExtension2 = null;
+
+  before(async () => {
+    let res = await gopherClient.createExtension({
+      extension: {
+        name: "Test Extension 493393",
+        subdomain: "test-493393"
+      }
+    });
+    testExtension1 = res.extension;
+
+    res = await gopherClient.createExtension({
+      extension: {
+        name: "Test Extension 49332",
+        subdomain: "test-49332"
+      }
+    });
+    testExtension2 = res.extension;
+  });
+
+  it("Should create some test tasks");
+  it("Should filter some test tasks");
+
+  after(async function() {
+    let deleteRes = await gopherClient.deleteExtension({
+      extensionid: testExtension1.id
+    });
+
+    deleteRes = await gopherClient.deleteExtension({
+      extensionid: testExtension2.id
+    });
   });
 });
