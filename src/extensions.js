@@ -84,7 +84,7 @@ export default {
   },
 
   /*
-  * Get a list of extensions (Admin only)
+  * Uninstall an extension (Admin only)
   */
   uninstallExtension(params, cb) {
     if (!params.extensionid) {
@@ -97,6 +97,30 @@ export default {
         `${this.config.apiHost}/api/v1/extensions/${
           params.extensionid
         }/uninstall/`
+      ),
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`,
+        "Content-Type": "application/json"
+      },
+      data: params
+    };
+    return _makeRequest(requestOptions, cb);
+  },
+
+  /*
+  * Install an extension (Admin only)
+  */
+  installExtension(params, cb) {
+    if (!params.extensionid) {
+      throw "extensionid is required to install";
+    }
+
+    const requestOptions = {
+      method: "PUT",
+      url: urljoin(
+        `${this.config.apiHost}/api/v1/extensions/${
+          params.extensionid
+        }/install/`
       ),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,

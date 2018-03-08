@@ -1,4 +1,4 @@
-import querystring from "querystring";
+import querystring from "query-string";
 import urljoin from "url-join";
 import { _makeRequest, _checkParam, debug } from "./util";
 
@@ -7,7 +7,24 @@ export default {
    * Get List of Gopher Tasks
    */
   getTasks(params, cb) {
-    let qs = params ? `?${querystring.stringify(params)}` : "";
+    let availableFilters = [
+      "extensions",
+      "filters",
+      "search",
+      "order_by",
+      "order_dir"
+    ];
+    for (let key in params) {
+      if (availableFilters.indexOf(key) === -1) {
+        throw new Error(
+          "Tasks can only be filtered by these attributes: " +
+            JSON.stringify(availableFilters)
+        );
+      }
+    }
+    let qs = params
+      ? `?${querystring.stringify(params, { arrayFormat: "bracket" })}`
+      : "";
     const requestOptions = {
       url: urljoin(this.config.apiHost, "/api/v1/tasks", qs),
       headers: {
@@ -81,17 +98,38 @@ export default {
   },
 
   /*
-    * Delete / Archive A Gopher Task
+    * Archive A Gopher Task
     */
-  archiveTask(taskId, cb) {
+  archiveTask(params, cb) {
+    if (!params.task.id) throw "taskid is required to archive a task";
     const requestOptions = {
       method: "DELETE",
-      url: urljoin(this.config.apiHost, "/api/v1/tasks/", taskId, "/"),
+      url: urljoin(this.config.apiHost, "/api/v1/tasks/", params.task.id),
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`,
+        "Content-Type": "application/json; charset=UTF-8"
+      }
+    };
+    return _makeRequest(requestOptions, cb);
+  },
+
+  /*
+    * Permanently Delete A Gopher Task
+    */
+  deleteTask(params, cb) {
+    if (!params.task.id) throw "taskid is required to delete a task";
+    const requestOptions = {
+      method: "DELETE",
+      url: urljoin(
+        this.config.apiHost,
+        "/api/v1/tasks/",
+        params.task.id,
+        "?permanent=1"
+      ),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json; charset=UTF-8"
       },
-      data: { task: { permanent } },
       json: true
     };
     return _makeRequest(requestOptions, cb);

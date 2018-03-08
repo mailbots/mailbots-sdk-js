@@ -30,7 +30,7 @@ describe("Tasks", function() {
         reminder_timeformat: "15min",
         reference_email: {
           server_recipient: process.env.EXAMPLE_COMMAND,
-          to: [process.env.EXAMPLE_COMMAND],
+
           cc: [],
           bcc: [],
           from: "bar@bar.email",
@@ -52,6 +52,50 @@ describe("Tasks", function() {
       done();
     });
   }).timeout(50000);
+
+  it("creates a task with suppressesed webhook and verbose output", async function() {
+    let res = await gopherClient.createTask({
+      verbose: 1,
+      suppress_webhook: true,
+      task: {
+        command: process.env.EXAMPLE_COMMAND,
+        reference_email: {
+          server_recipient: process.env.EXAMPLE_COMMAND,
+          to: [process.env.EXAMPLE_COMMAND],
+          cc: [],
+          bcc: [],
+          from: "test@example.com",
+          subject: "Test1",
+          html: "Test1",
+          text: "Test1",
+          attachments: []
+        },
+        private_data: {
+          privatedata1: "Value1"
+        },
+        reminder_time: 1520319928,
+        reminder_timeformat: "3days",
+        completed: false
+      },
+      response: [
+        {
+          type: "email",
+          subject: "A test email message",
+          to: "test@example.com",
+          body: [
+            {
+              type: "html",
+              text: "<h1>This is a test</h1>"
+            }
+          ]
+        }
+      ]
+    });
+    expect(res).to.be.an("object");
+    expect(res.messages).to.be.instanceof(Array);
+    expect(res.messages[0].to[0]).to.equal("test@example.com"); // Responds with email content
+    expect(res.statusCode).to.equal(201);
+  });
 
   it("should get a list of tasks with async/await", async () => {
     let res = await gopherClient.getTasks();
@@ -263,37 +307,6 @@ describe("Tasks", function() {
   //   );
   // });
 
-  it("should archive a task", async () => {
-    try {
-      let res = await gopherClient.createTask({
-        task: {
-          command: process.env.EXAMPLE_COMMAND,
-          reminder_timeformat: "1sec",
-          reference_email: {
-            server_recipient: process.env.EXAMPLE_COMMAND,
-            to: [process.env.EXAMPLE_COMMAND],
-            cc: [],
-            bcc: [],
-            from: "bar@bar.email",
-            subject: "Test1",
-            html: "Test1",
-            text: "Test1",
-            attachments: []
-          },
-          private_data: {
-            privatedata1: "Value1"
-          }
-        }
-      });
-
-      let task = res.task;
-
-      let resCompleted = await gopherClient.deleteFut(task.id);
-    } catch (error) {
-      return Promise.resolve(error);
-    }
-  });
-
   xit("should trigger a task", async done => {
     try {
       let res = await gopherClient.triggerTask({
@@ -339,38 +352,211 @@ describe("Tasks", function() {
   });
 });
 
-describe.only("Task Filters", function() {
+/**
+ * Archiving and Deleting Tasks
+ */
+
+describe("Archiving and Deleting Tasks", function() {
+  let task = null;
+
+  before(async function() {
+    let res = await gopherClient.createTask({
+      suppress_webhook: true,
+      task: {
+        command: process.env.EXAMPLE_COMMAND,
+        reminder_timeformat: "1sec",
+        reference_email: {
+          server_recipient: process.env.EXAMPLE_COMMAND,
+          to: [process.env.EXAMPLE_COMMAND],
+          cc: [],
+          bcc: [],
+          from: "bar@bar.email",
+          subject: "Test1",
+          html: "Test1",
+          text: "Test1",
+          attachments: []
+        },
+        private_data: {
+          privatedata1: "Value1"
+        }
+      }
+    });
+    task = res.task;
+  });
+
+  it("Should archive a task", async function() {
+    let resCompleted = await gopherClient.archiveTask({
+      task: { id: task.id }
+    });
+  });
+
+  it("Should delete the archived task", async function() {
+    let resDeleted = await gopherClient.deleteTask({
+      task: { id: task.id }
+    });
+  });
+
+  it("Should fail to delete the same task", async function() {
+    let resDeleted = await gopherClient.deleteTask({
+      task: { id: task.id }
+    });
+    expect(resDeleted).to.be.instanceof(Error);
+  });
+});
+
+/**
+ * Filtering Tasks
+ * This set up multiple extensions, installs them, creates
+ * tasks for each extension with various attributes, then
+ * validates that the filters are properly filtering.
+ */
+describe.only("Filter Tasks", function() {
   let testExtension1 = null;
   let testExtension2 = null;
+  let testTasks = []; //for cleanup
 
   before(async () => {
     let res = await gopherClient.createExtension({
       extension: {
-        name: "Test Extension 493393",
-        subdomain: "test-493393"
+        name: "Test Extension 1",
+        subdomain: "test-extension-1",
+        enabled: true
       }
     });
     testExtension1 = res.extension;
+    if (res instanceof Error) throw res;
 
     res = await gopherClient.createExtension({
       extension: {
-        name: "Test Extension 49332",
-        subdomain: "test-49332"
+        name: "Test Extension 2",
+        subdomain: "test-extension-2",
+        enabled: true
       }
     });
     testExtension2 = res.extension;
-  });
+    if (res instanceof Error) throw res;
 
-  it("Should create some test tasks");
-  it("Should filter some test tasks");
-
-  after(async function() {
-    let deleteRes = await gopherClient.deleteExtension({
-      extensionid: testExtension1.id
+    res = await gopherClient.installExtension({
+      extensionid: testExtension2.id
     });
 
-    deleteRes = await gopherClient.deleteExtension({
-      extensionid: testExtension2.id
+    res = await gopherClient.installExtension({
+      extensionid: testExtension1.id
+    });
+  });
+
+  describe("Filters By Time", function() {
+    it("Creates a task due in 3 days from extension1", async () => {
+      let res = await gopherClient.createTask({
+        suppress_webhook: true,
+        task: {
+          command: "example@test-extension-1.gopher.email",
+          reference_email: {
+            server_recipient: "example@test-extension-1.gopher.email",
+            subject: "Subject 1"
+          },
+          reminder_timeformat: "3days"
+        }
+      });
+      testTasks.push(res.task);
+    });
+
+    it("Create a task due tomorrow from extension2", async () => {
+      let res = await gopherClient.createTask({
+        suppress_webhook: true,
+        task: {
+          command: "example@test-extension-2.gopher.email",
+          reference_email: {
+            server_recipient: "example@test-extension-2.gopher.email",
+            subject: "Subject 2"
+          },
+          reminder_timeformat: "tomorrow"
+        }
+      });
+      testTasks.push(res.task);
+    });
+
+    it("Gets only the task for only extension1", async () => {
+      let res = await gopherClient.getTasks({
+        extensions: ["test-extension-1"]
+      });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.subject).to.equal("Subject 1");
+    });
+
+    it("Gets only tasks with '2' in subject (search)", async () => {
+      let res = await gopherClient.getTasks({
+        search: "2"
+      });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.subject).to.equal("Subject 2");
+    });
+
+    it("Creates another, later task for extension1", async () => {
+      let res = await gopherClient.createTask({
+        suppress_webhook: true,
+        task: {
+          command: "example@test-extension-1.gopher.email",
+          reference_email: {
+            server_recipient: "example@test-extension-1.gopher.email",
+            subject: "Subject 1 Month"
+          },
+          reminder_timeformat: "1month"
+        }
+      });
+      testTasks.push(res.task);
+    });
+
+    it("Orders search results by due date desc", async () => {
+      let res = await gopherClient.getTasks({
+        extensions: ["test-extension-1"],
+        order_by: "due",
+        order_dir: "desc"
+      });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.subject).to.equal("Subject 1 Month");
+    });
+
+    it("Orders search results by due date asc", async () => {
+      let res = await gopherClient.getTasks({
+        extensions: ["test-extension-1"],
+        order_by: "due",
+        order_dir: "asc"
+      });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.subject).to.equal("Subject 1");
+    });
+
+    xit("Gets only the task due tomorrow", async () => {
+      let res = await gopherClient.getTasks({
+        extensions: ["test-extension-1"],
+        filters: {
+          time: ["tomorrow"]
+        }
+      });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.subject).to.equal("Subject 2");
+    });
+
+    after(async function() {
+      let deleteRes = await gopherClient.deleteExtension({
+        extensionid: testExtension1.id
+      });
+
+      deleteRes = await gopherClient.deleteExtension({
+        extensionid: testExtension2.id
+      });
+
+      testTasks.map(async testTask => {
+        let deleteTestTasks = await gopherClient.deleteTask({
+          task: { id: testTask.id }
+        });
+      });
     });
   });
 });
