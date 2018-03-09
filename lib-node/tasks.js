@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _querystring = require("querystring");
+var _queryString = require("query-string");
 
-var _querystring2 = _interopRequireDefault(_querystring);
+var _queryString2 = _interopRequireDefault(_queryString);
 
 var _urlJoin = require("url-join");
 
@@ -21,7 +21,7 @@ exports.default = {
    * Get List of Gopher Tasks
    */
   getTasks: function getTasks(params, cb) {
-    var qs = params ? "?" + _querystring2.default.stringify(params) : "";
+    var qs = params ? "?" + _queryString2.default.stringify(params, { arrayFormat: "bracket" }) : "";
     var requestOptions = {
       url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks", qs),
       headers: {
@@ -60,7 +60,7 @@ exports.default = {
     if (params.verbose) {
       urlParams.verbose = 1;
     }
-    var serializedParams = _querystring2.default.stringify(urlParams);
+    var serializedParams = _queryString2.default.stringify(urlParams);
     var qs = serializedParams ? "?" + serializedParams : "";
     var requestOptions = {
       method: "POST",
@@ -98,17 +98,34 @@ exports.default = {
 
 
   /*
-    * Delete / Archive A Gopher Task
+    * Archive A Gopher Task
     */
-  archiveTask: function archiveTask(taskId, cb) {
+  archiveTask: function archiveTask(params, cb) {
+    if (!params.task.id) throw "taskid is required to archive a task";
     var requestOptions = {
       method: "DELETE",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", taskId, "/"),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id),
+      headers: {
+        Authorization: "Bearer " + this._accessToken,
+        "Content-Type": "application/json; charset=UTF-8"
+      }
+    };
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
+
+
+  /*
+    * Permanently Delete A Gopher Task
+    */
+  deleteTask: function deleteTask(params, cb) {
+    if (!params.task.id) throw "taskid is required to delete a task";
+    var requestOptions = {
+      method: "DELETE",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id, "?permanent=1"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json; charset=UTF-8"
       },
-      data: { task: { permanent: permanent } },
       json: true
     };
     return (0, _util._makeRequest)(requestOptions, cb);
@@ -154,7 +171,7 @@ exports.default = {
   naturalTime: function naturalTime(params, cb) {
     var requestOptions = {
       method: "GET",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/natural_time", "?" + _querystring2.default.stringify(params)),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/natural_time", "?" + _queryString2.default.stringify(params)),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json; charset=UTF-8"

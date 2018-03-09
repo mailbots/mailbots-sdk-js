@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _querystring = require("querystring");
+var _queryString = require("query-string");
 
-var _querystring2 = _interopRequireDefault(_querystring);
+var _queryString2 = _interopRequireDefault(_queryString);
 
 var _urlJoin = require("url-join");
 
@@ -14,16 +14,14 @@ var _urlJoin2 = _interopRequireDefault(_urlJoin);
 
 var _util = require("./util");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
   /*
    * Get List of Gopher Tasks
    */
   getTasks: function getTasks(params, cb) {
-    var qs = params ? "?" + _querystring2.default.stringify(params) : "";
+    var qs = params ? "?" + _queryString2.default.stringify(params, { arrayFormat: "bracket" }) : "";
     var requestOptions = {
       url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks", qs),
       headers: {
@@ -36,12 +34,12 @@ exports.default = {
     return (0, _util._makeRequest)(requestOptions, cb);
   },
 
+
   /*
    * Fetch A Single Gopher Task
    */
   getTask: function getTask(params, cb) {
-    if (typeof params.id != "number")
-      throw "id must be an integer. This was given instead: " + params.id;
+    if (typeof params.id != "number") throw "id must be an integer. This was given instead: " + params.id;
     var requestOptions = {
       url: this.config.apiHost + "/api/v1/tasks/" + params.id + "/",
       headers: {
@@ -53,6 +51,7 @@ exports.default = {
     return (0, _util._makeRequest)(requestOptions, cb);
   },
 
+
   /*
    * Create A Gopher Task
    */
@@ -61,7 +60,7 @@ exports.default = {
     if (params.verbose) {
       urlParams.verbose = 1;
     }
-    var serializedParams = _querystring2.default.stringify(urlParams);
+    var serializedParams = _queryString2.default.stringify(urlParams);
     var qs = serializedParams ? "?" + serializedParams : "";
     var requestOptions = {
       method: "POST",
@@ -77,6 +76,7 @@ exports.default = {
     return (0, _util._makeRequest)(requestOptions, cb);
   },
 
+
   /*
     * Update A Gopher Task
     * Used to save data against the task, update content, followup time and more
@@ -85,12 +85,7 @@ exports.default = {
     if (!params.task.id) throw "taskid is required to update a task";
     var requestOptions = {
       method: "PUT",
-      url: (0, _urlJoin2.default)(
-        this.config.apiHost,
-        "/api/v1/tasks/",
-        params.task.id,
-        "/"
-      ),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id, "/"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json; charset=UTF-8"
@@ -98,31 +93,44 @@ exports.default = {
       data: params,
       json: true
     };
-    console.log("REQ OPTIONS", requestOptions);
     return (0, _util._makeRequest)(requestOptions, cb);
   },
 
+
   /*
-    * Delete / Archive A Gopher Task
+    * Archive A Gopher Task
     */
-  archiveTask: function archiveTask(taskId, cb) {
+  archiveTask: function archiveTask(params, cb) {
+    if (!params.task.id) throw "taskid is required to archive a task";
     var requestOptions = {
       method: "DELETE",
-      url: (0, _urlJoin2.default)(
-        this.config.apiHost,
-        "/api/v1/tasks/",
-        taskId,
-        "/"
-      ),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id),
+      headers: {
+        Authorization: "Bearer " + this._accessToken,
+        "Content-Type": "application/json; charset=UTF-8"
+      }
+    };
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
+
+
+  /*
+    * Permanently Delete A Gopher Task
+    */
+  deleteTask: function deleteTask(params, cb) {
+    if (!params.task.id) throw "taskid is required to delete a task";
+    var requestOptions = {
+      method: "DELETE",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id, "?permanent=1"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json; charset=UTF-8"
       },
-      data: { task: { permanent: permanent } },
       json: true
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   },
+
 
   /**
    * Trigger a Gopher Task
@@ -156,17 +164,14 @@ exports.default = {
     return (0, _util._makeRequest)(requestOptions);
   },
 
+
   /*
    * Resolve Natural Time Format (ex: {naturaltime}@ext.gopher.email)
    */
   naturalTime: function naturalTime(params, cb) {
     var requestOptions = {
       method: "GET",
-      url: (0, _urlJoin2.default)(
-        this.config.apiHost,
-        "/api/v1/natural_time",
-        "?" + _querystring2.default.stringify(params)
-      ),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/natural_time", "?" + _queryString2.default.stringify(params)),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json; charset=UTF-8"
@@ -174,6 +179,7 @@ exports.default = {
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   },
+
 
   /*
    * Developer can simulate an action email with this method 
@@ -183,10 +189,7 @@ exports.default = {
   devSendAction: function devSendAction(params, cb) {
     var requestOptions = {
       method: "POST",
-      url: (0, _urlJoin2.default)(
-        this.config.apiHost,
-        "/api/v1/actions/?verbose=1"
-      ),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/actions/?verbose=1"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json; charset=UTF-8"

@@ -76,6 +76,24 @@ describe("Extensions", function() {
     expect(res.extension).to.have.property("name");
   });
 
+  it("should let an extension save data", done => {
+    gopherClient.saveExtensionData({ three: "more" }, (err, res) => {
+      if (err) done(err);
+      expect(res).to.be.an("object");
+      expect(res.data.three).to.equal("more");
+      done();
+    });
+  });
+
+  it("should let an extension get data", done => {
+    gopherClient.getExtensionData((err, res) => {
+      if (err) done(err);
+      expect(res).to.be.an("object");
+      expect(res.data.three).to.equal("more");
+      done();
+    });
+  });
+
   it("should uninstall", async () => {
     let res = await gopherClient.uninstallExtension({
       extensionid: extensionId
@@ -103,7 +121,6 @@ describe("Extensions", function() {
       let res = await gopherClient.getExtension({
         extensionid: 1234
       });
-      console.log(res);
       expect(e).to.be.instanceof(Error);
       expect(e).to.contain("not found");
     } catch (e) {

@@ -1,6 +1,6 @@
 import querystring from "querystring";
 import urljoin from "url-join";
-import qs from "qs";
+import queryString from "query-string";
 import { _makeRequest, _checkParam, debug } from "./util";
 
 export default {
@@ -48,10 +48,10 @@ export default {
   * Get a list of extensions (Admin only)
   */
   getExtensions(params, cb) {
-    const queryString = params ? qs.stringify(params) : "";
+    const qs = params ? queryString.stringify(params) : "";
     const requestOptions = {
       method: "GET",
-      url: urljoin(`${this.config.apiHost}/api/v1/extensions?${queryString}`),
+      url: urljoin(`${this.config.apiHost}/api/v1/extensions?${qs}`),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json"

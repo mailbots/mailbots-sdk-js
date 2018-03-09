@@ -12,9 +12,9 @@ var _urlJoin = require("url-join");
 
 var _urlJoin2 = _interopRequireDefault(_urlJoin);
 
-var _qs = require("qs");
+var _queryString = require("query-string");
 
-var _qs2 = _interopRequireDefault(_qs);
+var _queryString2 = _interopRequireDefault(_queryString);
 
 var _util = require("./util");
 
@@ -63,10 +63,10 @@ exports.default = {
   * Get a list of extensions (Admin only)
   */
   getExtensions: function getExtensions(params, cb) {
-    var queryString = params ? _qs2.default.stringify(params) : "";
+    var qs = params ? _queryString2.default.stringify(params) : "";
     var requestOptions = {
       method: "GET",
-      url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions?" + queryString),
+      url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions?" + qs),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -99,7 +99,7 @@ exports.default = {
 
 
   /*
-  * Get a list of extensions (Admin only)
+  * Uninstall an extension (Admin only)
   */
   uninstallExtension: function uninstallExtension(params, cb) {
     if (!params.extensionid) {
@@ -109,6 +109,27 @@ exports.default = {
     var requestOptions = {
       method: "DELETE",
       url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions/" + params.extensionid + "/uninstall/"),
+      headers: {
+        Authorization: "Bearer " + this._accessToken,
+        "Content-Type": "application/json"
+      },
+      data: params
+    };
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
+
+
+  /*
+  * Install an extension (Admin only)
+  */
+  installExtension: function installExtension(params, cb) {
+    if (!params.extensionid) {
+      throw "extensionid is required to install";
+    }
+
+    var requestOptions = {
+      method: "PUT",
+      url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions/" + params.extensionid + "/install/"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"

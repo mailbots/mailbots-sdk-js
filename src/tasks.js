@@ -7,21 +7,6 @@ export default {
    * Get List of Gopher Tasks
    */
   getTasks(params, cb) {
-    let availableFilters = [
-      "extensions",
-      "filters",
-      "search",
-      "order_by",
-      "order_dir"
-    ];
-    for (let key in params) {
-      if (availableFilters.indexOf(key) === -1) {
-        throw new Error(
-          "Tasks can only be filtered by these attributes: " +
-            JSON.stringify(availableFilters)
-        );
-      }
-    }
     let qs = params
       ? `?${querystring.stringify(params, { arrayFormat: "bracket" })}`
       : "";
