@@ -12,6 +12,7 @@ import mocha from "mocha";
 import { expect } from "chai";
 import Gopher from "../src/gopherhq";
 import timestamp from "unix-timestamp";
+import { _ } from "lodash";
 
 timestamp.round = true;
 const debug = require("debug")("gopherhq");
@@ -101,15 +102,6 @@ describe("Tasks", function() {
     let res = await gopherClient.getTasks();
     expect(res.statusCode).to.equal(200);
     expect(res.tasks).to.be.an("array");
-    expect(res.tasks[0]).to.have.property("reference_email");
-    exampleTask = res.tasks[0];
-  });
-
-  it("should get a filtered list of tasks", async () => {
-    let res = await gopherClient.getTasks({ limit: 1 });
-    expect(res.statusCode).to.equal(200);
-    expect(res.tasks).to.be.an("array");
-    expect(res.tasks.length).to.equal(1);
     expect(res.tasks[0]).to.have.property("reference_email");
     exampleTask = res.tasks[0];
   });
@@ -373,12 +365,31 @@ describe("Archiving and Deleting Tasks", function() {
  * tasks for each extension with various attributes, then
  * validates that the filters are properly filtering.
  */
-describe.only("Filter Tasks", function() {
+describe("Filter Tasks", function() {
   let testExtension1 = null;
   let testExtension2 = null;
   let testTasks = []; //for cleanup
 
   before("create test extensions", async () => {
+    /**
+     * Delete all test extensions
+     */
+    let res1 = await gopherClient.getExtensions({
+      owner: "self"
+    });
+    let testExtensions = _.filter(res1.extensions, extension => {
+      return extension.subdomain && extension.subdomain.indexOf("test-") !== -1;
+    });
+    for (let ext of testExtensions) {
+      let deleteRes = await gopherClient.deleteExtension({
+        extensionid: ext.id
+      });
+    }
+
+    /**
+     * Create new test extensions
+     */
+
     let res = await gopherClient.createExtension({
       extension: {
         name: "Test Extension 1",
@@ -399,6 +410,7 @@ describe.only("Filter Tasks", function() {
     testExtension2 = res.extension;
     if (res instanceof Error) throw res;
 
+    // Install test extensions (must use ACCESS_TOKEN with admin-level access)
     res = await gopherClient.installExtension({
       extensionid: testExtension2.id
     });
@@ -447,7 +459,7 @@ describe.only("Filter Tasks", function() {
     expect(res.tasks[0].reference_email.subject).to.equal("Subject 1");
   });
 
-  describe.only("Search", function() {
+  describe("Search", function() {
     it("Creates an task from Joe", async () => {
       let res = await gopherClient.createTask({
         suppress_webhook: true,
@@ -535,25 +547,38 @@ describe.only("Filter Tasks", function() {
   });
 
   it("Gets only the later task using due_after", async () => {
-    let tomorrow = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7; //7 days
+    let sevenDays = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7; //7 days
     let res = await gopherClient.getTasks({
       extension: "test-extension-1",
-      due_after: tomorrow
+      due_after: sevenDays
     });
     if (res instanceof Error) throw res;
     expect(res.tasks).to.be.instanceof(Array);
     expect(res.tasks[0].reference_email.subject).to.equal("Subject 1 Month");
   });
 
-  it("Gets only the earlier task using due_before", async () => {
-    let tomorrow = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 2; //2 days
+  it("Filters tasks using due_before", async () => {
+    let addRes = await gopherClient.createTask({
+      suppress_webhook: true,
+      task: {
+        command: "example@test-extension-1.gopher.email",
+        reference_email: {
+          server_recipient: "example@test-extension-1.gopher.email",
+          subject: "TEST: One Hour"
+        },
+        reminder_timeformat: "1hour"
+      }
+    });
+    testTasks.push(addRes.task);
+
+    let twoHours = Math.floor(Date.now() / 1000) + 60 * 60 * 2; //2 hours
     let res = await gopherClient.getTasks({
       extension: "test-extension-1",
-      due_before: tomorrow
+      due_before: twoHours
     });
     if (res instanceof Error) throw res;
     expect(res.tasks).to.be.instanceof(Array);
-    expect(res.tasks[0].reference_email.subject).to.equal("Subject 1");
+    expect(res.tasks[0].reference_email.subject).to.equal("TEST: One Hour");
   });
 
   it("Limits results using per_page param", async () => {
@@ -570,11 +595,20 @@ describe.only("Filter Tasks", function() {
     let res = await gopherClient.getTasks({
       extension: "test-extension-1",
       per_page: 1,
-      page: 2
+      page: 1
     });
     if (res instanceof Error) throw res;
     expect(res.tasks).to.be.instanceof(Array);
     expect(res.tasks).to.have.length(1);
+  });
+
+  it("should limit to 1 task retrieved", async () => {
+    let res = await gopherClient.getTasks({ limit: 1 });
+    expect(res.statusCode).to.equal(200);
+    expect(res.tasks).to.be.an("array");
+    expect(res.tasks.length).to.equal(1);
+    expect(res.tasks[0]).to.have.property("reference_email");
+    exampleTask = res.tasks[0];
   });
 
   after(async function() {
