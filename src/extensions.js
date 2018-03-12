@@ -4,6 +4,38 @@ import queryString from "query-string";
 import { _makeRequest, _checkParam, debug } from "./util";
 
 export default {
+  /**
+   * Trigger a Gopher Task
+   */
+  triggerExtension(params, cb) {
+    if (!params.trigger_url) {
+      throw new Error("trigger_url is required");
+    }
+
+    const requestOptions = {
+      method: "POST",
+      url: params.trigger_url,
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8"
+      }
+    };
+
+    if (params.payload) {
+      Object.assign(requestOptions, { data: params.payload });
+    }
+
+    if (params.verbose) {
+      requestOptions.url += "?verbose=1";
+    }
+
+    if (this._accessToken) {
+      Object.assign(requestOptions.headers, {
+        Authorization: `Bearer ${this._accessToken}`
+      });
+    }
+    return _makeRequest(requestOptions);
+  },
+
   /*
   * Create a Gopher Extension (Admin Only)
   */

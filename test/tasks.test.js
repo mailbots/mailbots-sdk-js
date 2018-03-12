@@ -216,94 +216,53 @@ describe("Tasks", function() {
     expect(res.recurring).to.be.false;
   });
 
-  xit("test should not create an example task if one has been loaded", done => {
-    getExampleTask()
-      .then(res => {
-        // exampleTask called newly in beforeEach()
-        expect(res.id).to.equal(exampleTask.id);
+  it("should create a task with verbose output", done => {
+    gopherClient.createTask(
+      {
+        verbose: 1,
+        task: {
+          command: process.env.EXAMPLE_COMMAND,
+          reminder_timeformat: "1sec",
+          reference_email: {
+            server_recipient: process.env.EXAMPLE_COMMAND,
+            to: [process.env.EXAMPLE_COMMAND],
+            cc: [],
+            bcc: [],
+            from: "bar@bar.email",
+            subject: "Test1",
+            html: "Test1",
+            text: "Test1",
+            attachments: []
+          },
+          private_data: {
+            privatedata1: "Value1"
+          }
+        }
+      },
+      (err, res) => {
+        if (err) done(err);
+        expect(res).to.be.an("object");
+        expect(res.status).to.equal("success");
+        expect(res.messages[0].type).to.equal("email");
         done();
-      })
-      .catch(err => {
-        done(new Error(err));
-      });
+      }
+    );
   });
 
-  // TODO: Fix after proper error cases are accounted for.
-  // xit("should create a task with verbose output", done => {
-  //   gopherClient.createTask(
-  //     {
-  //       verbose: 1,
-  //       task: {
-  //         command: process.env.EXAMPLE_COMMAND,
-  //         reminder_timeformat: "1sec",
-  //         reference_email: {
-  //           server_recipient: process.env.EXAMPLE_COMMAND,
-  //           to: [process.env.EXAMPLE_COMMAND],
-  //           cc: [],
-  //           bcc: [],
-  //           from: "bar@bar.email",
-  //           subject: "Test1",
-  //           html: "Test1",
-  //           text: "Test1",
-  //           attachments: []
-  //         },
-  //         private_data: {
-  //           privatedata1: "Value1"
-  //         }
-  //       }
-  //     },
-  //     (err, res) => {
-  //       if (err) done(err);
-  //       expect(res).to.be.an("object");
-  //       expect(res.status).to.equal(200);
-  //       expect.res.messages[0].type.to.equal("email");
-  //       done();
-  //     }
-  //   );
-  // });
-
-  xit("should trigger a task", async done => {
-    try {
-      let res = await gopherClient.triggerTask({
-        trigger_url: exampleTask.trigger_url
-      });
-    } catch (e) {
-      done(e);
-    }
+  it("should trigger a task", async () => {
+    let task = await getExampleTask();
+    let res = await gopherClient.triggerTask({
+      trigger_url: task.trigger_url
+    });
     expect(res).to.be.ok;
   });
 
-  xit("should trigger an extension", async () => {
+  it("should trigger an extension", async () => {
+    let exampleTask = await getExampleTask();
     let res = await gopherClient.triggerExtension({
       trigger_url: exampleTask.trigger_url
     });
     expect(res).to.be.ok;
-  });
-
-  xit("should let admin app send a simulated email", async () => {
-    let res = await gopherClient.devSendAction({
-      action: {
-        format:
-          "a+notifications.off+t.1960+gopher-express-local+c39a2e@followupthen.com"
-      },
-      reference_email: {
-        method: "",
-        server_recipient:
-          "a+notifications.off+t.1960+gopher-express-local+c39a2e@followupthen.com",
-        to: [
-          "a+notifications.off+t.1960+gopher-express-local+c39a2e@followupthen.com"
-        ],
-        cc: [],
-        bcc: [],
-        from: "esweetland@gmail.com",
-        subject: "Email Action Subject",
-        html: "Email Action Body HTML",
-        text: "Email Action Body Text",
-        attachments: []
-      }
-    });
-
-    expect(res.status).to.equal("error");
   });
 });
 

@@ -67,40 +67,36 @@ module.exports.getGopherClient = function() {
 };
 
 module.exports.getExampleTask = async function() {
-  if (exampleTask.hasOwnProperty("id")) {
-    return Promise.resolve(exampleTask);
+  if (exampleTask && exampleTask.id) {
+    return exampleTask;
   }
 
   gopherClient = module.exports.getGopherClient();
 
-  return gopherClient
-    .createTask({
-      task: {
-        command: process.env.EXAMPLE_COMMAND,
-        reminder_timeformat: "1sec",
-        reference_email: {
-          server_recipient: process.env.EXAMPLE_COMMAND,
-          to: [process.env.EXAMPLE_COMMAND],
-          cc: [],
-          bcc: [],
-          from: "bar@bar.email",
-          subject: "Test1",
-          html: "Test1",
-          text: "Test1",
-          attachments: []
-        },
-        private_data: {
-          privatedata1: "Value1"
-        }
+  let { task } = await gopherClient.createTask({
+    suppress_webhook: true,
+    task: {
+      command: process.env.EXAMPLE_COMMAND,
+      reference_email: {
+        server_recipient: process.env.EXAMPLE_COMMAND
       }
-    })
-    .then(res => {
-      exampleTask = res.task;
-      return res;
-    })
-    .catch(err => {
-      return new Error("error creating example task");
-    });
+    },
+    response: [
+      {
+        type: "email",
+        subject: "A test email message",
+        to: "test@example.com",
+        body: [
+          {
+            type: "html",
+            text: "<h1>This is a test</h1>"
+          }
+        ]
+      }
+    ]
+  });
+  exampleTask = task;
+  return exampleTask;
 };
 
 module.exports.signWebhook = function(webhook) {
