@@ -137,7 +137,7 @@ exports.default = {
    */
   triggerTask: function triggerTask(params) {
     if (!params.trigger_url) {
-      return new Error("trigger_url is required");
+      throw new Error("trigger_url is required");
     }
 
     var requestOptions = {

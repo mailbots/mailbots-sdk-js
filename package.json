@@ -11,20 +11,21 @@
   "directories": {
     "test": "test"
   },
-  "files": ["lib-browser", "lib-node", "dist", "readme"],
+  "files": [
+    "lib-browser",
+    "lib-node",
+    "dist",
+    "readme"
+  ],
   "scripts": {
-    "test":
-      "NOCK_OFF=true SERVER=true mocha --require babel-register --require babel-polyfill",
+    "test": "NOCK_OFF=true SERVER=true mocha --require babel-register --require babel-polyfill",
     "test:watch": "npm t -- -w",
     "test:inspect": "npm t -- -w --inspect-brk",
     "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t",
-    "build":
-      "npm run build:node && npm run build:browser && npm run build:dist",
-    "build:watch":
-      "concurrently \"npm run build:node -- --watch\" \"npm run build:browser -- --watch\"",
+    "build": "npm run build:node && npm run build:browser && npm run build:dist",
+    "build:watch": "concurrently \"npm run build:node -- --watch\" \"npm run build:browser -- --watch\"",
     "build:node": "rimraf lib-node && SERVER=true babel --out-dir lib-node src",
-    "build:browser":
-      "rimraf lib-browser && SERVER=false babel --out-dir lib-browser src",
+    "build:browser": "rimraf lib-browser && SERVER=false babel --out-dir lib-browser src",
     "build:dist": "rimraf dist && SERVER=false webpack",
     "prepublishOnly": "npm run build",
     "prepush": "npm test"

@@ -22645,7 +22645,7 @@ exports.default = {
    */
   triggerTask: function triggerTask(params) {
     if (!params.trigger_url) {
-      return new Error("trigger_url is required");
+      throw new Error("trigger_url is required");
     }
 
     var requestOptions = {
@@ -24601,6 +24601,39 @@ var _util = __webpack_require__(12);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
+  /**
+   * Trigger a Gopher Task
+   */
+  triggerExtension: function triggerExtension(params) {
+    if (!params.trigger_url) {
+      throw new Error("trigger_url is required");
+    }
+
+    var requestOptions = {
+      method: "POST",
+      url: params.trigger_url,
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8"
+      }
+    };
+
+    if (params.payload) {
+      Object.assign(requestOptions, { data: params.payload });
+    }
+
+    if (params.verbose) {
+      requestOptions.url += "?verbose=1";
+    }
+
+    if (this._accessToken) {
+      Object.assign(requestOptions.headers, {
+        Authorization: "Bearer " + this._accessToken
+      });
+    }
+    return (0, _util._makeRequest)(requestOptions);
+  },
+
+
   /*
   * Create a Gopher Extension (Admin Only)
   */
