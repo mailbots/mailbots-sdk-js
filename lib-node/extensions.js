@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _querystring = require("querystring");
 
 var _querystring2 = _interopRequireDefault(_querystring);
@@ -22,7 +24,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
   /**
-   * Trigger a Gopher Task
+   * Trigger an extension. For example, when an extension is listening for
+   * a specific event.
    */
   triggerExtension: function triggerExtension(params) {
     if (!params.trigger_url) {
@@ -55,138 +58,37 @@ exports.default = {
 
 
   /*
-  * Create a Gopher Extension (Admin Only)
-  */
-  createExtension: function createExtension(params, cb) {
+   * Save Gopher Extension Data which is then sent with every webhook related to that extension.
+   * This is also how an extension persist's user settings specific to that extension.
+   */
+
+  saveExtensionData: function saveExtensionData(data, cb) {
+    if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object") throw new Error("data must be an object");
+
     var requestOptions = {
       method: "POST",
-      url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions"),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
       },
-      data: params
+      data: data
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   },
 
 
   /*
-  * Update a Gopher Extension (Admin Only)
-  */
-  updateExtension: function updateExtension(params, cb) {
-    if (!params.extension.extensionid) {
-      throw "extensionid` is required to update an extension";
-    }
-
+   * Get Gopher Extension Data
+   */
+  getExtensionData: function getExtensionData(cb) {
     var requestOptions = {
-      method: "PUT",
-      url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions/" + params.extension.extensionid),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
       },
-      data: params
-    };
-    return (0, _util._makeRequest)(requestOptions, cb);
-  },
-
-
-  /*
-  * Get a list of extensions (Admin only)
-  */
-  getExtensions: function getExtensions(params, cb) {
-    var qs = params ? _queryString2.default.stringify(params) : "";
-    var requestOptions = {
-      method: "GET",
-      url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions?" + qs),
-      headers: {
-        Authorization: "Bearer " + this._accessToken,
-        "Content-Type": "application/json"
-      },
-      data: params
-    };
-    return (0, _util._makeRequest)(requestOptions, cb);
-  },
-
-
-  /*
-  * Get a list of extensions (Admin only)
-  */
-  getExtension: function getExtension(params, cb) {
-    //TODO: Better error handling
-    if (!params.extensionid) {
-      throw "extensionid is required to fetch an extension";
-    }
-    var requestOptions = {
-      method: "GET",
-      url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions/" + params.extensionid),
-      headers: {
-        Authorization: "Bearer " + this._accessToken,
-        "Content-Type": "application/json"
-      },
-      data: params
-    };
-    return (0, _util._makeRequest)(requestOptions, cb);
-  },
-
-
-  /*
-  * Uninstall an extension (Admin only)
-  */
-  uninstallExtension: function uninstallExtension(params, cb) {
-    if (!params.extensionid) {
-      throw "extensionid is required to uninstall";
-    }
-
-    var requestOptions = {
-      method: "DELETE",
-      url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions/" + params.extensionid + "/uninstall/"),
-      headers: {
-        Authorization: "Bearer " + this._accessToken,
-        "Content-Type": "application/json"
-      },
-      data: params
-    };
-    return (0, _util._makeRequest)(requestOptions, cb);
-  },
-
-
-  /*
-  * Install an extension (Admin only)
-  */
-  installExtension: function installExtension(params, cb) {
-    if (!params.extensionid) {
-      throw "extensionid is required to install";
-    }
-
-    var requestOptions = {
-      method: "PUT",
-      url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions/" + params.extensionid + "/install/"),
-      headers: {
-        Authorization: "Bearer " + this._accessToken,
-        "Content-Type": "application/json"
-      },
-      data: params
-    };
-    return (0, _util._makeRequest)(requestOptions, cb);
-  },
-
-
-  /*
-  * Delete an extension
-  */
-  deleteExtension: function deleteExtension(params, cb) {
-    // throw "`extensionid` is required to delete an extension";
-
-    var requestOptions = {
-      method: "DELETE",
-      url: (0, _urlJoin2.default)(this.config.apiHost + "/api/v1/extensions/" + params.extensionid),
-      headers: {
-        Authorization: "Bearer " + this._accessToken,
-        "Content-Type": "application/json"
-      },
-      data: params
+      json: true
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   }

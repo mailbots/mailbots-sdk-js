@@ -1,20 +1,8 @@
-import {
-  getGopherClient,
-  signWebhook,
-  getExampleTask,
-  beforeEachTest,
-  testConfig,
-  getRandomString
-} from "./testUtils/gopherTestUtils";
-
+import { getGopherClient, getExampleTask } from "./testUtils/gopherTestUtils";
 import "./testUtils/nockMocks";
-import mocha from "mocha";
 import { expect } from "chai";
 import Gopher from "../src/gopherhq";
-import timestamp from "unix-timestamp";
-import { _ } from "lodash";
 
-timestamp.round = true;
 const debug = require("debug")("gopherhq");
 
 let gopherClient = getGopherClient();
@@ -22,6 +10,16 @@ let exampleTask = {};
 let testTasks = [];
 let testExtension1 = null;
 let testExtension2 = null;
+
+/**
+ * Create and install test extensions. If you work at Gopher (or want to join us!)
+ * run `npm run sample-data:create-extensions`. in the React Admin UI. Otherwise,
+ * you'll have to create a couple test extensions and add their subdomains (ids) in .env.
+ */
+let extensionSubdomain1 =
+  process.env.EXAMPLE_EXTENSION_SUBDOMAIN_1 || "test-extension-1";
+let extensionSubdomain2 =
+  process.env.EXAMPLE_EXTENSION_SUBDOMAIN_2 || "test-extension-2";
 
 describe("Tasks", function() {
   /**
@@ -33,49 +31,17 @@ describe("Tasks", function() {
    */
   before(async function() {
     /**
-     * Create and install test extensions
-     */
-    let res = await gopherClient.createExtension({
-      extension: {
-        name: "Test Extension 1",
-        subdomain: "test-extension-1",
-        enabled: true
-      }
-    });
-    testExtension1 = res.extension;
-    if (res instanceof Error) throw res;
-
-    res = await gopherClient.createExtension({
-      extension: {
-        name: "Test Extension 2",
-        subdomain: "test-extension-2",
-        enabled: true
-      }
-    });
-    testExtension2 = res.extension;
-    if (res instanceof Error) throw res;
-
-    // Install test extensions (must use ACCESS_TOKEN with admin-level access)
-    res = await gopherClient.installExtension({
-      extensionid: testExtension2.id
-    });
-
-    res = await gopherClient.installExtension({
-      extensionid: testExtension1.id
-    });
-
-    /**
      * Set Up Tasks for Testing
      */
-    res = await gopherClient.createTask({
+    let res = await gopherClient.createTask({
       suppress_webhook: true,
       task: {
-        command: "example@test-extension-1.gopher.email",
+        command: `example@${extensionSubdomain1}.gopher.email`,
         reference_email: {
-          server_recipient: "example@test-extension-1.gopher.email",
+          server_recipient: `example@${extensionSubdomain1}.gopher.email`,
           subject: "Subject 1"
         },
-        reminder_timeformat: "3days"
+        reminder_timeformat: "1hour"
       }
     });
     testTasks.push(res.task);
@@ -83,12 +49,12 @@ describe("Tasks", function() {
     res = await gopherClient.createTask({
       suppress_webhook: true,
       task: {
-        command: "example@test-extension-1.gopher.email",
+        command: `example@${extensionSubdomain1}.gopher.email`,
         reference_email: {
-          server_recipient: "example@test-extension-1.gopher.email",
-          subject: "Subject 1 Month"
+          server_recipient: `example@${extensionSubdomain1}.gopher.email`,
+          subject: "Space Ships!"
         },
-        reminder_timeformat: "1month"
+        reminder_timeformat: "20years"
       }
     });
     testTasks.push(res.task);
@@ -96,9 +62,9 @@ describe("Tasks", function() {
     res = await gopherClient.createTask({
       suppress_webhook: true,
       task: {
-        command: "example@test-extension-2.gopher.email",
+        command: `example@${extensionSubdomain2}.gopher.email`,
         reference_email: {
-          server_recipient: "example@test-extension-2.gopher.email",
+          server_recipient: `example@${extensionSubdomain2}.gopher.email`,
           subject: "Subject 2"
         },
         reminder_timeformat: "tomorrow"
@@ -110,9 +76,9 @@ describe("Tasks", function() {
     res = await gopherClient.createTask({
       suppress_webhook: true,
       task: {
-        command: "example@test-extension-1.gopher.email",
+        command: `example@${extensionSubdomain1}.gopher.email`,
         reference_email: {
-          server_recipient: "example@test-extension-1.gopher.email",
+          server_recipient: `example@${extensionSubdomain1}.gopher.email`,
           subject: "TEST: Null due date"
         }
       }
@@ -129,22 +95,10 @@ describe("Tasks", function() {
         task: { id: testTask.id }
       });
     });
-
-    /**
-     * Delete test extensions
-     */
-    let deleteRes = await gopherClient.deleteExtension({
-      extensionid: testExtension1.id
-    });
-
-    deleteRes = await gopherClient.deleteExtension({
-      extensionid: testExtension2.id
-    });
   });
 
-  describe("Task creation and triggering", function() {
-    testConfig.call(this);
-    beforeEach(beforeEachTest);
+  describe("Creating, Editing and Deleting", function() {
+    this.timeout(20000);
 
     it("should create a task", done => {
       let taskPayload = {
@@ -484,187 +438,172 @@ describe("Tasks", function() {
 
   /**
    * Filtering Tasks
-   * This set up multiple extensions, installs them, creates
-   * tasks for each extension with various attributes, then
-   * validates that the filters are properly filtering.
    */
-  describe("Filter Tasks", function() {
+  describe("Filtering & Searching", function() {
     it("Gets only the task for extension1", async () => {
       let res = await gopherClient.getTasks({
-        extension: "test-extension-1"
+        extension: extensionSubdomain1
       });
       if (res instanceof Error) throw res;
       expect(res.tasks).to.be.instanceof(Array);
       expect(res.tasks[0].reference_email.subject).to.equal("Subject 1");
     });
 
-    describe("Search", function() {
-      it("Creates a task from Joe", async () => {
-        let res = await gopherClient.createTask({
-          suppress_webhook: true,
-          task: {
-            command: "example@test-extension-2.gopher.email",
-            reference_email: {
-              server_recipient: "example@test-extension-2.gopher.email",
-              to: "Joe<joe@example.com>",
-              subject: "Hi Joe"
-            }
+    it("Creates a task from Joe", async () => {
+      let res = await gopherClient.createTask({
+        suppress_webhook: true,
+        task: {
+          command: `example@${extensionSubdomain2}.gopher.email`,
+          reference_email: {
+            server_recipient: `example@${extensionSubdomain2}.gopher.email`,
+            to: "Joe<joe@example.com>",
+            subject: "Hi Joe"
           }
-        });
-        testTasks.push(res.task);
+        }
       });
+      testTasks.push(res.task);
+    });
 
-      it("Creates an task with subect 'Zuki'", async () => {
-        let res = await gopherClient.createTask({
-          suppress_webhook: true,
-          task: {
-            command: "example@test-extension-2.gopher.email",
-            reference_email: {
-              server_recipient: "example@test-extension-2.gopher.email",
-              to: "joe@example.com",
-              subject: "Zuki"
-            }
+    it("Creates a task with subect 'Zuki'", async () => {
+      let res = await gopherClient.createTask({
+        suppress_webhook: true,
+        task: {
+          command: `example@${extensionSubdomain2}.gopher.email`,
+          reference_email: {
+            server_recipient: `example@${extensionSubdomain2}.gopher.email`,
+            to: "joe@example.com",
+            subject: "Zuki"
           }
-        });
-        testTasks.push(res.task);
+        }
       });
+      testTasks.push(res.task);
+    });
 
-      it("Search for tasks with Zuki in subject", async () => {
-        let res = await gopherClient.getTasks({
-          search: "Zuki"
-        });
-        if (res instanceof Error) throw res;
-        expect(res.tasks).to.be.instanceof(Array);
-        expect(res.tasks[0].reference_email.subject).to.equal("Zuki");
+    it("Search for tasks with Zuki in subject", async () => {
+      let res = await gopherClient.getTasks({
+        search: "Zuki"
       });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.subject).to.equal("Zuki");
+    });
 
-      it("Search for tasks from Joe", async () => {
-        let res = await gopherClient.getTasks({
-          search: "Joe"
-        });
-        if (res instanceof Error) throw res;
-        expect(res.tasks).to.be.instanceof(Array);
-        expect(res.tasks[0].reference_email.to[0]).to.contain(
-          "joe@example.com"
-        );
+    it("Search for tasks from Joe", async () => {
+      let res = await gopherClient.getTasks({
+        search: "Joe"
       });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.to[0]).to.contain("joe@example.com");
+    });
 
-      it("Orders search results by due date desc", async () => {
-        let res = await gopherClient.getTasks({
-          extension: "test-extension-1",
-          order_by: "due",
-          order_dir: "desc"
-        });
-        if (res instanceof Error) throw res;
-        expect(res.tasks).to.be.instanceof(Array);
-        expect(res.tasks[0].reference_email.subject).to.equal(
-          "Subject 1 Month"
-        );
+    it("Orders search results by due date desc", async () => {
+      let res = await gopherClient.getTasks({
+        extension: extensionSubdomain1,
+        order_by: "due",
+        order_dir: "desc"
       });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.subject).to.equal("Space Ships!");
+    });
 
-      it("Orders search results by due date asc", async () => {
-        let res = await gopherClient.getTasks({
-          extension: "test-extension-1",
-          order_by: "due",
-          order_dir: "asc"
-        });
-        if (res instanceof Error) throw res;
-        expect(res.tasks).to.be.instanceof(Array);
-        expect(res.tasks[0].reference_email.subject).to.equal("Subject 1");
+    it("Orders search results by due date asc", async () => {
+      let res = await gopherClient.getTasks({
+        extension: extensionSubdomain1,
+        order_by: "due",
+        order_dir: "asc"
       });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.subject).to.equal("Subject 1");
+    });
 
-      it("Gets only the later task using due_after", async () => {
-        let sevenDays = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7; //7 days
-        let res = await gopherClient.getTasks({
-          extension: "test-extension-1",
-          due_after: sevenDays
-        });
-        if (res instanceof Error) throw res;
-        expect(res.tasks).to.be.instanceof(Array);
-        expect(res.tasks[0].reference_email.subject).to.equal(
-          "Subject 1 Month"
-        );
+    it("Gets only the later task using due_after", async () => {
+      let tenYears = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365 * 10;
+      let res = await gopherClient.getTasks({
+        extension: extensionSubdomain1,
+        due_after: tenYears
       });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.subject).to.equal("Space Ships!");
+    });
 
-      it("Filters tasks using due_before", async () => {
-        let addRes = await gopherClient.createTask({
-          suppress_webhook: true,
-          task: {
-            command: "example@test-extension-1.gopher.email",
-            reference_email: {
-              server_recipient: "example@test-extension-1.gopher.email",
-              subject: "TEST: One Hour"
-            },
-            reminder_timeformat: "1hour"
-          }
-        });
-        testTasks.push(addRes.task);
-
-        let twoHours = Math.floor(Date.now() / 1000) + 60 * 60 * 2; //2 hours
-        let res = await gopherClient.getTasks({
-          extension: "test-extension-1",
-          due_before: twoHours
-        });
-        if (res instanceof Error) throw res;
-        expect(res.tasks).to.be.instanceof(Array);
-        expect(res.tasks[0].reference_email.subject).to.equal("TEST: One Hour");
+    it("Filters tasks using due_before", async () => {
+      let addRes = await gopherClient.createTask({
+        suppress_webhook: true,
+        task: {
+          command: `example@${extensionSubdomain1}.gopher.email`,
+          reference_email: {
+            server_recipient: `example@${extensionSubdomain1}.gopher.email`,
+            subject: "Twenty Minutes"
+          },
+          reminder_timeformat: "20min"
+        }
       });
+      testTasks.push(addRes.task);
 
-      it("Limits results using per_page param", async () => {
-        let res = await gopherClient.getTasks({
-          extension: "test-extension-1",
-          per_page: 1
-        });
-        if (res instanceof Error) throw res;
-        expect(res.tasks).to.be.instanceof(Array);
-        expect(res.tasks).to.have.length(1);
+      let thirtyMinutes = Math.floor(Date.now() / 1000) + 60 * 30; //30 min
+      let res = await gopherClient.getTasks({
+        extension: extensionSubdomain1,
+        due_before: thirtyMinutes
       });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks[0].reference_email.subject).to.equal("Twenty Minutes");
+    });
 
-      it("Always the tasks with null due dates last", async () => {
-        let res = await gopherClient.getTasks({
-          extension: "test-extension-1",
-          order_by: "due",
-          order_dir: "desc"
-        });
-        if (res instanceof Error) throw res;
-        expect(res.tasks).to.be.instanceof(Array);
-        let finalTask = res.tasks.pop();
-        expect(finalTask.reference_email.subject).to.equal(
-          "TEST: Null due date"
-        );
-
-        res = await gopherClient.getTasks({
-          extension: "test-extension-1",
-          order_by: "due",
-          order_dir: "asc"
-        });
-        if (res instanceof Error) throw res;
-        expect(res.tasks).to.be.instanceof(Array);
-        finalTask = res.tasks.pop();
-        expect(finalTask.reference_email.subject).to.equal(
-          "TEST: Null due date"
-        );
+    it("Limits results using per_page param", async () => {
+      let res = await gopherClient.getTasks({
+        extension: extensionSubdomain1,
+        per_page: 1
       });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks).to.have.length(1);
+    });
 
-      it("Paginates results using per_page and page param", async () => {
-        let res = await gopherClient.getTasks({
-          extension: "test-extension-1",
-          per_page: 1,
-          page: 1
-        });
-        if (res instanceof Error) throw res;
-        expect(res.tasks).to.be.instanceof(Array);
-        expect(res.tasks).to.have.length(1);
+    it("Always the tasks with null due dates last", async () => {
+      let res = await gopherClient.getTasks({
+        extension: extensionSubdomain1,
+        order_by: "due",
+        order_dir: "desc"
       });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      let finalTask = res.tasks.pop();
+      expect(finalTask.reference_email.subject).to.equal("TEST: Null due date");
 
-      it("should limit to 1 task retrieved", async () => {
-        let res = await gopherClient.getTasks({ limit: 1 });
-        expect(res.statusCode).to.equal(200);
-        expect(res.tasks).to.be.an("array");
-        expect(res.tasks.length).to.equal(1);
-        expect(res.tasks[0]).to.have.property("reference_email");
-        exampleTask = res.tasks[0];
+      res = await gopherClient.getTasks({
+        extension: extensionSubdomain1,
+        order_by: "due",
+        order_dir: "asc"
       });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      finalTask = res.tasks.pop();
+      expect(finalTask.reference_email.subject).to.equal("TEST: Null due date");
+    });
+
+    it("Paginates results using per_page and page param", async () => {
+      let res = await gopherClient.getTasks({
+        extension: extensionSubdomain1,
+        per_page: 1,
+        page: 1
+      });
+      if (res instanceof Error) throw res;
+      expect(res.tasks).to.be.instanceof(Array);
+      expect(res.tasks).to.have.length(1);
+    });
+
+    it("should limit to 1 task retrieved", async () => {
+      let res = await gopherClient.getTasks({ limit: 1 });
+      expect(res.statusCode).to.equal(200);
+      expect(res.tasks).to.be.an("array");
+      expect(res.tasks.length).to.equal(1);
+      expect(res.tasks[0]).to.have.property("reference_email");
+      exampleTask = res.tasks[0];
     });
   });
 });

@@ -14,10 +14,6 @@ var _urlJoin = require("url-join");
 
 var _urlJoin2 = _interopRequireDefault(_urlJoin);
 
-var _unixTimestamp = require("unix-timestamp");
-
-var _unixTimestamp2 = _interopRequireDefault(_unixTimestamp);
-
 var _tasks = require("./tasks");
 
 var _tasks2 = _interopRequireDefault(_tasks);
@@ -48,13 +44,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-_unixTimestamp2.default.round = true;
-
 var OAuth2 = void 0;
 var context = "browser";
 var server = false;
 
-// block removed by babel it's being build for the client (see package.json)
+// This block is removed by babel when it compiles the client lib (see package.json)
 
 var Gopher = function () {
   function Gopher(config) {
@@ -83,13 +77,12 @@ var Gopher = function () {
     this.config.state = Math.random().toString(36).substring(7);
     (0, _util.debug)("settings: ", this.config);
 
-    // Bearer token used in Auth header: curl url -h "Authorization: Bearer accessToken"
+    // Bearer token used in Auth header. Ex: curl url -h "Authorization: Bearer accessToken"
     this._accessToken = "";
   }
 
   /*
-   *  Auth: Manually set access token if we have it (ie, in a cookie, webhook, etc)
-   *  When a new instance is instantiated, we can inject the access token (ie, stored in a cookie..I)
+   *  Auth: Manually set access token if we already have it (ie, in a cookie, webhook, etc)
    */
 
 

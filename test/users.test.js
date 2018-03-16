@@ -16,9 +16,7 @@ timestamp.round = true;
 let gopherClient = getGopherClient();
 
 describe("Users", function() {
-  testConfig.call(this);
-  beforeEach(beforeEachTest);
-
+  this.timeout(3000);
   let userEmail;
   if (process.env.REBUILD_MOCKS) {
     userEmail = Math.floor(Math.random() * 10000) + "@example.com";
@@ -28,40 +26,9 @@ describe("Users", function() {
 
   let password = "fdsafdsa";
 
-  it("should create a new user", async () => {
-    let createRes = await gopherClient.createUser({
-      email: userEmail,
-      password: password,
-      name: "",
-      timezone: ""
-    });
-    expect(createRes.statusCode).to.equal(200);
-  });
-
   it("should get the logged in user", async () => {
     let createRes = await gopherClient.getLoggedInUser();
     expect(createRes.statusCode).to.equal(200);
-  });
-
-  it("should login a new user", async () => {
-    let loginRes = await gopherClient.login({
-      email: userEmail,
-      password: password
-    });
-    expect(loginRes.statusCode).to.equal(200);
-    expect(loginRes.user.token).to.have.property("access_token");
-  });
-
-  it("should let new user reset their password ", async () => {
-    let res = await gopherClient.resetPassword({
-      email: userEmail
-    });
-    expect(res.statusCode).to.equal(200);
-  });
-
-  it("should get user logs", async () => {
-    let res = await gopherClient.getLogs();
-    expect(res.logs).to.be.an("array");
   });
 
   it("should get user data", async () => {

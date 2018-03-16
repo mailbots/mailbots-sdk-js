@@ -1,8 +1,6 @@
 import querystring from "querystring";
 import crypto from "crypto";
 import urljoin from "url-join";
-import timestamp from "unix-timestamp";
-timestamp.round = true;
 
 import Tasks from "./tasks";
 import Users from "./users";
@@ -17,7 +15,7 @@ let OAuth2;
 let context = "browser";
 let server = false;
 
-// block removed by babel it's being build for the client (see package.json)
+// This block is removed by babel when it compiles the client lib (see package.json)
 if (process.env.SERVER) {
   context = "server";
   OAuth2 = require("simple-oauth2");
@@ -50,13 +48,12 @@ class Gopher {
       .substring(7);
     debug("settings: ", this.config);
 
-    // Bearer token used in Auth header: curl url -h "Authorization: Bearer accessToken"
+    // Bearer token used in Auth header. Ex: curl url -h "Authorization: Bearer accessToken"
     this._accessToken = "";
   }
 
   /*
-   *  Auth: Manually set access token if we have it (ie, in a cookie, webhook, etc)
-   *  When a new instance is instantiated, we can inject the access token (ie, stored in a cookie..I)
+   *  Auth: Manually set access token if we already have it (ie, in a cookie, webhook, etc)
    */
   setAccessToken(accessToken) {
     this._accessToken = accessToken;
