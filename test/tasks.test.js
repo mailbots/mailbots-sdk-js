@@ -325,6 +325,41 @@ describe("Tasks", function() {
       );
     });
 
+    it.only("should create a task that sends an email as simply as possible", done => {
+      gopherClient.createTask(
+        {
+          suppress_webhook: true,
+          verbose: 1,
+          task: {
+            command: process.env.EXAMPLE_COMMAND,
+            reference_email: {
+              server_recipient: process.env.EXAMPLE_COMMAND
+            }
+          },
+          send_messages: [
+            {
+              type: "email",
+              subject: "A test email message",
+              to: "test@example.com",
+              body: [
+                {
+                  type: "html",
+                  text: "<h1>This is a test</h1>"
+                }
+              ]
+            }
+          ]
+        },
+        (err, res) => {
+          if (err) done(err);
+          expect(res).to.be.an("object");
+          expect(res.status).to.equal("success");
+          expect(res.messages[0].type).to.equal("email");
+          done();
+        }
+      );
+    });
+
     it("should trigger a task", async () => {
       let task = await getExampleTask();
       let res = await gopherClient.triggerTask({
