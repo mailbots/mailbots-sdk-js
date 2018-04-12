@@ -13,7 +13,7 @@ import timestamp from "unix-timestamp";
 const debug = require("debug")("gopherhq");
 timestamp.round = true;
 
-let gopherClient = getGopherClient();
+const gopherClient = getGopherClient();
 
 describe("Auth", function() {
   it("should build a login URL", () => {

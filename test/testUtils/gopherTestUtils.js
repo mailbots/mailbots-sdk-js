@@ -81,7 +81,7 @@ module.exports.getExampleTask = async function() {
         server_recipient: process.env.EXAMPLE_COMMAND
       }
     },
-    response: [
+    send_messages: [
       {
         type: "email",
         subject: "A test email message",

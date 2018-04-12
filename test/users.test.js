@@ -16,7 +16,7 @@ timestamp.round = true;
 let gopherClient = getGopherClient();
 
 describe("Users", function() {
-  this.timeout(3000);
+  this.timeout(5000);
   let userEmail;
   if (process.env.REBUILD_MOCKS) {
     userEmail = Math.floor(Math.random() * 10000) + "@example.com";

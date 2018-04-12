@@ -22464,12 +22464,14 @@ exports.default = {
   archiveTask: function archiveTask(params, cb) {
     if (!params.task.id) throw "taskid is required to archive a task";
     var requestOptions = {
-      method: "DELETE",
+      method: "PUT",
       url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json; charset=UTF-8"
-      }
+      },
+      data: { task: { completed: true } },
+      json: true
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   },

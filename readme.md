@@ -13,14 +13,14 @@ npm install gopherhq
 ```
 
 ```javascript
-var Gopher = require('gopherhq');
+const var Gopher = require('gopherhq');
 
 // initialize
-var gopherClient = new Gopher({clientId: 'YOUR_EXTENSIONS_CLIENT_ID'});
+const gopherClient = new Gopher({clientId: 'YOUR_EXTENSIONS_CLIENT_ID'});
 gopherClient.setAccessToken('YOUR_OAUTH2_ACCESS_TOKEN');
 
 // create a task
-var task = {
+const task = {
         task: {
           reference_email: {
             server_recipient: 'command@your-extension.gopher.email',
@@ -35,7 +35,7 @@ var task = {
 gopherClient.createTask(task, function(err, res) { console.log(err || res)});
 
 // promises work, too.
-let res = gopherClient.createTask(task)
+const res = gopherClient.createTask(task)
 	.then(function(res) {
 		console.log(res);
 	})
@@ -44,7 +44,7 @@ let res = gopherClient.createTask(task)
 	});
 
 // along with async/await magic, of course ✨
-let res = await gopherClient.createTask(task); //in async function
+const res = await gopherClient.createTask(task); //in async function
 ```
 
 * `YOUR_EXTENSIONS_CLIENT_ID` – Find this in the developer portal.

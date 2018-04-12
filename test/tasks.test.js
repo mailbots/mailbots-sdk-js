@@ -5,7 +5,7 @@ import Gopher from "../src/gopherhq";
 
 const debug = require("debug")("gopherhq");
 
-let gopherClient = getGopherClient();
+const gopherClient = getGopherClient();
 let exampleTask = {};
 let testTasks = [];
 let testExtension1 = null;
@@ -22,6 +22,7 @@ let extensionSubdomain2 =
   process.env.EXAMPLE_EXTENSION_SUBDOMAIN_2 || "test-extension-2";
 
 describe("Tasks", function() {
+  this.timeout(15000);
   /**
    *
    * Setup For all "Task" Tests.
@@ -38,10 +39,9 @@ describe("Tasks", function() {
       task: {
         command: `example@${extensionSubdomain1}.gopher.email`,
         reference_email: {
-          server_recipient: `example@${extensionSubdomain1}.gopher.email`,
           subject: "Subject 1"
         },
-        reminder_timeformat: "1hour"
+        trigger_timeformat: "1hour"
       }
     });
     testTasks.push(res.task);
@@ -51,10 +51,9 @@ describe("Tasks", function() {
       task: {
         command: `example@${extensionSubdomain1}.gopher.email`,
         reference_email: {
-          server_recipient: `example@${extensionSubdomain1}.gopher.email`,
           subject: "Space Ships!"
         },
-        reminder_timeformat: "20years"
+        trigger_timeformat: "20years"
       }
     });
     testTasks.push(res.task);
@@ -64,10 +63,9 @@ describe("Tasks", function() {
       task: {
         command: `example@${extensionSubdomain2}.gopher.email`,
         reference_email: {
-          server_recipient: `example@${extensionSubdomain2}.gopher.email`,
           subject: "Subject 2"
         },
-        reminder_timeformat: "tomorrow"
+        trigger_timeformat: "tomorrow"
       }
     });
     testTasks.push(res.task);
@@ -78,11 +76,23 @@ describe("Tasks", function() {
       task: {
         command: `example@${extensionSubdomain1}.gopher.email`,
         reference_email: {
-          server_recipient: `example@${extensionSubdomain1}.gopher.email`,
           subject: "TEST: Null due date"
         }
       }
     });
+    testTasks.push(res.task);
+
+    //mutable example task
+    res = await gopherClient.createTask({
+      suppress_webhook: true,
+      task: {
+        command: `example@${extensionSubdomain1}.gopher.email`,
+        reference_email: {
+          subject: "TEST: Null due date"
+        }
+      }
+    });
+    exampleTask = res.task;
     testTasks.push(res.task);
   });
 
@@ -90,11 +100,14 @@ describe("Tasks", function() {
     /**
      * Delete test tasks
      */
-    testTasks.map(async testTask => {
-      let deleteTestTasks = await gopherClient.deleteTask({
-        task: { id: testTask.id }
-      });
+    let deletePromises = testTasks.map(testTask => {
+      if (testTask && testTask.id) {
+        return gopherClient.deleteTask({
+          task: { id: testTask.id }
+        });
+      } else return true;
     });
+    let res = await Promise.all(deletePromises);
   });
 
   describe("Creating, Editing and Deleting", function() {
@@ -104,9 +117,8 @@ describe("Tasks", function() {
       let taskPayload = {
         task: {
           command: process.env.EXAMPLE_COMMAND,
-          reminder_timeformat: "15min",
+          trigger_timeformat: "15min",
           reference_email: {
-            server_recipient: process.env.EXAMPLE_COMMAND,
             cc: [],
             bcc: [],
             from: "bar@bar.email",
@@ -121,13 +133,14 @@ describe("Tasks", function() {
         }
       };
       //TODO: Test successful Gopher Task creation even if the Extension endpoint fails.
-      gopherClient.createTask(taskPayload, (err, res) => {
+      let res = gopherClient.createTask(taskPayload, (err, res) => {
         if (err) done(err);
         expect(res).to.be.an("object");
         expect(res.statusCode).to.equal(201);
         testTasks.push(res.task);
         done();
       });
+      testTasks.push(res.task);
     }).timeout(50000);
 
     it("creates a task with suppressesed webhook and verbose output", async function() {
@@ -137,7 +150,6 @@ describe("Tasks", function() {
         task: {
           command: process.env.EXAMPLE_COMMAND,
           reference_email: {
-            server_recipient: process.env.EXAMPLE_COMMAND,
             to: [process.env.EXAMPLE_COMMAND],
             cc: [],
             bcc: [],
@@ -150,11 +162,11 @@ describe("Tasks", function() {
           private_data: {
             privatedata1: "Value1"
           },
-          reminder_time: 1520319928,
-          reminder_timeformat: "3days",
+          trigger_time: 1520319928,
+          trigger_timeformat: "3days",
           completed: false
         },
-        response: [
+        send_messages: [
           {
             type: "email",
             subject: "A test email message",
@@ -225,7 +237,7 @@ describe("Tasks", function() {
           task: {
             id: exampleTask.id,
             reference_email: {
-              body: "something else new"
+              html: "something else new"
             }
           }
         })
@@ -238,20 +250,20 @@ describe("Tasks", function() {
         });
     });
 
-    it("should update reminder_timeformat for a task", done => {
+    it("should update trigger_timeformat for a task", done => {
       if (!exampleTask.hasOwnProperty("id")) {
-        done(new Error("Example Task doens't exist"), exampleTask);
+        done(new Error("Example Task doesn't exist"), exampleTask);
       }
       gopherClient
         .updateTask({
           task: {
             id: exampleTask.id,
-            reminder_timeformat: "1day"
+            trigger_timeformat: "1day"
           }
         })
         .then(res => {
           expect(res).to.be.an("object");
-          expect(res.task.reminder_timeformat).to.equal("1day");
+          expect(res.task.trigger_timeformat).to.equal("1day");
           done();
         })
         .catch(err => {
@@ -259,7 +271,7 @@ describe("Tasks", function() {
         });
     });
 
-    it("should fail to update an unsupported reminder_timeformat", done => {
+    it("should fail to update an unsupported trigger_timeformat", done => {
       if (!exampleTask.hasOwnProperty("id")) {
         done(new Error("Example Task doens't exist"), exampleTask);
       }
@@ -267,7 +279,7 @@ describe("Tasks", function() {
         .updateTask({
           task: {
             id: exampleTask.id,
-            reminder_timeformat: "invalid_jibberish"
+            trigger_timeformat: "invalid_jibberish"
           }
         })
         .then(res => {
@@ -298,9 +310,8 @@ describe("Tasks", function() {
           verbose: 1,
           task: {
             command: process.env.EXAMPLE_COMMAND,
-            reminder_timeformat: "1sec",
+            trigger_timeformat: "1sec",
             reference_email: {
-              server_recipient: process.env.EXAMPLE_COMMAND,
               to: [process.env.EXAMPLE_COMMAND],
               cc: [],
               bcc: [],
@@ -317,6 +328,7 @@ describe("Tasks", function() {
         },
         (err, res) => {
           if (err) done(err);
+          testTasks.push(res.task);
           expect(res).to.be.an("object");
           expect(res.status).to.equal("success");
           expect(res.messages[0].type).to.equal("email");
@@ -325,16 +337,13 @@ describe("Tasks", function() {
       );
     });
 
-    it.only("should create a task that sends an email as simply as possible", done => {
-      gopherClient.createTask(
+    it("should create a minal task that only sends an email", done => {
+      let res = gopherClient.createTask(
         {
           suppress_webhook: true,
           verbose: 1,
           task: {
-            command: process.env.EXAMPLE_COMMAND,
-            reference_email: {
-              server_recipient: process.env.EXAMPLE_COMMAND
-            }
+            command: process.env.EXAMPLE_COMMAND
           },
           send_messages: [
             {
@@ -352,6 +361,7 @@ describe("Tasks", function() {
         },
         (err, res) => {
           if (err) done(err);
+          testTasks.push(res.task);
           expect(res).to.be.an("object");
           expect(res.status).to.equal("success");
           expect(res.messages[0].type).to.equal("email");
@@ -382,16 +392,15 @@ describe("Tasks", function() {
    */
   describe("Archiving and Deleting Tasks", function() {
     let task = null;
+    this.timeout(5000);
 
     before(async function() {
-      this.timeout(5000);
       let res = await gopherClient.createTask({
         suppress_webhook: true,
         task: {
           command: process.env.EXAMPLE_COMMAND,
-          reminder_timeformat: "1month",
+          trigger_timeformat: "1month",
           reference_email: {
-            server_recipient: process.env.EXAMPLE_COMMAND,
             to: [process.env.EXAMPLE_COMMAND],
             cc: [],
             bcc: [],
@@ -413,9 +422,8 @@ describe("Tasks", function() {
         suppress_webhook: true,
         task: {
           command: process.env.EXAMPLE_COMMAND,
-          reminder_timeformat: "1month",
+          trigger_timeformat: "1month",
           reference_email: {
-            server_recipient: process.env.EXAMPLE_COMMAND,
             to: [process.env.EXAMPLE_COMMAND],
             cc: [],
             bcc: [],
@@ -450,7 +458,6 @@ describe("Tasks", function() {
     it("Should be able to search for it with archive search", async function() {
       let searchRes = await gopherClient.getTasks({
         status: "archived"
-        // search: "Archived"
       });
       expect(searchRes.tasks[0].reference_email.subject).to.equal(
         "Archived Task"
@@ -490,7 +497,6 @@ describe("Tasks", function() {
         task: {
           command: `example@${extensionSubdomain2}.gopher.email`,
           reference_email: {
-            server_recipient: `example@${extensionSubdomain2}.gopher.email`,
             to: "Joe<joe@example.com>",
             subject: "Hi Joe"
           }
@@ -505,7 +511,6 @@ describe("Tasks", function() {
         task: {
           command: `example@${extensionSubdomain2}.gopher.email`,
           reference_email: {
-            server_recipient: `example@${extensionSubdomain2}.gopher.email`,
             to: "joe@example.com",
             subject: "Zuki"
           }
@@ -571,10 +576,9 @@ describe("Tasks", function() {
         task: {
           command: `example@${extensionSubdomain1}.gopher.email`,
           reference_email: {
-            server_recipient: `example@${extensionSubdomain1}.gopher.email`,
             subject: "Twenty Minutes"
           },
-          reminder_timeformat: "20min"
+          trigger_timeformat: "20min"
         }
       });
       testTasks.push(addRes.task);
