@@ -28,8 +28,9 @@ export default {
   getTask(params, cb) {
     if (typeof params.id != "number")
       throw "id must be an integer. This was given instead: " + params.id;
+    let qs = params.verbose ? "?verbose=1" : "";
     const requestOptions = {
-      url: `${this.config.apiHost}/api/v1/tasks/${params.id}/`,
+      url: `${this.config.apiHost}/api/v1/tasks/${params.id}${qs}`,
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json"
@@ -174,14 +175,13 @@ export default {
   },
 
   /*
-   * Developer can simulate an action email with this method 
-   * (For use only by Gopher Admin app in developer sandbox)
-   * TODO
+   * Dispatch a task action. Equivalent to sending an action email.
    */
-  devSendAction(params, cb) {
+  sendAction(params, cb) {
+    let qs = params.verbose ? "?verbose=1" : "";
     const requestOptions = {
       method: "POST",
-      url: urljoin(this.config.apiHost, "/api/v1/actions/?verbose=1"),
+      url: urljoin(this.config.apiHost, "/api/v1/actions", qs),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json; charset=UTF-8"

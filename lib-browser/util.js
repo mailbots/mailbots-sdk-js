@@ -35,7 +35,8 @@ var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
     }
     var errorResponse = friendlyMessage || err.statusText || err.message || err.statusCode;
     if (cb) cb(new Error(errorResponse));
-    return new Error(errorResponse);
+    console.error(errorResponse);
+    return Promise.reject(new Error(errorResponse));
   });
 };
 
