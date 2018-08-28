@@ -42,7 +42,7 @@ exports.default = {
     if (typeof params.id != "number") throw "id must be an integer. This was given instead: " + params.id;
     var qs = params.verbose ? "?verbose=1" : "";
     var requestOptions = {
-      url: this.config.apiHost + "/api/v1/tasks/" + params.id + qs,
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.id, qs),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -65,11 +65,11 @@ exports.default = {
     var qs = serializedParams ? "?" + serializedParams : "";
     var requestOptions = {
       method: "POST",
-      url: this.config.apiHost + "/api/v1/tasks/" + qs,
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", qs),
       headers: {
         Authorization: "Bearer " + this._accessToken,
-        // "Content-Type": "application/json; charset=UTF-8"
-        "Content-Type": "application/json"
+        "Content-Type": "application/json; charset=UTF-8"
+        // "Content-Type": "application/json"
       },
       data: params,
       json: true

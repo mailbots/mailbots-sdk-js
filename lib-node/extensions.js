@@ -57,6 +57,33 @@ exports.default = {
   },
 
 
+  /**
+   * Broadcast event.
+   * @param data.type {string} arbitrary event type: Ex: "email.received"
+   * @param data.task_hash {string} If included, req / res is specific to that task
+   * @param data.payload {object} json object data passsed to extension
+   * TODO: Allow broadcast with clientid + secret instead of access token
+   */
+  broadcastEvent: function broadcastEvent(data) {
+    var extensionid = data.extensionid || "self";
+    var requestOptions = {
+      method: "POST",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/" + extensionid + "/broadcast_event/"),
+      headers: {
+        Authorization: "Bearer " + this._accessToken,
+        "Content-Type": "application/json"
+      },
+      data: data
+    };
+
+    if (data.verbose) {
+      requestOptions.url += "?verbose=1";
+    }
+
+    return (0, _util._makeRequest)(requestOptions);
+  },
+
+
   /*
    * Save Gopher Extension Data which is then sent with every webhook related to that extension.
    * This is also how an extension persist's user settings specific to that extension.

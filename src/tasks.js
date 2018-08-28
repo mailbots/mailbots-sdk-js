@@ -30,7 +30,7 @@ export default {
       throw "id must be an integer. This was given instead: " + params.id;
     let qs = params.verbose ? "?verbose=1" : "";
     const requestOptions = {
-      url: `${this.config.apiHost}/api/v1/tasks/${params.id}${qs}`,
+      url: urljoin(this.config.apiHost, "/api/v1/tasks/", params.id, qs),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json"
@@ -52,11 +52,11 @@ export default {
     let qs = serializedParams ? `?${serializedParams}` : "";
     const requestOptions = {
       method: "POST",
-      url: `${this.config.apiHost}/api/v1/tasks/${qs}`,
+      url: urljoin(this.config.apiHost, "/api/v1/tasks/", qs),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
-        // "Content-Type": "application/json; charset=UTF-8"
-        "Content-Type": "application/json"
+        "Content-Type": "application/json; charset=UTF-8"
+        // "Content-Type": "application/json"
       },
       data: params,
       json: true

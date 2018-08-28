@@ -24,6 +24,16 @@ describe("Extensions", function() {
     });
   });
 
+  it("should broadcast an extension event", done => {
+    gopherClient
+      .broadcastEvent({
+        type: "test.event"
+      })
+      .then(res => {
+        expect(res.status).to.equal("success");
+      });
+  });
+
   it("should let an extension get data", done => {
     gopherClient.getExtensionData((err, res) => {
       if (err) done(err);

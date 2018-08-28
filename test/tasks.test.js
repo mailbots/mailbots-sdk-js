@@ -63,7 +63,7 @@ describe("Tasks", function() {
       task: {
         command: `example@${extensionSubdomain2}.gopher.email`,
         reference_email: {
-          subject: "Subject 2"
+          subject: "TEST: Subject 2"
         },
         trigger_timeformat: "tomorrow"
       }
@@ -238,6 +238,7 @@ describe("Tasks", function() {
       }
       gopherClient
         .updateTask({
+          suppress_webhook: true,
           task: {
             id: exampleTask.id,
             reference_email: {
@@ -260,6 +261,7 @@ describe("Tasks", function() {
       }
       gopherClient
         .updateTask({
+          suppress_webhook: true,
           task: {
             id: exampleTask.id,
             trigger_timeformat: "1day"
@@ -462,11 +464,12 @@ describe("Tasks", function() {
 
     it("Should be able to search for it with archive search", async function() {
       let searchRes = await gopherClient.getTasks({
-        status: "archived"
+        status: "archived",
+        search: "Archived Task"
       });
-      expect(searchRes.tasks[0].reference_email.subject).to.equal(
-        "Archived Task"
-      );
+      const hasProperSubject = task =>
+        task.reference_email.subject === "Archived Task";
+      expect(searchRes.tasks.some(hasProperSubject)).to.be.true;
     });
 
     it("Should delete the archived task", async function() {
@@ -493,7 +496,8 @@ describe("Tasks", function() {
   describe("Filtering & Searching", function() {
     it("Gets only the task for extension1", async () => {
       let res = await gopherClient.getTasks({
-        extension: extensionSubdomain1
+        extension: extensionSubdomain1,
+        search: "Subject"
       });
       if (res instanceof Error) throw res;
       expect(res.tasks).to.be.instanceof(Array);
@@ -539,7 +543,7 @@ describe("Tasks", function() {
 
     it("Search for tasks from Joe", async () => {
       let res = await gopherClient.getTasks({
-        search: "Joe"
+        search: "joe@example.com"
       });
       if (res instanceof Error) throw res;
       expect(res.tasks).to.be.instanceof(Array);
@@ -616,22 +620,34 @@ describe("Tasks", function() {
       let res = await gopherClient.getTasks({
         extension: extensionSubdomain1,
         order_by: "due",
-        order_dir: "desc"
+        order_dir: "desc",
+        search: "TEST"
       });
       if (res instanceof Error) throw res;
       expect(res.tasks).to.be.instanceof(Array);
-      let finalTask = res.tasks.pop();
-      expect(finalTask.reference_email.subject).to.equal("TEST: Null due date");
+      let indexOfNullDueTask = res.tasks.findIndex(
+        task => task.reference_email.subject === "TEST: Null due date"
+      );
+      let indexOfOtherTask = res.tasks.findIndex(
+        task => task.reference_email.subject === "TEST: Subject 2"
+      );
+      expect(indexOfNullDueTask).to.be.greaterThan(indexOfOtherTask);
 
       res = await gopherClient.getTasks({
         extension: extensionSubdomain1,
         order_by: "due",
-        order_dir: "asc"
+        order_dir: "asc",
+        search: "TEST"
       });
       if (res instanceof Error) throw res;
       expect(res.tasks).to.be.instanceof(Array);
-      finalTask = res.tasks.pop();
-      expect(finalTask.reference_email.subject).to.equal("TEST: Null due date");
+      indexOfNullDueTask = res.tasks.findIndex(
+        task => task.reference_email.subject === "TEST: Null due date"
+      );
+      indexOfOtherTask = res.tasks.findIndex(
+        task => task.reference_email.subject === "TEST: Subject 2"
+      );
+      expect(indexOfNullDueTask).to.be.greaterThan(indexOfOtherTask);
     });
 
     it("Paginates results using per_page and page param", async () => {
