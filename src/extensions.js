@@ -1,29 +1,32 @@
 import querystring from "querystring";
 import urljoin from "url-join";
-import queryString from "query-string";
 import { _makeRequest, _checkParam, debug } from "./util";
 
 export default {
   /**
-   * Send an Event to the extension. This is
-   * usually a 3rd party webhook received by the extension
-   * like and issue created in Github, or an email response
-   * received. The Gopher Extension can listen for events,
-   * act on tasks or create or delete tasks based on events.
+   * Send an Event to the extension. This does not require
+   * and auth token because the endpoint is meant for 3rd
+   * party services. Ex: issue created in Github, or an
+   * email response or support ticket received. The Gopher
+   * Extension can listen for events, act on tasks or
+   * create or delete tasks based on events.
    * @param {object}  params params
    * @returns {Promise}
    *
    * @example
-   * const res = await gopherClient.sendEvent({event_url: "[unique_event_url]"});
+   * const res = await gopherClient.sendEvent({type: 'event.type', payload: {"foo", "bar"}, event_url: "[unique_event_url]"});
    */
   sendEvent(params, cb) {
     if (!params.event_url) {
       throw new Error("event_url is required");
     }
+    if (!params.type) {
+      throw new Error("event type is required");
+    }
 
     const requestOptions = {
       method: "POST",
-      url: params.event_url,
+      url: params.event_url + `?type=${params.type}`,
       headers: {
         "Content-Type": "application/json; charset=UTF-8"
       }
@@ -31,47 +34,6 @@ export default {
 
     if (params.payload) {
       Object.assign(requestOptions, { data: params.payload });
-    }
-
-    if (params.verbose) {
-      requestOptions.url += "?verbose=1";
-    }
-
-    /** Test: Access token is required for verbose mode? */
-    if (this._accessToken) {
-      Object.assign(requestOptions.headers, {
-        Authorization: `Bearer ${this._accessToken}`
-      });
-    }
-    return _makeRequest(requestOptions, cb);
-  },
-
-  /**
-   * Send event. Send an Event to the extension. This is
-   * usually a 3rd party webhook received by the extension
-   * like and issue created in Github, or an email response
-   * received. The Gopher Extension can listen for events,
-   * act on tasks or create or delete tasks based on events.
-   * @param {object} params
-   * @returns {Promise}
-   */
-  sendEvent(params, cb) {
-    const extensionid = params.extensionid || "self";
-    const requestOptions = {
-      method: "POST",
-      url: urljoin(
-        this.config.apiHost,
-        `/api/v1/extensions/${extensionid}/broadcast_event/`
-      ),
-      headers: {
-        Authorization: `Bearer ${this._accessToken}`,
-        "Content-Type": "application/json"
-      },
-      params
-    };
-
-    if (data.verbose) {
-      requestOptions.url += "?verbose=1";
     }
 
     return _makeRequest(requestOptions, cb);

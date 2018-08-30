@@ -16,24 +16,41 @@ var _util = require("./util");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = {
-  /*
-   * Get List of Gopher Tasks
-   */
-  getTasks: function getTasks(params, cb) {
-    var qs = params ? "?" + _queryString2.default.stringify(params, { arrayFormat: "bracket" }) : "";
-    var requestOptions = {
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks", qs),
-      headers: {
-        Authorization: "Bearer " + this._accessToken,
-        "Content-Type": "application/json"
-      },
-      json: true
-    };
-    (0, _util.debug)("Request options for getting followups:", requestOptions);
-    return (0, _util._makeRequest)(requestOptions, cb);
-  },
+/**
+ * Get a filtered list of Gopher tasks
+ * @param {object} params  Arguments for API call
+ * @param {function} [cb]  Optional callback function
+ * @param {boolean} params.suppress_webhook  Prevent Gopher from firing the task.viewed webhook
+ * @param {boolean} params.status Retrieve completed or open tasks
+ *
+ * @example
+ * // Get all open tasks, sorted by due date
+ * const res = await gopherClient.getTasks();
+ * console.log(res.tasks);
+ *
+ * @example
+ * // With a callback
+ * gopherClient.getTasks({ limit: 1 }, (err, res) => {
+ *     if (err) done(err);
+ *     console.log(res.tasks);
+ *   });
+ */
+function getTasks(params, cb) {
+  var qs = params ? "?" + _queryString2.default.stringify(params, { arrayFormat: "bracket" }) : "";
+  var requestOptions = {
+    url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks", qs),
+    headers: {
+      Authorization: "Bearer " + this._accessToken,
+      "Content-Type": "application/json"
+    },
+    json: true
+  };
+  (0, _util.debug)("Request options for getting followups:", requestOptions);
+  return (0, _util._makeRequest)(requestOptions, cb);
+}
 
+exports.default = {
+  getTasks: getTasks,
 
   /*
    * Fetch A Single Gopher Task
@@ -53,8 +70,37 @@ exports.default = {
   },
 
 
-  /*
+  /**
    * Create A Gopher Task
+   * Create a new Gopher Task.
+   * @param {object}
+   * @param {boolean} params.suppress_webhook  Prevent Gopher from firing the task.created webhook
+   * @param {object} params.verbose Return rendered output of HTML email
+   * @param {Task} params.task  Gopher Task object
+   *
+   * @example
+   * const res = await gopherClient.createTask(
+   *     {
+   *       suppress_webhook: true,
+   *       verbose: 1,
+   *       task: {
+   *         command: process.env.EXAMPLE_COMMAND
+   *       },
+   *       send_messages: [
+   *         {
+   *           type: "email",
+   *           subject: "A test email message",
+   *           to: "test@example.com",
+   *           body: [
+   *             {
+   *               type: "html",
+   *               text: "<h1>This is a test</h1>"
+   *             }
+   *           ]
+   *         }
+   *       ]
+   *     });
+   *
    */
   createTask: function createTask(params, cb) {
     var urlParams = {};

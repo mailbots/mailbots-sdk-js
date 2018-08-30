@@ -14,27 +14,34 @@ var _urlJoin = require("url-join");
 
 var _urlJoin2 = _interopRequireDefault(_urlJoin);
 
-var _queryString = require("query-string");
-
-var _queryString2 = _interopRequireDefault(_queryString);
-
 var _util = require("./util");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
   /**
-   * Trigger an extension. For example, when an extension is listening for
-   * a specific event.
+   * Send an Event to the extension. This is
+   * usually a 3rd party webhook received by the extension
+   * like and issue created in Github, or an email response
+   * received. The Gopher Extension can listen for events,
+   * act on tasks or create or delete tasks based on events.
+   * @param {object}  params params
+   * @returns {Promise}
+   *
+   * @example
+   * const res = await gopherClient.sendEvent({type: 'event.type', payload: {"foo", "bar"}, event_url: "[unique_event_url]"});
    */
-  triggerExtension: function triggerExtension(params) {
-    if (!params.trigger_url) {
-      throw new Error("trigger_url is required");
+  sendEvent: function sendEvent(params, cb) {
+    if (!params.event_url) {
+      throw new Error("event_url is required");
+    }
+    if (!params.type) {
+      throw new Error("event type is required");
     }
 
     var requestOptions = {
       method: "POST",
-      url: params.trigger_url,
+      url: params.event_url + ("?type=" + params.type),
       headers: {
         "Content-Type": "application/json; charset=UTF-8"
       }
@@ -44,49 +51,30 @@ exports.default = {
       Object.assign(requestOptions, { data: params.payload });
     }
 
+    // REMOVE? Auth token required for verbose mode
     if (params.verbose) {
       requestOptions.url += "?verbose=1";
     }
 
+    /** REMOVE? Access token is required for verbose mode */
     if (this._accessToken) {
       Object.assign(requestOptions.headers, {
         Authorization: "Bearer " + this._accessToken
       });
     }
-    return (0, _util._makeRequest)(requestOptions);
+    return (0, _util._makeRequest)(requestOptions, cb);
   },
 
 
   /**
-   * Broadcast event.
-   * @param data.type {string} arbitrary event type: Ex: "email.received"
-   * @param data.task_hash {string} If included, req / res is specific to that task
-   * @param data.payload {object} json object data passsed to extension
-   * TODO: Allow broadcast with clientid + secret instead of access token
-   */
-  broadcastEvent: function broadcastEvent(data) {
-    var extensionid = data.extensionid || "self";
-    var requestOptions = {
-      method: "POST",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/" + extensionid + "/broadcast_event/"),
-      headers: {
-        Authorization: "Bearer " + this._accessToken,
-        "Content-Type": "application/json"
-      },
-      data: data
-    };
-
-    if (data.verbose) {
-      requestOptions.url += "?verbose=1";
-    }
-
-    return (0, _util._makeRequest)(requestOptions);
-  },
-
-
-  /*
-   * Save Gopher Extension Data which is then sent with every webhook related to that extension.
-   * This is also how an extension persist's user settings specific to that extension.
+   * Save Gopher extension data which is sent with every webhook related to that extension.
+   * This is how an extension persist's user settings specific to that extension.
+   * For params and details, see [extension saving data API docs](https://postman.gopheremail.com/#7f9bfa6c-a673-4104-9be9-1ada487c300e)
+   * @param {object} data Nestable key value value pairs
+   * @returns {Promise}
+   *
+   * @example
+   * const res = await gopherClient.saveExtensionData({ foo: "bar" });
    */
 
   saveExtensionData: function saveExtensionData(data, cb) {
@@ -105,8 +93,11 @@ exports.default = {
   },
 
 
-  /*
-   * Get Gopher Extension Data
+  /**
+   * Get saved Gopher extension data
+   * For params and details, see [extension get data API docs](https://postman.gopheremail.com/#f98b6862-9059-4d4f-931b-78d554e8a4e7)
+   * @example
+   * const res = await gopherClient.getExtensionData();
    */
   getExtensionData: function getExtensionData(cb) {
     var requestOptions = {

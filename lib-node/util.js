@@ -46,7 +46,7 @@ var _checkParam = exports._checkParam = function (param, paramName) {
   }
 };
 
-/**
+/*
  * Used to extend one class prototype  with the keys/values of another objects
  */
 var _extend = exports._extend = function (base, newObj) {

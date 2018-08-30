@@ -94,7 +94,7 @@ var Gopher = function () {
       this._accessToken = accessToken;
     }
 
-    /**
+    /*
      * Populates an OAuth2 client that should ONLY BE USED ON THE SERVER.
      * @return oauth2 client (simple-oauth2)
      */
@@ -120,7 +120,7 @@ var Gopher = function () {
       });
     }
 
-    /**
+    /*
      * Expose for use by inherited classes (ex: GopherAdminClient)
      */
 

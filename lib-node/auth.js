@@ -3,8 +3,9 @@
 var _util = require("./util");
 
 module.exports = {
-  /**
-   *  Auth: Build initial AOuth2 login link
+  /*
+   *  Get OAuth2 login link from config credentials
+   *  @returns {object} Auth URI and state Ex: `{ uri: authorizationUri, state: state }`
    */
   getAuthorizationUri: function getAuthorizationUri() {
     (0, _util._checkParam)(this.config.clientId, "clientId");
@@ -25,8 +26,8 @@ module.exports = {
 
 
   /*
-   *  Auth: After user has Authorized extension with Gopher, fetch access token (Node Only)
-   *  Promises only.
+   *  After user has authorized extension with Gopher, fetch access token (server only)
+   *  @param {string} code Access code after user approval from auth URL
    */
 
   getAccessToken: function getAccessToken(code) {

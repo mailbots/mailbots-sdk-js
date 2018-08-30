@@ -14,8 +14,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
   /**
-   * Login
    * Get information about the currently logged in user
+   * @param {function} [cb] - Optional callback
    */
   getLoggedInUser: function getLoggedInUser(cb) {
     var requestOptions = {
@@ -30,11 +30,13 @@ exports.default = {
   },
 
 
-  /*
+  /**
    * Invite users to this extension. If an Auth token is included, the invitation email
-   * includes the name of the logged in person who is sending the invitation. 
-   * "emails" param can be either an array of email addresses, or a string with a single 
+   * includes the name of the logged in user who is sending the invitation.
+   * "emails" param can be either an array of email addresses, or a string with a single
    * email address.
+   * @param {array|string} emails A single email address, or an array of emails to invite
+   * @param {function} [cb] Optional callback (also can be used with promises)
    */
   invite: function invite(emails, cb) {
     var requestBody = {
