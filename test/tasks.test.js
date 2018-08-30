@@ -384,14 +384,6 @@ describe("Tasks", function() {
       });
       expect(res).to.be.ok;
     });
-
-    it("should trigger an extension", async () => {
-      let exampleTask = await getExampleTask();
-      let res = await gopherClient.triggerExtension({
-        trigger_url: exampleTask.trigger_url
-      });
-      expect(res).to.be.ok;
-    });
   });
 
   /**
@@ -450,7 +442,7 @@ describe("Tasks", function() {
     });
 
     it("Should archive a task", async function() {
-      let resCompleted = await gopherClient.archiveTask({
+      let resCompleted = await gopherClient.completeTask({
         task: { id: task.id }
       });
     });
@@ -464,7 +456,7 @@ describe("Tasks", function() {
 
     it("Should be able to search for it with archive search", async function() {
       let searchRes = await gopherClient.getTasks({
-        status: "archived",
+        status: "completed",
         search: "Archived Task"
       });
       const hasProperSubject = task =>

@@ -22509,7 +22509,7 @@ exports.default = {
   /*
     * Archive A Gopher Task
     */
-  archiveTask: function archiveTask(params, cb) {
+  completeTask: function completeTask(params, cb) {
     if (!params.task.id) throw "taskid is required to archive a task";
     var requestOptions = {
       method: "PUT",
@@ -24540,11 +24540,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
   /**
-   * Send an Event to the extension. This is
-   * usually a 3rd party webhook received by the extension
-   * like and issue created in Github, or an email response
-   * received. The Gopher Extension can listen for events,
-   * act on tasks or create or delete tasks based on events.
+   * Send an Event to the extension. This does not require
+   * and auth token because the endpoint is meant for 3rd
+   * party services. Ex: issue created in Github, or an
+   * email response or support ticket received. The Gopher
+   * Extension can listen for events, act on tasks or
+   * create or delete tasks based on events.
    * @param {object}  params params
    * @returns {Promise}
    *
@@ -24571,17 +24572,6 @@ exports.default = {
       Object.assign(requestOptions, { data: params.payload });
     }
 
-    // REMOVE? Auth token required for verbose mode
-    if (params.verbose) {
-      requestOptions.url += "?verbose=1";
-    }
-
-    /** REMOVE? Access token is required for verbose mode */
-    if (this._accessToken) {
-      Object.assign(requestOptions.headers, {
-        Authorization: "Bearer " + this._accessToken
-      });
-    }
     return (0, _util._makeRequest)(requestOptions, cb);
   },
 

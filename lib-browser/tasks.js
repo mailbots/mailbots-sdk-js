@@ -147,7 +147,7 @@ exports.default = {
   /*
     * Archive A Gopher Task
     */
-  archiveTask: function archiveTask(params, cb) {
+  completeTask: function completeTask(params, cb) {
     if (!params.task.id) throw "taskid is required to archive a task";
     var requestOptions = {
       method: "PUT",

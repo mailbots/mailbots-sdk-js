@@ -27,9 +27,7 @@ describe("Extensions", function() {
   it("should send an extension event", done => {
     gopherClient
       .sendEvent({
-        // TODO: Pull event url from installed extension. This test will fail
-        event_url:
-          "http://local-gopher.ngrok.io/api/v1/extension_event/226/dde79d075661874a/",
+        event_url: process.env.EXAMPLE_EXTENSION_EVENT_URL,
         type: "test.event",
         payload: { foo: "bar" }
       })

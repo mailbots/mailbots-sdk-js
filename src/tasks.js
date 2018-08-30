@@ -133,7 +133,7 @@ export default {
   /*
     * Archive A Gopher Task
     */
-  archiveTask(params, cb) {
+  completeTask(params, cb) {
     if (!params.task.id) throw "taskid is required to archive a task";
     const requestOptions = {
       method: "PUT",
