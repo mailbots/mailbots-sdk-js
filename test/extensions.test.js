@@ -24,7 +24,7 @@ describe("Extensions", function() {
     });
   });
 
-  it("should broadcast an extension event", done => {
+  it.skip("should broadcast an extension event", done => {
     gopherClient
       .broadcastEvent({
         type: "test.event"

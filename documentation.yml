@@ -1,0 +1,8 @@
+toc:
+  - name: Quick Start
+    description: |
+      This is a function reference for gopherhq-js. View the 
+      [readme.md](https://github.com/gopherhq/gopherhq-js/blob/master/readme.md)
+      file in the the repo that corresponds with this version. Also, view 
+      [Gopher REST API](https://www.getpostman.com/collections/172d1b9e89c7830f6c95)
+      and the [Gopher API Docs](https://docs.gopher.email) for more information.

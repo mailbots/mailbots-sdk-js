@@ -1,0 +1,1048 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>gopherhq 0.0.18-beta | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
+  <link href='assets/style.css' type='text/css' rel='stylesheet' />
+  <link href='assets/github.css' type='text/css' rel='stylesheet' />
+  <link href='assets/split.css' type='text/css' rel='stylesheet' />
+  <meta name='description' content='Gopher Email API client for the browser and node.js'>
+</head>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>gopherhq</h3>
+          <div class='mb1'><code>0.0.18-beta</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#quick-start'
+                  class="h5 bold black caps">
+                  Quick Start
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#triggerextension'
+                  class="">
+                  triggerExtension
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#broadcastevent'
+                  class="">
+                  broadcastEvent
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#saveextensiondata'
+                  class="">
+                  saveExtensionData
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getextensiondata'
+                  class="">
+                  getExtensionData
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getlogs'
+                  class="">
+                  getLogs
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#gettasks'
+                  class="">
+                  getTasks
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#createtask'
+                  class="">
+                  createTask
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#triggertask'
+                  class="">
+                  triggerTask
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getloggedinuser'
+                  class="">
+                  getLoggedInUser
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#invite'
+                  class="">
+                  invite
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='http://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+            <div class='keyline-top-not py2'>
+  <section class='py2 clearfix'>
+
+    <h2 id='quick-start' class='mt0'>
+      Quick Start
+    </h2>
+
+    
+      <p>This is a function reference for gopherhq-js. View the
+<a href="https://github.com/gopherhq/gopherhq-js/blob/master/readme.md">readme.md</a>
+file in the the repo that corresponds with this version. Also, view
+<a href="https://www.getpostman.com/collections/172d1b9e89c7830f6c95">Gopher REST API</a>
+and the <a href="https://docs.gopher.email">Gopher API Docs</a> for more information.</p>
+
+    
+  </section>
+</div>
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='quick-start'>
+      Quick Start
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>This is a function reference for gopherhq-js. View the
+<a href="https://github.com/gopherhq/gopherhq-js/blob/master/readme.md">readme.md</a>
+file in the the repo that corresponds with this version. Also, view
+<a href="https://www.getpostman.com/collections/172d1b9e89c7830f6c95">Gopher REST API</a>
+and the <a href="https://docs.gopher.email">Gopher API Docs</a> for more information.</p>
+
+ 
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='triggerextension'>
+      triggerExtension
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Send a webhook event to your extension.
+For params and details, see <a href="https://postman.gopheremail.com/#30da6c1c-f174-4222-9e24-d0aed544d71d">extension triggering API docs</a></p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>triggerExtension(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    params
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.triggerExtension({<span class="hljs-attr">trigger_url</span>: <span class="hljs-string">"[unique_trigger_url]"</span>});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='broadcastevent'>
+      broadcastEvent
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Broadcast event.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>broadcastEvent(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  <div>Deprecated: This is deprecated.
+</div>
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='saveextensiondata'>
+      saveExtensionData
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Save Gopher extension data which is sent with every webhook related to that extension.
+This is how an extension persist's user settings specific to that extension.
+For params and details, see <a href="https://postman.gopheremail.com/#7f9bfa6c-a673-4104-9be9-1ada487c300e">extension saving data API docs</a></p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>saveExtensionData(data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    Nestable key value value pairs
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.saveExtensionData({ <span class="hljs-attr">foo</span>: <span class="hljs-string">"bar"</span> });</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getextensiondata'>
+      getExtensionData
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Get saved Gopher extension data
+For params and details, see <a href="https://postman.gopheremail.com/#f98b6862-9059-4d4f-931b-78d554e8a4e7">extension get data API docs</a></p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getExtensionData(cb: any)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.getExtensionData();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getlogs'>
+      getLogs
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Retrieve logged in user's extension logs</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getLogs(filter: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>filter</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    Filter. Ex: 
+<code>{type: ['api', 'submit_failed'], extension: ['subdomain'], since: 1517948366, num: 10}</code>
+)
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
+	    Optional error-first callback
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        Promise resolving to log results in the form of: 
+<code>{status: "success", logs[...]}</code>
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='gettasks'>
+      getTasks
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Get a filtered list of Gopher tasks</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getTasks(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    Arguments for API call
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.suppress_webhook</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+  </td>
+  <td class='break-word'><span>Prevent Gopher from firing the task.viewed webhook
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.status</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+  </td>
+  <td class='break-word'><span>Retrieve completed or open tasks
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
+	    Optional callback function
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Get all open tasks, sorted by due date</span>
+<span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.getTasks();
+<span class="hljs-built_in">console</span>.log(res.tasks);</pre>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// With a callback</span>
+gopherClient.getTasks({ <span class="hljs-attr">limit</span>: <span class="hljs-number">1</span> }, (err, res) =&gt; {
+    <span class="hljs-keyword">if</span> (err) done(err);
+    <span class="hljs-built_in">console</span>.log(res.tasks);
+  });</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createtask'>
+      createTask
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Create A Gopher Task
+Create a new Gopher Task.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>createTask(params: any, cb: any, object: any)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>object</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.createTask(
+    {
+      <span class="hljs-attr">suppress_webhook</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">verbose</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">task</span>: {
+        <span class="hljs-attr">command</span>: process.env.EXAMPLE_COMMAND
+      },
+      <span class="hljs-attr">send_messages</span>: [
+        {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">"email"</span>,
+          <span class="hljs-attr">subject</span>: <span class="hljs-string">"A test email message"</span>,
+          <span class="hljs-attr">to</span>: <span class="hljs-string">"test@example.com"</span>,
+          <span class="hljs-attr">body</span>: [
+            {
+              <span class="hljs-attr">type</span>: <span class="hljs-string">"html"</span>,
+              <span class="hljs-attr">text</span>: <span class="hljs-string">"&lt;h1&gt;This is a test&lt;/h1&gt;"</span>
+            }
+          ]
+        }
+      ]
+    });</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='triggertask'>
+      triggerTask
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Trigger a Gopher Task</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>triggerTask(params: any, cb: any)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getloggedinuser'>
+      getLoggedInUser
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Get information about the currently logged in user</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getLoggedInUser(cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
+	    Optional callback
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='invite'>
+      invite
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Invite users to this extension. If an Auth token is included, the invitation email
+includes the name of the logged in user who is sending the invitation.
+"emails" param can be either an array of email addresses, or a string with a single
+email address.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>invite(emails: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emails</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    A single email address, or an array of emails to invite
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
+	    Optional callback (also can be used with promises)
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+      </div>
+    </div>
+  <script src='assets/anchor.js'></script>
+  <script src='assets/split.js'></script>
+  <script src='assets/site.js'></script>
+</body>
+</html>

@@ -42,7 +42,7 @@ export const _checkParam = (param, paramName) => {
   }
 };
 
-/**
+/*
  * Used to extend one class prototype  with the keys/values of another objects
  */
 export const _extend = (base, newObj) => {
