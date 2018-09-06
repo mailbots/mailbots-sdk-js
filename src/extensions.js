@@ -3,6 +3,21 @@ import urljoin from "url-join";
 import { _makeRequest, _checkParam, debug } from "./util";
 
 export default {
+  /*
+   * Get information about the current extension
+   */
+  extensionGetSelf(cb) {
+    const requestOptions = {
+      method: "GET",
+      url: urljoin(this.config.apiHost, "/api/v1/extensions/self"),
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`,
+        "Content-Type": "application/json"
+      }
+    };
+    return this.makeRequest(requestOptions, cb);
+  },
+
   /**
    * Send an Event to the extension. This does not require
    * and auth token because the endpoint is meant for 3rd

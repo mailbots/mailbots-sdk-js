@@ -24,6 +24,15 @@ describe("Extensions", function() {
     });
   });
 
+  it("should get data about itself", done => {
+    gopherClient.extensionGetSelf((err, res) => {
+      if (err) done(err);
+      expect(res).to.be.an("object");
+      expect(res.extension.event_url).to.be.a("String");
+      done();
+    });
+  });
+
   it("should send an extension event", done => {
     gopherClient
       .sendEvent({

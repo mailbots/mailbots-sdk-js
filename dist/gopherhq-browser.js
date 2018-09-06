@@ -6821,24 +6821,19 @@ base.Node = __webpack_require__(159);
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-(function (name, context, definition) {
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (name, context, definition) {
   if (typeof module !== 'undefined' && module.exports) module.exports = definition();else if (true) !(__WEBPACK_AMD_DEFINE_FACTORY__ = (definition),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
 				__WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else context[name] = definition();
-})('urljoin', undefined, function () {
+})('urljoin', this, function () {
 
   function startsWith(str, searchString) {
     return str.substr(0, searchString.length) === searchString;
   }
 
-  function normalize(str) {
+  function normalize(str, options) {
 
     if (startsWith(str, 'file://')) {
 
@@ -6866,7 +6861,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     var input = arguments;
     var options = {};
 
-    if (_typeof(arguments[0]) === 'object') {
+    if (typeof arguments[0] === 'object') {
       // new syntax with array and options
       input = arguments[0];
       options = arguments[1] || {};
@@ -24539,6 +24534,22 @@ var _util = __webpack_require__(12);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
+  /*
+  * Get information about the current extension
+  */
+  extensionGetSelf: function extensionGetSelf(cb) {
+    var requestOptions = {
+      method: "GET",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self"),
+      headers: {
+        Authorization: "Bearer " + this._accessToken,
+        "Content-Type": "application/json"
+      }
+    };
+    return this.makeRequest(requestOptions, cb);
+  },
+
+
   /**
    * Send an Event to the extension. This does not require
    * and auth token because the endpoint is meant for 3rd
