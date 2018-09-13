@@ -191,6 +191,28 @@ describe("Tasks", function() {
       testTasks.push(res.task);
     });
 
+    it.only("uses sendEmail helper to both create an email and a task ", async function() {
+      const res = await gopherClient.sendEmail({
+        command: process.env.EXAMPLE_COMMAND,
+        to: "test@exampletask.com",
+        cc: [],
+        bcc: [],
+        from: "test@example.com",
+        subject: "Test1",
+        body: `<h1>This is a test</h1>`,
+        verbose: 1 // useful for testing only (probably)
+      });
+      expect(res).to.be.an("object");
+      expect(res.task.completed).to.be.true;
+      expect(res.messages).to.be.instanceof(Array);
+      expect(res.messages[0].to[0]).to.equal("test@exampletask.com");
+      expect(res.messages[0].html).to.contain("This is a test");
+      expect(res.task.reference_email.to[0]).to.equal("test@exampletask.com");
+      expect(res.task.reference_email.html).to.contain("This is a test");
+      expect(res.statusCode).to.equal(201);
+      testTasks.push(res.task);
+    });
+
     it("should get a list of tasks with async/await", async () => {
       let res = await gopherClient.getTasks();
       expect(res.statusCode).to.equal(200);

@@ -22481,6 +22481,62 @@ exports.default = {
   },
 
 
+  /**
+   * Create Task and Send Email
+   * This creates a gopher task and sends an email. It's a wrapper
+   * for createTask with opinionated settings for just sending email.
+   *
+   * @param {object} email
+   * @param {object}
+   * @example
+     const res = await gopherClient.sendEmail({
+        command: command@my-ext.gopher.email,
+        to: "test@exampletask.com",
+        cc: [],
+        bcc: [],
+        from: "test@example.com",
+        subject: "Test1",
+        body: [
+          {
+            type: "html",
+            text: "<h1>This is a test</h1>"
+          }
+        ]
+      });
+   */
+  sendEmail: function sendEmail(email, cb) {
+    var taskParams = {
+      verbose: !!email.verbose,
+      suppress_webhook: true,
+      task: {
+        command: email.command,
+        trigger_timeformat: email.trigger_timeformat || null,
+        completed: !email.trigger_timeformat, // automatically complete
+        reference_email: {
+          to: email.to,
+          cc: email.cc,
+          bcc: email.bcc,
+          subject: email.subject,
+          html: email.body
+        }
+      },
+      send_messages: [{
+        type: "email",
+        to: email.to,
+        cc: email.cc,
+        bcc: email.bcc,
+        subject: email.subject,
+        body: [{
+          type: "html",
+          text: email.body
+        }]
+      }]
+    };
+
+    return this.createTask(taskParams, cb);
+  },
+
+
   /*
     * Update A Gopher Task
     * Used to save data against the task, update content, followup time and more
@@ -24535,8 +24591,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
   /*
-  * Get information about the current extension
-  */
+   * Get information about the current extension
+   */
   extensionGetSelf: function extensionGetSelf(cb) {
     var requestOptions = {
       method: "GET",

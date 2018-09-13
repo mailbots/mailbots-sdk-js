@@ -29,8 +29,7 @@
     "build:dist": "rimraf dist && SERVER=false webpack",
     "build:docs": "documentation -c documentation.yml -f html build src/* -o docs && cd docs && now --static && echo '\n Run: \n\n now alias [pjt-url] gopherhq-js.gopheremail.com\n'",
     "dev:docs": "documentation -c documentation.yml serve --watch src/* ",
-    "prepublishOnly": "npm run build",
-    "prepush": "npm test"
+    "prepublishOnly": "npm run build"
   },
   "now": {
     "alias": "gopherhq-js.gopheremail.com"

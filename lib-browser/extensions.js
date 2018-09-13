@@ -20,8 +20,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
   /*
-  * Get information about the current extension
-  */
+   * Get information about the current extension
+   */
   extensionGetSelf: function extensionGetSelf(cb) {
     var requestOptions = {
       method: "GET",
