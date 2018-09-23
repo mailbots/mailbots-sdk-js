@@ -42,6 +42,8 @@ export default {
 
   /*
    * Fetch A Single Gopher Task
+   * Passing ?verbose=1 fires a webhook to the extnesion and fetches a rendered 
+   * HTML email preview of the task
    */
   getTask(params, cb) {
     if (typeof params.id != "number")
@@ -62,14 +64,16 @@ export default {
    * Create A Gopher Task
    * Create a new Gopher Task.
    * @param {object}
-   * @param {boolean} params.suppress_webhook  Prevent Gopher from firing the task.created webhook
+   * @param {boolean} params.webhook  Force Gopher to fire the task.created webhook and use its response
    * @param {object} params.verbose Return rendered output of HTML email
+   * @param {object} params.suppress_email Prevent the API call from sending an email even if it has "send_messages"
    * @param {Task} params.task  Gopher Task object
    *
    * @example
    * const res = await gopherClient.createTask(
    *     {
-   *       suppress_webhook: true,
+   *       webhook: false,
+   *       suppress_email: true,
    *       verbose: 1,
    *       task: {
    *         command: process.env.EXAMPLE_COMMAND
@@ -135,9 +139,27 @@ export default {
       });
    */
   sendEmail(email, cb) {
+    let emailBody;
+    let referenceEmailBody;
+    if (typeof email.body === "string") {
+      referenceEmailBody = email.body;
+      emailBody = [
+        {
+          type: "html",
+          text: email.body
+        }
+      ];
+    } else if (email.body instanceof Array) {
+      referenceEmailBody = "";
+      emailBody = email.body;
+    } else {
+      console.error(
+        `Email body should be only a string or array, not  ${typeof email.body}`
+      );
+    }
     const taskParams = {
       verbose: !!email.verbose,
-      suppress_webhook: true,
+      webhook: false,
       task: {
         command: email.command,
         trigger_timeformat: email.trigger_timeformat || null,
@@ -147,7 +169,7 @@ export default {
           cc: email.cc,
           bcc: email.bcc,
           subject: email.subject,
-          html: email.body
+          html: referenceEmailBody
         }
       },
       send_messages: [
@@ -157,12 +179,7 @@ export default {
           cc: email.cc,
           bcc: email.bcc,
           subject: email.subject,
-          body: [
-            {
-              type: "html",
-              text: email.body
-            }
-          ]
+          body: emailBody
         }
       ]
     };
@@ -170,10 +187,12 @@ export default {
     return this.createTask(taskParams, cb);
   },
 
-  /*
-    * Update A Gopher Task
-    * Used to save data against the task, update content, followup time and more
-    */
+  /**
+   * Update A Gopher Task
+   * Used to save data against the task, update content, followup time and more
+   * @param {object}
+   * @param {string} params.webhook - Setting to tru fires `task.updated` webhook
+   */
   updateTask(params, cb) {
     if (!params.task.id) throw "taskid is required to update a task";
     const requestOptions = {
@@ -231,6 +250,8 @@ export default {
 
   /**
    * Trigger a Gopher Task
+   * @param {object} params
+   * @param {boolean} params.verbose Fire webhook and render HTML email response
    */
   triggerTask(params, cb) {
     if (!params.trigger_url) {
