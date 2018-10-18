@@ -33,11 +33,11 @@ describe("Extensions", function() {
     });
   });
 
-  it("should send an extension event", done => {
+  it.only("should send an extension event", done => {
     gopherClient
       .sendEvent({
         event_url: process.env.EXAMPLE_EXTENSION_EVENT_URL,
-        type: "test.event",
+        type: "github.issue.opened",
         payload: { foo: "bar" }
       })
       .then(res => {

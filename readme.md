@@ -47,14 +47,15 @@ const res = gopherClient.createTask(task)
 const res = await gopherClient.createTask(task); //in async function
 ```
 
-* `YOUR_EXTENSIONS_CLIENT_ID` – Find this in the developer portal.
-* `YOUR_OAUTH2_ACCESS_TOKEN` - Log in to your extension and copy the value from the `gopherToken` cookie using something like [EditThisCookie](http://www.editthiscookie.com/) or the Chrome dev tools.
+- `YOUR_EXTENSIONS_CLIENT_ID` – Find this in the developer portal.
+- `YOUR_OAUTH2_ACCESS_TOKEN` - Log in to your extension and copy the value from the `gopherToken` cookie using something like [EditThisCookie](http://www.editthiscookie.com/) or the Chrome dev tools.
 
-## Examples
+## References and Examples
 
-* See the `test` directory for usage examples.
-* [gopher-express](https://github.com/gopherhq/gopher-express), an open source Gopher Extension
-* Create a new extension and [remix Gopher Express on Glitch](https://glitch.com/edit/#!/gopher-express) to start prototyping right away.
+- [Reference docs](https://gopherhq-js.gopheremail.com/)
+- See the `test` directory for usage examples.
+- [gopher-express](https://github.com/gopherhq/gopher-express), an open source Gopher Extension
+- Create a new extension and [remix Gopher Express on Glitch](https://glitch.com/edit/#!/gopher-express) to start prototyping right away.
 
 ## Debugging
 
@@ -64,9 +65,9 @@ Set the env variable `DEBUG=gopherhq` to log debugging information.
 
 Contributions are welcome. Feel free to send us an email help+gopher@humans.fut.io or create a PR. A few notes:
 
-* `npm t` will watch for changes and re-run tests on save, letting you make rapid progress.
-* See comment in `gopherTestUtils.js` about mocking network requests.
-* Make sure to run `npm run build` to rebuild the lib.
+- `npm t` will watch for changes and re-run tests on save, letting you make rapid progress.
+- See comment in `gopherTestUtils.js` about mocking network requests.
+- Make sure to run `npm run build` to rebuild the lib.
 
 ## License
 

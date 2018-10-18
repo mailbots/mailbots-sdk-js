@@ -3,8 +3,13 @@ import urljoin from "url-join";
 import { _makeRequest, _checkParam, debug } from "./util";
 
 export default {
-  /*
-   * Get information about the current extension
+  /**
+   * Get information about the extension that corresponds with user's Bearer token
+   * (ie, most likely your extension).
+   * @param {function} [cb] Optional callback
+   * @return {Promise}
+   *
+   * @example const res = await gopherClient.extensionGetSelf();
    */
   extensionGetSelf(cb) {
     const requestOptions = {

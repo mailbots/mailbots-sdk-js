@@ -8,6 +8,7 @@ import { _makeRequest, _checkParam, debug } from "./util";
  * @param {function} [cb]  Optional callback function
  * @param {boolean} params.suppress_webhook  Prevent Gopher from firing the task.viewed webhook
  * @param {boolean} params.status Retrieve completed or open tasks
+ * @return {Promise}
  *
  * @example
  * // Get all open tasks, sorted by due date
@@ -40,10 +41,17 @@ function getTasks(params, cb) {
 export default {
   getTasks,
 
-  /*
-   * Fetch A Single Gopher Task
-   * Passing ?verbose=1 fires a webhook to the extnesion and fetches a rendered 
+  /**
+   * Get a Gopher task
+   * Passing ?verbose=1 fires a webhook to the extnesion and fetches a rendered
    * HTML email preview of the task
+   * @param {object} params - request params
+   * @param {number} params.id - taskid
+   * @param {boolean} params.verbose - Fires webhook to extension, returns rendered HTML emails
+   * in a "messages" array if the extension makes these available in the task.viewed webhook resopnse.
+   * @return {Promise}
+   *
+   * @example const res = await getTask({id: 123});
    */
   getTask(params, cb) {
     if (typeof params.id != "number")
@@ -61,13 +69,13 @@ export default {
   },
 
   /**
-   * Create A Gopher Task
    * Create a new Gopher Task.
    * @param {object}
    * @param {boolean} params.webhook  Force Gopher to fire the task.created webhook and use its response
    * @param {object} params.verbose Return rendered output of HTML email
    * @param {object} params.suppress_email Prevent the API call from sending an email even if it has "send_messages"
    * @param {Task} params.task  Gopher Task object
+   * @return {Promise}
    *
    * @example
    * const res = await gopherClient.createTask(
@@ -116,27 +124,27 @@ export default {
   },
 
   /**
-   * Create Task and Send Email
+   * Send Email and automatically create a Task
    * This creates a gopher task and sends an email. It's a wrapper
    * for createTask with opinionated settings for just sending email.
    *
-   * @param {object} email
-   * @param {object}
+   * @param {object} email - Email object. `command` and one recipient is required.
+   * @return {Promise}
    * @example
-     const res = await gopherClient.sendEmail({
-        command: command@my-ext.gopher.email,
-        to: "test@exampletask.com",
-        cc: [],
-        bcc: [],
-        from: "test@example.com",
-        subject: "Test1",
-        body: [
-          {
-            type: "html",
-            text: "<h1>This is a test</h1>"
-          }
-        ]
-      });
+   *  const res = await gopherClient.sendEmail({
+   *     command: command@my-ext.gopher.email,
+   *     to: "test@exampletask.com",
+   *     cc: [],
+   *     bcc: [],
+   *     from: "test@example.com",
+   *     subject: "Test1",
+   *     body: [
+   *       {
+   *         type: "html",
+   *         text: "<h1>This is a test</h1>"
+   *       }
+   *     ]
+   *   });
    */
   sendEmail(email, cb) {
     let emailBody;
@@ -191,7 +199,19 @@ export default {
    * Update A Gopher Task
    * Used to save data against the task, update content, followup time and more
    * @param {object}
-   * @param {string} params.webhook - Setting to tru fires `task.updated` webhook
+   * @param {object} params.task - Task object (see Create Task)
+   * @param {number} params.task.id - Taskid being updated
+   * @param {string} [params.webhook] - Setting to true fires `task.updated` webhook
+   * @return {Promise}
+   *
+   * @example
+   *  const res = await gopherClient.updateTask({
+   *    task: {
+   *     id: 1234,
+   *     reference_email: {
+   *       to: "newRecipient@exampletask.com"
+   *     }
+   *   }});
    */
   updateTask(params, cb) {
     if (!params.task.id) throw "taskid is required to update a task";
@@ -208,9 +228,15 @@ export default {
     return _makeRequest(requestOptions, cb);
   },
 
-  /*
-    * Archive A Gopher Task
-    */
+  /**
+   * Archive A Gopher Task
+   * @param {number} params - Arguments
+   * @param {number} params.task - Task object
+   * @param {number} params.task.id - Taskid to complete
+   * @return {Promise}
+   *
+   * @example
+   */
   completeTask(params, cb) {
     if (!params.task.id) throw "taskid is required to archive a task";
     const requestOptions = {
@@ -226,9 +252,13 @@ export default {
     return _makeRequest(requestOptions, cb);
   },
 
-  /*
-    * Permanently Delete A Gopher Task
-    */
+  /**
+   * Permanently Delete A Gopher Task
+   * @param {object} params - Taskid to delete
+   * @param {object} params.task - Task object
+   * @param {number} params.task.id - Taskid to delete
+   * @return {Promise}
+   */
   deleteTask(params, cb) {
     if (!params.task.id) throw "taskid is required to delete a task";
     const requestOptions = {
@@ -251,7 +281,9 @@ export default {
   /**
    * Trigger a Gopher Task
    * @param {object} params
-   * @param {boolean} params.verbose Fire webhook and render HTML email response
+   * @param {boolean} params.trigger_url Trigger URL of the task to trigger (get from task object)
+   * @param {boolean} [params.verbose] Fire webhook and render HTML email response
+   * @return {Promise}
    */
   triggerTask(params, cb) {
     if (!params.trigger_url) {
@@ -282,8 +314,12 @@ export default {
     return _makeRequest(requestOptions);
   },
 
-  /*
+  /**
    * Resolve Natural Time Format (ex: {naturaltime}@ext.gopher.email)
+   * @param {object} params - params object
+   * @param {string} params.format - Time format to check (ex: 3days)
+   * @param {string} params.timezone - IANA timezone designation (https://www.wikiwand.com/en/List_of_tz_database_time_zones) ex: "America/Los_Angeles"
+   * @return {Promise}
    */
   naturalTime(params, cb) {
     const requestOptions = {
@@ -301,8 +337,13 @@ export default {
     return _makeRequest(requestOptions, cb);
   },
 
-  /*
-   * Dispatch a task action. Equivalent to sending an action email.
+  /**
+   * Dispatch an email-based action for a task. (Equivalent to sending an action email.)
+   * @param {object} params
+   * @param {string} params.action - The action string
+   * @param {object} params.reference_email - The email that would be sent as the action email
+   * @param {boolean} [params.verbose] - Include rendered HTML email contents in API response
+   * @return {Promise}
    */
   sendAction(params, cb) {
     let qs = params.verbose ? "?verbose=1" : "";

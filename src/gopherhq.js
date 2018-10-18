@@ -82,8 +82,11 @@ class Gopher {
     });
   }
 
-  /*
-   * Expose for use by inherited classes (ex: GopherAdminClient)
+  /**
+   * Low-level function to make authenticated request to Gopher API
+   * @param {object} requestOptions - Axiox-compatible request ooptions
+   * @param {function} [cb] - Optional callback.
+   * @return {Promise}
    */
   makeRequest(requestOptions, cb) {
     return _makeRequest(requestOptions, cb);

@@ -19,8 +19,13 @@ var _util = require("./util");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-  /*
-   * Get information about the current extension
+  /**
+   * Get information about the extension that corresponds with user's Bearer token
+   * (ie, most likely your extension).
+   * @param {function} [cb] Optional callback
+   * @return {Promise}
+   *
+   * @example const res = await gopherClient.extensionGetSelf();
    */
   extensionGetSelf: function extensionGetSelf(cb) {
     var requestOptions = {

@@ -3,9 +3,15 @@ import timestamp from "unix-timestamp";
 import crypto from "crypto";
 
 module.exports = {
-  /*
-   *  Validates webhook signature. Set verifyAge to false when testing / mocking HTTP requests
-   *  (Node only) - The core API posts webhooks to extensions as one of the main functions. This is obviously server-side only.
+  /**
+   * Validate webhook signature.
+   * Set verifyAge to false when testing / mocking HTTP requests. (Server side only)
+   * @param {string} webhookSignature
+   * @param {number} webhookTimestamp - Unix Timestamp of webhook.  Used to prevent reply attack
+   * @param {string} rawBody - Unprocessed http post body
+   * @param {boolean} [verifyAge] - Use for automated testing
+   * @return {boolean} - Pass / fail webhook validation
+   *
    */
   validateWebhook(
     webhookSignature,

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>gopherhq 0.0.18-beta | Documentation</title>
+  <title>gopherhq 0.0.22-beta | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>gopherhq</h3>
-          <div class='mb1'><code>0.0.18-beta</code></div>
+          <div class='mb1'><code>0.0.22-beta</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -36,9 +36,9 @@
               
                 
                 <li><a
-                  href='#triggerextension'
+                  href='#extensiongetself'
                   class="">
-                  triggerExtension
+                  extensionGetSelf
                   
                 </a>
                 
@@ -46,9 +46,9 @@
               
                 
                 <li><a
-                  href='#broadcastevent'
+                  href='#sendevent'
                   class="">
-                  broadcastEvent
+                  sendEvent
                   
                 </a>
                 
@@ -76,6 +76,16 @@
               
                 
                 <li><a
+                  href='#makerequest'
+                  class="">
+                  makeRequest
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#getlogs'
                   class="">
                   getLogs
@@ -96,6 +106,16 @@
               
                 
                 <li><a
+                  href='#gettask'
+                  class="">
+                  getTask
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#createtask'
                   class="">
                   createTask
@@ -106,9 +126,69 @@
               
                 
                 <li><a
+                  href='#sendemail'
+                  class="">
+                  sendEmail
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updatetask'
+                  class="">
+                  updateTask
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#completetask'
+                  class="">
+                  completeTask
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#deletetask'
+                  class="">
+                  deleteTask
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#triggertask'
                   class="">
                   triggerTask
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#naturaltime'
+                  class="">
+                  naturalTime
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#sendaction'
+                  class="">
+                  sendAction
                   
                 </a>
                 
@@ -129,6 +209,16 @@
                   href='#invite'
                   class="">
                   invite
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#validatewebhook'
+                  class="">
+                  validateWebhook
                   
                 </a>
                 
@@ -217,20 +307,101 @@ and the <a href="https://docs.gopher.email">Gopher API Docs</a> for more informa
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='triggerextension'>
-      triggerExtension
+    <h3 class='fl m0' id='extensiongetself'>
+      extensionGetSelf
     </h3>
     
     
   </div>
   
 
-  <p>Send a webhook event to your extension.
-For params and details, see <a href="https://postman.gopheremail.com/#30da6c1c-f174-4222-9e24-d0aed544d71d">extension triggering API docs</a></p>
+  <p>Get information about the extension that corresponds with user's Bearer token
+(ie, most likely your extension).</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>triggerExtension(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+    <div class='pre p1 fill-light mt0'>extensionGetSelf(cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
+	    Optional callback
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.extensionGetSelf();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sendevent'>
+      sendEvent
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Send an Event to the extension. This does not require
+and auth token because the endpoint is meant for 3rd
+party services. Ex: issue created in Github, or an
+email response or support ticket received. The Gopher
+Extension can listen for events, act on tasks or
+create or delete tasks based on events.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>sendEvent(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
    
   
   
@@ -284,86 +455,8 @@ For params and details, see <a href="https://postman.gopheremail.com/#30da6c1c-f
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.triggerExtension({<span class="hljs-attr">trigger_url</span>: <span class="hljs-string">"[unique_trigger_url]"</span>});</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.sendEvent({<span class="hljs-attr">type</span>: <span class="hljs-string">'event.type'</span>, <span class="hljs-attr">payload</span>: {<span class="hljs-string">"foo"</span>, <span class="hljs-string">"bar"</span>}, <span class="hljs-attr">event_url</span>: <span class="hljs-string">"[unique_event_url]"</span>});</pre>
     
-  
-
-  
-
-  
-
-  
-</section>
-
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='broadcastevent'>
-      broadcastEvent
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Broadcast event.</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>broadcastEvent(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
-  
-  
-
-  <div>Deprecated: This is deprecated.
-</div>
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
-        
-
-      
-    
-  
-
-  
-
   
 
   
@@ -534,19 +627,19 @@ For params and details, see <a href="https://postman.gopheremail.com/#f98b6862-9
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='getlogs'>
-      getLogs
+    <h3 class='fl m0' id='makerequest'>
+      makeRequest
     </h3>
     
     
   </div>
   
 
-  <p>Retrieve logged in user's extension logs</p>
+  <p>Low-level function to make authenticated request to Gopher API</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>getLogs(filter: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+    <div class='pre p1 fill-light mt0'>makeRequest(requestOptions: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
    
   
   
@@ -564,7 +657,87 @@ For params and details, see <a href="https://postman.gopheremail.com/#f98b6862-9
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>filter</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+            <span class='code bold'>requestOptions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    Axiox-compatible request ooptions
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
+	    Optional callback.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getlogs'>
+      getLogs
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Retrieve logged-in user's extension logs
+For params and details, see <a href="https://postman.gopheremail.com/#7f9bfa6c-a673-4104-9be9-1ada487c300e">extension saving data API docs</a></p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getLogs(filter: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>filter</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    Filter. Ex: 
 <code>{type: ['api', 'submit_failed'], extension: ['subdomain'], since: 1517948366, num: 10}</code>
 )
@@ -575,9 +748,8 @@ For params and details, see <a href="https://postman.gopheremail.com/#f98b6862-9
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>cb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
-	    Optional error-first callback
-
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
           </div>
           
         </div>
@@ -628,7 +800,7 @@ For params and details, see <a href="https://postman.gopheremail.com/#f98b6862-9
 
  
   
-    <div class='pre p1 fill-light mt0'>getTasks(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</div>
+    <div class='pre p1 fill-light mt0'>getTasks(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
    
   
   
@@ -702,6 +874,14 @@ For params and details, see <a href="https://postman.gopheremail.com/#f98b6862-9
   
 
   
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
 
   
 
@@ -736,6 +916,127 @@ gopherClient.getTasks({ <span class="hljs-attr">limit</span>: <span class="hljs-
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='gettask'>
+      getTask
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Get a Gopher task
+Passing ?verbose=1 fires a webhook to the extnesion and fetches a rendered
+HTML email preview of the task</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getTask(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    request params
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.id</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+  </td>
+  <td class='break-word'><span>taskid
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.verbose</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+  </td>
+  <td class='break-word'><span>Fires webhook to extension, returns rendered HTML emails
+in a "messages" array if the extension makes these available in the task.viewed webhook resopnse.
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> getTask({<span class="hljs-attr">id</span>: <span class="hljs-number">123</span>});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='createtask'>
       createTask
     </h3>
@@ -744,12 +1045,11 @@ gopherClient.getTasks({ <span class="hljs-attr">limit</span>: <span class="hljs-
   </div>
   
 
-  <p>Create A Gopher Task
-Create a new Gopher Task.</p>
+  <p>Create a new Gopher Task.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>createTask(params: any, cb: any, object: any)</div>
+    <div class='pre p1 fill-light mt0'>createTask(params: any, cb: any, object: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
    
   
   
@@ -795,6 +1095,14 @@ Create a new Gopher Task.</p>
   
 
   
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
 
   
 
@@ -804,7 +1112,8 @@ Create a new Gopher Task.</p>
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.createTask(
     {
-      <span class="hljs-attr">suppress_webhook</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">webhook</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">suppress_email</span>: <span class="hljs-literal">true</span>,
       <span class="hljs-attr">verbose</span>: <span class="hljs-number">1</span>,
       <span class="hljs-attr">task</span>: {
         <span class="hljs-attr">command</span>: process.env.EXAMPLE_COMMAND
@@ -840,19 +1149,121 @@ Create a new Gopher Task.</p>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='triggertask'>
-      triggerTask
+    <h3 class='fl m0' id='sendemail'>
+      sendEmail
     </h3>
     
     
   </div>
   
 
-  <p>Trigger a Gopher Task</p>
+  <p>Send Email and automatically create a Task
+This creates a gopher task and sends an email. It's a wrapper
+for createTask with opinionated settings for just sending email.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>triggerTask(params: any, cb: any)</div>
+    <div class='pre p1 fill-light mt0'>sendEmail(email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    Email object. 
+<code>command</code>
+ and one recipient is required.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.sendEmail({
+    <span class="hljs-attr">command</span>: command@my-ext.gopher.email,
+    <span class="hljs-attr">to</span>: <span class="hljs-string">"test@exampletask.com"</span>,
+    <span class="hljs-attr">cc</span>: [],
+    <span class="hljs-attr">bcc</span>: [],
+    <span class="hljs-attr">from</span>: <span class="hljs-string">"test@example.com"</span>,
+    <span class="hljs-attr">subject</span>: <span class="hljs-string">"Test1"</span>,
+    <span class="hljs-attr">body</span>: [
+      {
+        <span class="hljs-attr">type</span>: <span class="hljs-string">"html"</span>,
+        <span class="hljs-attr">text</span>: <span class="hljs-string">"&lt;h1&gt;This is a test&lt;/h1&gt;"</span>
+      }
+    ]
+  });</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updatetask'>
+      updateTask
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Update A Gopher Task
+Used to save data against the task, update content, followup time and more</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>updateTask(params: any, cb: any, object: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
    
   
   
@@ -884,11 +1295,612 @@ Create a new Gopher Task.</p>
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>object</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
     </div>
   
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.updateTask({
+   <span class="hljs-attr">task</span>: {
+    <span class="hljs-attr">id</span>: <span class="hljs-number">1234</span>,
+    <span class="hljs-attr">reference_email</span>: {
+      <span class="hljs-attr">to</span>: <span class="hljs-string">"newRecipient@exampletask.com"</span>
+    }
+  }});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='completetask'>
+      completeTask
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Archive A Gopher Task</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>completeTask(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Arguments
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.task</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+  </td>
+  <td class='break-word'><span>Task object
+</span></td>
+</tr>
+
+  
+    <tr>
+  <td class='break-word'><span class='code bold'>params.task.id</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+  </td>
+  <td class='break-word'><span>Taskid to complete
+</span></td>
+</tr>
+
+
+  
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='deletetask'>
+      deleteTask
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Permanently Delete A Gopher Task</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>deleteTask(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    Taskid to delete
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.task</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>
+  </td>
+  <td class='break-word'><span>Task object
+</span></td>
+</tr>
+
+  
+    <tr>
+  <td class='break-word'><span class='code bold'>params.task.id</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+  </td>
+  <td class='break-word'><span>Taskid to delete
+</span></td>
+</tr>
+
+
+  
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='triggertask'>
+      triggerTask
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Trigger a Gopher Task</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>triggerTask(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.trigger_url</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+  </td>
+  <td class='break-word'><span>Trigger URL of the task to trigger (get from task object)
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.verbose</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
+  </td>
+  <td class='break-word'><span>Fire webhook and render HTML email response
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='naturaltime'>
+      naturalTime
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Resolve Natural Time Format (ex: {naturaltime}@ext.gopher.email)</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>naturalTime(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    params object
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.format</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>Time format to check (ex: 3days)
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.timezone</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>IANA timezone designation (
+<a href="https://www.wikiwand.com/en/List_of_tz_database_time_zones">https://www.wikiwand.com/en/List_of_tz_database_time_zones</a>
+) ex: "America/Los_Angeles"
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sendaction'>
+      sendAction
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Dispatch an email-based action for a task. (Equivalent to sending an action email.)</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>sendAction(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.action</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>The action string
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.reference_email</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>
+  </td>
+  <td class='break-word'><span>The email that would be sent as the action email
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.verbose</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
+  </td>
+  <td class='break-word'><span>Include rendered HTML email contents in API response
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
   
 
   
@@ -1025,6 +2037,104 @@ email address.</p>
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='validatewebhook'>
+      validateWebhook
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Validate webhook signature.
+Set verifyAge to false when testing / mocking HTTP requests. (Server side only)</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>validateWebhook(webhookSignature: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, webhookTimestamp: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, rawBody: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, verifyAge: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>webhookSignature</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>webhookTimestamp</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Unix Timestamp of webhook.  Used to prevent reply attack
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rawBody</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Unprocessed http post body
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>verifyAge</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
+            = <code>true</code>)</code>
+	    Use for automated testing
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        Pass / fail webhook validation
+
+      
+    
   
 
   
