@@ -132,7 +132,7 @@ export default {
    * @return {Promise}
    * @example
    *  const res = await gopherClient.sendEmail({
-   *     command: command@my-ext.gopher.email,
+   *     command: "command@my-ext.gopher.email", // must be your extension's domain
    *     to: "test@exampletask.com",
    *     cc: [],
    *     bcc: [],

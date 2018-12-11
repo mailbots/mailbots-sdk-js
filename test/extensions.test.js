@@ -1,9 +1,6 @@
 import {
   getGopherClient,
-  getExampleTask,
-  getRandomString,
-  beforeEachTest,
-  testConfig
+  getRandomString
 } from "./testUtils/gopherTestUtils";
 import "./testUtils/nockMocks";
 import { expect } from "chai";
@@ -33,7 +30,7 @@ describe("Extensions", function() {
     });
   });
 
-  it.only("should send an extension event", done => {
+  it("should send an extension event", done => {
     gopherClient
       .sendEvent({
         event_url: process.env.EXAMPLE_EXTENSION_EVENT_URL,

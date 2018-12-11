@@ -1,7 +1,7 @@
 {
-  "name": "gopherhq",
-  "version": "0.0.22-beta",
-  "description": "Gopher Email API client for the browser and node.js",
+  "name": "@mailbots/mailbots-js",
+  "version": "0.0.23-beta",
+  "description": "MailBots API client for the node.js and the browser",
   "repository": {
     "type": "git",
     "url": "https://github.com/gopherhq/gopherhq-js.git"
@@ -19,9 +19,10 @@
   ],
   "scripts": {
     "test": "NOCK_OFF=true SERVER=true mocha --require babel-register --require babel-polyfill",
-    "test:watch": "npm t -- -w",
-    "test:inspect": "npm t -- -w --inspect-brk",
-    "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t",
+    "test:fast": "echo '\n\n⚠️ Not all tests run in fast-mode\n\n'; sleep .1; NOCK_OFF=false SERVER=true mocha --require babel-register --require babel-polyfill",
+    "test:watch": "npm run test:fast -- -w",
+    "test:inspect": "npm t -- --inspect-brk -w",
+    "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t -- --inspect-brk",
     "build": "npm run build:node && npm run build:browser && npm run build:dist",
     "build:watch": "concurrently \"npm run build:node -- --watch\" \"npm run build:browser -- --watch\"",
     "build:node": "rimraf lib-node && SERVER=true babel --out-dir lib-node src",
@@ -59,7 +60,7 @@
     "dotenv": "4.0.0",
     "husky": "0.14.3",
     "mocha": "5.2.0",
-    "nock": "9.6.1",
+    "nock": "10.0.4",
     "node-libs-browser": "2.1.0",
     "rimraf": "2.6.2",
     "webpack": "3.10.0"

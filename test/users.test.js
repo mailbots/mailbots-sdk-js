@@ -1,7 +1,6 @@
 import {
   getGopherClient,
   getExampleTask,
-  beforeEachTest,
   testConfig
 } from "./testUtils/gopherTestUtils";
 import "./testUtils/nockMocks";

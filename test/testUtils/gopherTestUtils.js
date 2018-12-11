@@ -14,14 +14,15 @@ let gopherClient = {};
 /**
  * Simulate API Requests
  * We use Nock to mock network requests to make our tests speedy.
- * By default this is on, so testing the API never actually hits Gopher.
  * To run tests against an instance of Gopher and rebuild the mocks:
  *   1. Modify your .env to point to an install of Gopher. (Copy access token from cookie.)
- *   2. `npm test:build` This will delete and rebuild nockMocks.js
+ *   2. `npm test:rebuild` This will delete and rebuild nockMocks.js
  */
 
-function recordNockMocks() {
+exports.allNocks = []; // store all mocked tests
+function recordNockMocks({append = false} = {}) {
   let mockRequestsFile = join(__dirname, "./nockMocks.js");
+
   function customNockLogger(output) {
     fs.appendFileSync(mockRequestsFile, output, (err, success) => {
       if (err) console.log("Error writing to network mock file:", err);
@@ -29,8 +30,28 @@ function recordNockMocks() {
     console.log("request added to nock mocks...");
   }
 
-  if (fs.existsSync(mockRequestsFile)) {
+  // Store all nock requests in this var. 
+  // hooks.test.js has a global "after" hook that 
+  // de-duplicates them and writes them to a file. 
+  // A necessary optimization to prevent painsully slow
+  // execution and crashing
+  function storeUniqueNocks(newNock) {
+    // Is this nock already in the array?
+    function nockAlreadyExists(existingNock) {
+      return JSON.stringify(existingNock) ===  JSON.stringify(newNock)
+    }
+
+    if(!exports.allNocks.find(nockAlreadyExists)) {
+      console.log("addingNock");
+      exports.allNocks.push(newNock);
+    } else {
+      console.log("skipping duplicate nock");
+    }
+  }
+
+  if (fs.existsSync(mockRequestsFile) && !append) {
     fs.unlinkSync(mockRequestsFile);
+    console.log('DELETING NOCK FILE');
   }
   fs.appendFileSync(
     mockRequestsFile,
@@ -39,8 +60,13 @@ function recordNockMocks() {
     \n//pass through unhandled requests
     \nnock("http://local.gopher.email:80", { allowUnmocked: true }).get("/fdsa").reply(200, 'ok');` // allow unmocked requests to pass through
   );
-  nock.recorder.rec({ use_separator: false, logging: customNockLogger });
+
+  // nock.recorder.rec({ use_separator: false, logging: customNockLogger });
+  nock.recorder.rec({ use_separator: false, output_objects: true, logging: storeUniqueNocks });
+  
 }
+
+module.exports.recordNockMocks = recordNockMocks;
 
 if (process.env.REBUILD_MOCKS) {
   recordNockMocks(); // regenerate tests/nockMocks.js. TODO: Better switch to regenerate test. Note that user email address must also be new.
@@ -113,6 +139,11 @@ module.exports.sleep = function sleep(time) {
 
 module.exports.beforeEachTest = async function() {
   if (process.env.THROTTLE) await module.exports.sleep(500);
+
+  // @TODO Place this in the afterAll() mocha hook
+  if (!process.env.NOCK_OFF) {
+    console.log('⚠️ Warning: Some test cases were skipped. Run npm t for full tests\n\n');
+  }
 };
 
 // make sure to bind 'this'. ex: testConfig.call(this)

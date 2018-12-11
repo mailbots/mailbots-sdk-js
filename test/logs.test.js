@@ -46,14 +46,18 @@ describe("Logs", function () {
     expect(res.logs.length).to.equal(10);
   });
 
-  it('only gets recent logs', async () => {
+  it('only gets recent logs', async function () {
+    // Dynamic date breaks mocked network requests
+    if (!process.env.NOCK_OFF) {
+      this.skip();
+    }
     let since = Math.round(Date.now() / 1000 - (60 * 60 * 24 * 60));
     let res = await gopherClient.getLogs({ since });
     expect(res.logs).to.be.an("array");
     let allDates = res.logs.map(log => new Date(log.date).getTime());
     let checkResults = allDates.every((date) => date > since * 1000)
     expect(checkResults).to.be.true;
-  });
+  }); 
 
   it("should get user logs of various types", async () => {
     let res = await gopherClient.getLogs({

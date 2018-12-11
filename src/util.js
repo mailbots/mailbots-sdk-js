@@ -31,7 +31,7 @@ export const _makeRequest = (requestOptions, cb) => {
       let errorResponse =
         friendlyMessage || err.statusText || err.message || err.statusCode;
       if (cb) cb(new Error(errorResponse));
-      console.error(errorResponse);
+      debug(errorResponse);
       return Promise.reject(new Error(errorResponse));
     });
 };
