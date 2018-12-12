@@ -1,19 +1,17 @@
 import {
-  getGopherClient,
+   getMailBotsClient,
   signWebhook,
   beforeEachTest,
   testConfig
-} from "./testUtils/gopherTestUtils";
+} from "./testUtils/mbTestUtils";
 import "./testUtils/nockMocks";
-import mocha from "mocha";
 import { expect } from "chai";
-import Gopher from "../src/gopherhq";
 import timestamp from "unix-timestamp";
 
 timestamp.round = true;
-const debug = require("debug")("gopherhq");
+const debug = require("debug")("mailbots-sdk");
 
-let gopherClient = getGopherClient();
+let mbClient =  getMailBotsClient();
 
 describe("Webhooks", function() {
   testConfig.call(this);
@@ -25,7 +23,7 @@ describe("Webhooks", function() {
     let verifyAge = true;
     let webhookSignature = signWebhook({ rawBody, webhookTimestamp });
 
-    let webhookVaild = gopherClient.validateWebhook(
+    let webhookVaild = mbClient.validateWebhook(
       webhookSignature,
       webhookTimestamp,
       rawBody
@@ -40,7 +38,7 @@ describe("Webhooks", function() {
     let verifyAge = true;
     let webhookSignature = signWebhook({ rawBody, webhookTimestamp });
 
-    let webhookVaild = gopherClient.validateWebhook(
+    let webhookVaild = mbClient.validateWebhook(
       webhookSignature,
       webhookTimestamp,
       rawBody

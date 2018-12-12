@@ -1,23 +1,22 @@
 import { 
-  getGopherClient, 
-  getExampleTask,
-  recordNockMocks  } from "./testUtils/gopherTestUtils";
+   getMailBotsClient, 
+  getExampleTask 
+} from "./testUtils/mbTestUtils";
 import "./testUtils/nockMocks";
 import { expect } from "chai";
-import Gopher from "../src/gopherhq";
 import _ from "lodash";
 import nock from "nock";
 
-const debug = require("debug")("gopherhq");
+const debug = require("debug")("mailbots-sdk");
 
-const gopherClient = getGopherClient();
+const mbClient =  getMailBotsClient();
 let exampleTask = {};
 let testTasks = [];
 let testExtension1 = null;
 let testExtension2 = null;
 
 /**
- * Create and install test extensions. If you work at Gopher (or want to join us!)
+ * Create and install test extensions. If you work at MailBots (or want to join us!)
  * run `npm run sample-data:create-extensions`. in the React Admin UI. Otherwise,
  * you'll have to create a couple test extensions and add their subdomains (ids) in .env.
  */
@@ -39,10 +38,10 @@ describe("Tasks", function() {
     // reset testTasks array to zero 
     testTasks = [];
 
-    let res = await gopherClient.createTask({
+    let res = await mbClient.createTask({
       suppress_webhook: true,
       task: {
-        command: `example@${extensionSubdomain1}.gopher.email`,
+        command: `example@${extensionSubdomain1}.eml.bot`,
         reference_email: {
           subject: "Subject 1"
         },
@@ -66,7 +65,7 @@ describe("Tasks", function() {
       const uniqueTestTasks = [...new Set(testTasks)]; // efficient way of de-duplicating array
       let deletePromises = uniqueTestTasks.map(testTask => {
         if (testTask && testTask.id) {
-          return gopherClient.deleteTask({
+          return mbClient.deleteTask({
             task: { id: testTask.id }
           });
         } else return true;
@@ -103,8 +102,8 @@ describe("Tasks", function() {
           }
         }
       };
-      //TODO: Test successful Gopher Task creation even if the Extension endpoint fails.
-      let res = gopherClient.createTask(taskPayload, (err, res) => {
+      //TODO: Test successful MailBots Task creation even if the Extension endpoint fails.
+      let res = mbClient.createTask(taskPayload, (err, res) => {
         if (err) done(err);
         expect(res).to.be.an("object");
         expect(res.statusCode).to.equal(201);
@@ -115,7 +114,7 @@ describe("Tasks", function() {
     }).timeout(50000);
 
     it("creates a task with suppressesed webhook and verbose output", async function() {
-      let res = await gopherClient.createTask({
+      let res = await mbClient.createTask({
         verbose: 1,
         suppress_webhook: true,
         task: {
@@ -159,7 +158,7 @@ describe("Tasks", function() {
     });
 
     it("sendEmail helper creates an email and task with html", async function() {
-      const res = await gopherClient.sendEmail({
+      const res = await mbClient.sendEmail({
         command: process.env.EXAMPLE_COMMAND,
         to: "test@exampletask.com",
         cc: [],
@@ -181,7 +180,7 @@ describe("Tasks", function() {
     });
 
     it("sendEmail helper uses object body data", async function() {
-      const res = await gopherClient.sendEmail({
+      const res = await mbClient.sendEmail({
         command: process.env.EXAMPLE_COMMAND,
         to: "test@exampletask.com",
         cc: [],
@@ -208,7 +207,7 @@ describe("Tasks", function() {
     });
 
     it("should get a list of tasks with async/await", async () => {
-      let res = await gopherClient.getTasks();
+      let res = await mbClient.getTasks();
       expect(res.statusCode).to.equal(200);
       expect(res.tasks).to.be.an("array");
       expect(res.tasks[0]).to.have.property("reference_email");
@@ -216,7 +215,7 @@ describe("Tasks", function() {
     });
 
     it("should get a list of tasks with a cb", done => {
-      gopherClient.getTasks({ limit: 1 }, (err, res) => {
+      mbClient.getTasks({ limit: 1 }, (err, res) => {
         if (err) done(err);
         expect(res.tasks).to.be.an("array");
         expect(res.tasks[0]).to.have.property("reference_email");
@@ -225,7 +224,7 @@ describe("Tasks", function() {
     });
 
     it("should get a list of tasks with a promise", done => {
-      gopherClient
+      mbClient
         .getTasks({ limit: 1 })
         .then(res => {
           expect(res.statusCode).to.equal(200);
@@ -242,7 +241,7 @@ describe("Tasks", function() {
     it("should get a single task", done => {
       if (!task)
         return done("Example task does not exist. Run as part of the suite");
-      gopherClient.getTask({ id: task.id }, (err, res) => {
+      mbClient.getTask({ id: task.id }, (err, res) => {
         if (err) done(err);
         done();
       });
@@ -252,7 +251,7 @@ describe("Tasks", function() {
       if (!task.hasOwnProperty("id")) {
         done("Example Task doens't exist", task);
       }
-      gopherClient
+      mbClient
         .updateTask({
           suppress_webhook: true,
           task: {
@@ -275,7 +274,7 @@ describe("Tasks", function() {
       if (!task.hasOwnProperty("id")) {
         done(new Error("Example Task doesn't exist"), task);
       }
-      gopherClient
+      mbClient
         .updateTask({
           suppress_webhook: true,
           task: {
@@ -297,7 +296,7 @@ describe("Tasks", function() {
       if (!task.hasOwnProperty("id")) {
         done(new Error("Example Task doens't exist"), task);
       }
-      gopherClient
+      mbClient
         .updateTask({
           task: {
             id: task.id,
@@ -320,14 +319,14 @@ describe("Tasks", function() {
         timezone: "America/Los_Angeles"
       };
 
-      let res = await gopherClient.naturalTime(format);
+      let res = await mbClient.naturalTime(format);
       debug(res);
       expect(res.valid).to.be.true;
       expect(res.recurring).to.be.false;
     });
 
     it("should create a task with verbose output", done => {
-      gopherClient.createTask(
+      mbClient.createTask(
         {
           verbose: 1,
           task: {
@@ -361,7 +360,7 @@ describe("Tasks", function() {
     });
 
     it("should create a minal task that only sends an email", done => {
-      let res = gopherClient.createTask(
+      let res = mbClient.createTask(
         {
           suppress_webhook: true,
           verbose: 1,
@@ -395,7 +394,7 @@ describe("Tasks", function() {
 
     it("should trigger a task", async () => {
       let task = await getExampleTask();
-      let res = await gopherClient.triggerTask({
+      let res = await mbClient.triggerTask({
         trigger_url: task.trigger_url
       });
       expect(res).to.be.ok;
@@ -409,10 +408,10 @@ describe("Tasks", function() {
     this.timeout(5000);
 
     it("Should archive a task", async function() {
-      const resCompleted = await gopherClient.completeTask({
+      const resCompleted = await mbClient.completeTask({
         task: { id: task.id }
       });
-      const foundTask = await gopherClient.getTask({
+      const foundTask = await mbClient.getTask({
         id: task.id
       });
       expect(foundTask.task.id).to.equal(task.id);
@@ -420,11 +419,11 @@ describe("Tasks", function() {
 
     it("Should be able to find an it with archive search", async function() {
       const subject = task.reference_email.subject; 
-      const resCompleted = await gopherClient.completeTask({
+      const resCompleted = await mbClient.completeTask({
         task: { id: task.id }
       });
 
-      let searchRes = await gopherClient.getTasks({
+      let searchRes = await mbClient.getTasks({
         status: "completed",
         search: subject
       });
@@ -434,11 +433,11 @@ describe("Tasks", function() {
     });
 
     it("Should delete the archived task", async function() {
-      const resDeleted = await gopherClient.deleteTask({
+      const resDeleted = await mbClient.deleteTask({
         task: { id: task.id }
       });
       try {
-      const foundTask = await gopherClient.getTask({
+      const foundTask = await mbClient.getTask({
         id: task.id
       });} catch (e) {
         expect(e.message).to.eq("task_not_found");
@@ -452,10 +451,10 @@ describe("Tasks", function() {
   describe("Filtering & Searching", function() {
     beforeEach(async function() {
       // More taest tasks to test sorting, filtering and things
-      let res = await gopherClient.createTask({
+      let res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${extensionSubdomain1}.gopher.email`,
+          command: `example@${extensionSubdomain1}.eml.bot`,
           reference_email: {
             subject: "Space Ships!",
             to: ["joe@example.com"]
@@ -465,10 +464,10 @@ describe("Tasks", function() {
       });
       testTasks.push(res.task);
 
-      res = await gopherClient.createTask({
+      res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${extensionSubdomain2}.gopher.email`,
+          command: `example@${extensionSubdomain2}.eml.bot`,
           reference_email: {
             subject: "TEST: Subject 2"
           },
@@ -478,10 +477,10 @@ describe("Tasks", function() {
       testTasks.push(res.task);
 
       //null due date
-      res = await gopherClient.createTask({
+      res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${extensionSubdomain1}.gopher.email`,
+          command: `example@${extensionSubdomain1}.eml.bot`,
           reference_email: {
             subject: "TEST: Null due date"
           }
@@ -491,7 +490,7 @@ describe("Tasks", function() {
     });
 
     it("Gets only the task for extension1", async () => {
-      let res = await gopherClient.getTasks({
+      let res = await mbClient.getTasks({
         extension: extensionSubdomain1,
         search: "Subject"
       });
@@ -501,10 +500,10 @@ describe("Tasks", function() {
     });
 
     it("Creates a task from Joe", async () => {
-      let res = await gopherClient.createTask({
+      let res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${extensionSubdomain2}.gopher.email`,
+          command: `example@${extensionSubdomain2}.eml.bot`,
           reference_email: {
             to: "Joe<joe@example.com>",
             subject: "Hi Joe"
@@ -515,10 +514,10 @@ describe("Tasks", function() {
     });
 
     it("Creates a task with subect 'Zuki'", async () => {
-      let res = await gopherClient.createTask({
+      let res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${extensionSubdomain2}.gopher.email`,
+          command: `example@${extensionSubdomain2}.eml.bot`,
           reference_email: {
             to: "joe@example.com",
             subject: "Zuki"
@@ -529,7 +528,7 @@ describe("Tasks", function() {
     });
 
     it("Search for tasks with Zuki in subject", async () => {
-      let res = await gopherClient.getTasks({
+      let res = await mbClient.getTasks({
         search: "Space Ships!"
       });
       if (res instanceof Error) throw res;
@@ -538,7 +537,7 @@ describe("Tasks", function() {
     });
 
     it("Search for tasks from Joe", async () => {
-      let res = await gopherClient.getTasks({
+      let res = await mbClient.getTasks({
         search: "joe@example.com"
       });
       if (res instanceof Error) throw res;
@@ -547,7 +546,7 @@ describe("Tasks", function() {
     });
 
     it("Orders search results by due date desc", async () => {
-      let res = await gopherClient.getTasks({
+      let res = await mbClient.getTasks({
         extension: extensionSubdomain1,
         order_by: "due",
         order_dir: "desc"
@@ -558,7 +557,7 @@ describe("Tasks", function() {
     });
 
     it("Orders search results by due date asc", async () => {
-      let res = await gopherClient.getTasks({
+      let res = await mbClient.getTasks({
         extension: extensionSubdomain1,
         order_by: "due",
         order_dir: "asc"
@@ -574,7 +573,7 @@ describe("Tasks", function() {
         this.skip();
       }
       let tenYears = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365 * 10;
-      let res = await gopherClient.getTasks({
+      let res = await mbClient.getTasks({
         extension: extensionSubdomain1,
         due_after: tenYears
       });
@@ -589,10 +588,10 @@ describe("Tasks", function() {
         if(!process.env.NOCK_OFF) {
           this.skip();
         }
-        let addRes = await gopherClient.createTask({
+        let addRes = await mbClient.createTask({
           suppress_webhook: true,
           task: {
-            command: `example@${extensionSubdomain1}.gopher.email`,
+            command: `example@${extensionSubdomain1}.eml.bot`,
             reference_email: {
               subject: "Twenty Minutes"
             },
@@ -602,7 +601,7 @@ describe("Tasks", function() {
         testTasks.push(addRes.task);
 
         let thirtyMinutes = Math.floor(Date.now() / 1000) + 60 * 30; //30 min
-        let res = await gopherClient.getTasks({
+        let res = await mbClient.getTasks({
           extension: extensionSubdomain1,
           due_before: thirtyMinutes
         });
@@ -612,7 +611,7 @@ describe("Tasks", function() {
       });
 
     it("Limits results using per_page param", async () => {
-      let res = await gopherClient.getTasks({
+      let res = await mbClient.getTasks({
         extension: extensionSubdomain1,
         per_page: 1
       });
@@ -622,7 +621,7 @@ describe("Tasks", function() {
     });
 
     it("Always sorts the tasks with null due dates last", async () => {
-      let res = await gopherClient.getTasks({
+      let res = await mbClient.getTasks({
         extension: extensionSubdomain1,
         order_by: "due",
         order_dir: "desc",
@@ -638,7 +637,7 @@ describe("Tasks", function() {
       );
       expect(indexOfNullDueTask).to.be.greaterThan(indexOfOtherTask);
 
-      res = await gopherClient.getTasks({
+      res = await mbClient.getTasks({
         extension: extensionSubdomain1,
         order_by: "due",
         order_dir: "asc",
@@ -656,7 +655,7 @@ describe("Tasks", function() {
     });
 
     it("Paginates results using per_page and page param", async () => {
-      let res = await gopherClient.getTasks({
+      let res = await mbClient.getTasks({
         extension: extensionSubdomain1,
         per_page: 1,
         page: 1
@@ -667,7 +666,7 @@ describe("Tasks", function() {
     });
 
     it("should limit to 1 task retrieved", async () => {
-      let res = await gopherClient.getTasks({ limit: 1 });
+      let res = await mbClient.getTasks({ limit: 1 });
       expect(res.statusCode).to.equal(200);
       expect(res.tasks).to.be.an("array");
       expect(res.tasks.length).to.equal(1);

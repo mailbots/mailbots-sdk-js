@@ -52,11 +52,11 @@ var server = false;
 context = "server";
 OAuth2 = require("simple-oauth2");
 
-var Gopher = function () {
-  function Gopher(config) {
-    _classCallCheck(this, Gopher);
+var MailBotsClient = function () {
+  function MailBotsClient(config) {
+    _classCallCheck(this, MailBotsClient);
 
-    if (!(this instanceof Gopher)) return new Gopher(config);
+    if (!(this instanceof MailBotsClient)) return new MailBotsClient(config);
 
     if (context === "browser" && this.clientSecret) {
       throw "SECURITY ERROR: clientSecret should only be stored the server.";
@@ -69,10 +69,10 @@ var Gopher = function () {
       redirectUri: "",
       scope: "",
       state: "",
-      apiHost: "https://www.gopher.email",
-      tokenHost: "https://www.gopher.email",
-      tokenPath: "https://www.gopher.email/api/v1/oauth2/access_token",
-      authorizePath: "https://www.gopher.email/settings/oauth2_authorize"
+      apiHost: "https://api.mailbots.com",
+      tokenHost: "https://api.mailbots.com",
+      tokenPath: "https://api.mailbots.com/api/v1/oauth2/access_token",
+      authorizePath: "https://api.mailbots.com/settings/oauth2_authorize"
     };
 
     this.config = Object.assign(this.configDefaults, this.config);
@@ -88,7 +88,7 @@ var Gopher = function () {
    */
 
 
-  _createClass(Gopher, [{
+  _createClass(MailBotsClient, [{
     key: "setAccessToken",
     value: function setAccessToken(accessToken) {
       this._accessToken = accessToken;
@@ -121,7 +121,7 @@ var Gopher = function () {
     }
 
     /**
-     * Low-level function to make authenticated request to Gopher API
+     * Low-level function to make authenticated request to MailBots API
      * @param {object} requestOptions - Axiox-compatible request ooptions
      * @param {function} [cb] - Optional callback.
      * @return {Promise}
@@ -134,18 +134,18 @@ var Gopher = function () {
     }
   }]);
 
-  return Gopher;
+  return MailBotsClient;
 }();
 
-(0, _util._extend)(Gopher, _tasks2.default);
-(0, _util._extend)(Gopher, _users2.default);
-(0, _util._extend)(Gopher, _webhooks2.default);
-(0, _util._extend)(Gopher, _auth2.default);
-(0, _util._extend)(Gopher, _extensions2.default);
-(0, _util._extend)(Gopher, _logs2.default);
+(0, _util._extend)(MailBotsClient, _tasks2.default);
+(0, _util._extend)(MailBotsClient, _users2.default);
+(0, _util._extend)(MailBotsClient, _webhooks2.default);
+(0, _util._extend)(MailBotsClient, _auth2.default);
+(0, _util._extend)(MailBotsClient, _extensions2.default);
+(0, _util._extend)(MailBotsClient, _logs2.default);
 
-module.exports = Gopher;
+module.exports = MailBotsClient;
 
 global.window = {};
 
-window.Gopher = Gopher;
+window.MailBotsClient = MailBotsClient;

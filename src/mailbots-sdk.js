@@ -21,9 +21,9 @@ if (process.env.SERVER) {
   OAuth2 = require("simple-oauth2");
 }
 
-class Gopher {
+class MailBotsClient {
   constructor(config) {
-    if (!(this instanceof Gopher)) return new Gopher(config);
+    if (!(this instanceof MailBotsClient)) return new MailBotsClient(config);
 
     if (context === "browser" && this.clientSecret) {
       throw "SECURITY ERROR: clientSecret should only be stored the server.";
@@ -36,10 +36,10 @@ class Gopher {
       redirectUri: "",
       scope: "",
       state: "",
-      apiHost: "https://www.gopher.email",
-      tokenHost: "https://www.gopher.email",
-      tokenPath: "https://www.gopher.email/api/v1/oauth2/access_token",
-      authorizePath: "https://www.gopher.email/settings/oauth2_authorize"
+      apiHost: "https://api.mailbots.com",
+      tokenHost: "https://api.mailbots.com",
+      tokenPath: "https://api.mailbots.com/api/v1/oauth2/access_token",
+      authorizePath: "https://api.mailbots.com/settings/oauth2_authorize"
     };
 
     this.config = Object.assign(this.configDefaults, this.config);
@@ -83,7 +83,7 @@ class Gopher {
   }
 
   /**
-   * Low-level function to make authenticated request to Gopher API
+   * Low-level function to make authenticated request to MailBots API
    * @param {object} requestOptions - Axiox-compatible request ooptions
    * @param {function} [cb] - Optional callback.
    * @return {Promise}
@@ -93,16 +93,16 @@ class Gopher {
   }
 }
 
-_extend(Gopher, Tasks);
-_extend(Gopher, Users);
-_extend(Gopher, Webhooks);
-_extend(Gopher, Auth);
-_extend(Gopher, Extensions);
-_extend(Gopher, Logs);
+_extend(MailBotsClient, Tasks);
+_extend(MailBotsClient, Users);
+_extend(MailBotsClient, Webhooks);
+_extend(MailBotsClient, Auth);
+_extend(MailBotsClient, Extensions);
+_extend(MailBotsClient, Logs);
 
-module.exports = Gopher;
+module.exports = MailBotsClient;
 
 if (process.env.SERVER) {
   global.window = {};
 }
-window.Gopher = Gopher;
+window.MailBotsClient = MailBotsClient;

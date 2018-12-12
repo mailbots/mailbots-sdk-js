@@ -5,7 +5,6 @@ import queryString from "query-string";
 module.exports = {
   /**
    * Retrieve logged-in user's extension logs
-   * For params and details, see [extension saving data API docs](https://postman.gopheremail.com/#7f9bfa6c-a673-4104-9be9-1ada487c300e)
    * @param  {object} filter - Filter. Ex: `{type: ['api', 'submit_failed'], extension: ['subdomain'], since: 1517948366, num: 10}`)
    * @return {Promise} Promise resolving to log results in the form of: `{status: "success", logs[...]}`
    */

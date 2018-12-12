@@ -1,19 +1,17 @@
 import {
-  getGopherClient,
-} from "./testUtils/gopherTestUtils";
+   getMailBotsClient,
+} from "./testUtils/mbTestUtils";
 import "./testUtils/nockMocks";
-import mocha from "mocha";
 import { expect } from "chai";
-import Gopher from "../src/gopherhq";
 import timestamp from "unix-timestamp";
 
-const debug = require("debug")("gopherhq");
+const debug = require("debug")("mailbots-sdk");
 timestamp.round = true;
 
-const gopherClient = getGopherClient();
+const mbClient =  getMailBotsClient();
 
 describe("Auth", function() {
   it("should build a login URL", () => {
-    expect(gopherClient.getAuthorizationUri().uri).to.be.a("string");
+    expect (mbClient.getAuthorizationUri().uri).to.be.a("string");
   });
 });

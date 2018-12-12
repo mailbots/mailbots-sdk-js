@@ -9,7 +9,7 @@ export default {
    * @param {function} [cb] Optional callback
    * @return {Promise}
    *
-   * @example const res = await gopherClient.extensionGetSelf();
+   * @example const res = await mbClient.extensionGetSelf();
    */
   extensionGetSelf(cb) {
     const requestOptions = {
@@ -27,14 +27,14 @@ export default {
    * Send an Event to the extension. This does not require
    * and auth token because the endpoint is meant for 3rd
    * party services. Ex: issue created in Github, or an
-   * email response or support ticket received. The Gopher
-   * Extension can listen for events, act on tasks or
+   * email response or support ticket received. The MailBots
+   * bot can listen for events, act on tasks or
    * create or delete tasks based on events.
    * @param {object}  params params
    * @returns {Promise}
    *
    * @example
-   * const res = await gopherClient.sendEvent({type: 'event.type', payload: {"foo", "bar"}, event_url: "[unique_event_url]"});
+   * const res = await mbClient.sendEvent({type: 'event.type', payload: {"foo", "bar"}, event_url: "[unique_event_url]"});
    */
   sendEvent(params, cb) {
     if (!params.event_url) {
@@ -60,14 +60,14 @@ export default {
   },
 
   /**
-   * Save Gopher extension data which is sent with every webhook related to that extension.
+   * Save MailBot data which is sent with every webhook related to that extension.
    * This is how an extension persist's user settings specific to that extension.
-   * For params and details, see [extension saving data API docs](https://postman.gopheremail.com/#7f9bfa6c-a673-4104-9be9-1ada487c300e)
+   * For params and details, see [extension saving data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#7f9bfa6c-a673-4104-9be9-1ada487c300e)
    * @param {object} data Nestable key value value pairs
    * @returns {Promise}
    *
    * @example
-   * const res = await gopherClient.saveExtensionData({ foo: "bar" });
+   * const res = await mbClient.saveExtensionData({ foo: "bar" });
    */
 
   saveExtensionData(data, cb) {
@@ -86,10 +86,10 @@ export default {
   },
 
   /**
-   * Get saved Gopher extension data
-   * For params and details, see [extension get data API docs](https://postman.gopheremail.com/#f98b6862-9059-4d4f-931b-78d554e8a4e7)
+   * Get saved MailBot data
+   * For params and details, see [extension get data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7)
    * @example
-   * const res = await gopherClient.getExtensionData();
+   * const res = await mbClient.getExtensionData();
    */
   getExtensionData(cb) {
     const requestOptions = {

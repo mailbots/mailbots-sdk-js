@@ -1,7 +1,7 @@
 module.exports = {
-  entry: "./src/gopherhq.js",
+  entry: "./src/mailbots-sdk.js",
   output: {
-    filename: "./dist/gopherhq-browser.js"
+    filename: "./dist/mailbots-sdk.js"
   },
   module: {
     rules: [{ test: /\.js$/, use: "babel-loader" }]
