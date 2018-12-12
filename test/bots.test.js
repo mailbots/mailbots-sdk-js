@@ -7,12 +7,10 @@ import { expect } from "chai";
 const debug = require("debug")("mailbots-sdk");
 
 let mbClient =  getMailBotsClient();
-let extensionId;
-let extensionName = getRandomString(); // TODO: Cache the generated extensoin name
 
-describe("Extensions", function() {
-  it("should save user-level data extension save data", done => {
-    mbClient.saveExtensionData({ three: "more" }, (err, res) => {
+describe("Bot Management", function() {
+  it("should save user-level data bot save data", done => {
+    mbClient.saveBotData({ three: "more" }, (err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.data.three).to.equal("more");
@@ -21,7 +19,7 @@ describe("Extensions", function() {
   });
 
   it("should get data about itself", done => {
-    mbClient.extensionGetSelf((err, res) => {
+    mbClient.botGetSelf((err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.extension.event_url).to.be.a("String");
@@ -29,10 +27,10 @@ describe("Extensions", function() {
     });
   });
 
-  it("should send an extension event", done => {
+  it("should send a bot event", done => {
     mbClient
       .sendEvent({
-        event_url: process.env.EXAMPLE_EXTENSION_EVENT_URL,
+        event_url: process.env.EXAMPLE_BOT_EVENT_URL,
         type: "github.issue.opened",
         payload: { foo: "bar" }
       })
@@ -43,8 +41,8 @@ describe("Extensions", function() {
       .catch(done);
   });
 
-  it("should let an extension get data", done => {
-    mbClient.getExtensionData((err, res) => {
+  it("should let a bot get data", done => {
+    mbClient.getBotData((err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.data.three).to.equal("more");

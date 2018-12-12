@@ -25,12 +25,12 @@ describe("Users", function() {
   });
 
   it("should get user data", async () => {
-    let res = await mbClient.getExtensionData();
+    let res = await mbClient.getBotData();
     expect(res.statusCode).to.equal(200);
   });
 
   it("should save user data", async () => {
-    let res = await mbClient.saveExtensionData({ foo: "bar" });
+    let res = await mbClient.saveBotData({ foo: "bar" });
     expect(res.statusCode).to.equal(200);
   });
 

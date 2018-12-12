@@ -12,18 +12,16 @@ const debug = require("debug")("mailbots-sdk");
 const mbClient =  getMailBotsClient();
 let exampleTask = {};
 let testTasks = [];
-let testExtension1 = null;
-let testExtension2 = null;
 
 /**
- * Create and install test extensions. If you work at MailBots (or want to join us!)
- * run `npm run sample-data:create-extensions`. in the React Admin UI. Otherwise,
- * you'll have to create a couple test extensions and add their subdomains (ids) in .env.
+ * Create and install test bots. If you work at MailBots (or want to join us!)
+ * run `npm run sample-data:create-bots`. in the React Admin UI. Otherwise,
+ * you'll have to create a couple test bots and add their subdomains (ids) in .env.
  */
 let extensionSubdomain1 =
-  process.env.EXAMPLE_EXTENSION_SUBDOMAIN_1 || "test-extension-1";
+  process.env.EXAMPLE_BOT_SUBDOMAIN_1 || "test-extension-1";
 let extensionSubdomain2 =
-  process.env.EXAMPLE_EXTENSION_SUBDOMAIN_2 || "test-extension-2";
+  process.env.EXAMPLE_BOT_SUBDOMAIN_2 || "test-extension-2";
 
 describe("Tasks", function() {
   this.timeout(15000);
@@ -242,6 +240,7 @@ describe("Tasks", function() {
       if (!task)
         return done("Example task does not exist. Run as part of the suite");
       mbClient.getTask({ id: task.id }, (err, res) => {
+        console.log(err);
         if (err) done(err);
         done();
       });

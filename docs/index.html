@@ -36,9 +36,9 @@
               
                 
                 <li><a
-                  href='#extensiongetself'
+                  href='#botGetSelf'
                   class="">
-                  extensionGetSelf
+                  botGetSelf
                   
                 </a>
                 
@@ -56,9 +56,9 @@
               
                 
                 <li><a
-                  href='#saveextensiondata'
+                  href='#saveBotData'
                   class="">
-                  saveExtensionData
+                  saveBotData
                   
                 </a>
                 
@@ -66,9 +66,9 @@
               
                 
                 <li><a
-                  href='#getextensiondata'
+                  href='#getBotData'
                   class="">
-                  getExtensionData
+                  getBotData
                   
                 </a>
                 
@@ -307,20 +307,20 @@ and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more infor
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='extensiongetself'>
-      extensionGetSelf
+    <h3 class='fl m0' id='botGetSelf'>
+      botGetSelf
     </h3>
     
     
   </div>
   
 
-  <p>Get information about the extension that corresponds with user's Bearer token
+  <p>Get information about the bot that corresponds with user's Bearer token
 (ie, most likely your extension).</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>extensionGetSelf(cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+    <div class='pre p1 fill-light mt0'>botGetSelf(cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
    
   
   
@@ -366,7 +366,7 @@ and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more infor
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.extensionGetSelf();</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.botGetSelf();</pre>
     
   
 
@@ -473,8 +473,8 @@ create or delete tasks based on events.</p>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='saveextensiondata'>
-      saveExtensionData
+    <h3 class='fl m0' id='saveBotData'>
+      saveBotData
     </h3>
     
     
@@ -482,12 +482,12 @@ create or delete tasks based on events.</p>
   
 
   <p>Save MailBot data which is sent with every webhook related to that extension.
-This is how an extension persist's user settings specific to that extension.
+This is how a bot persist's user settings specific to that extension.
 For params and details, see <a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#7f9bfa6c-a673-4104-9be9-1ada487c300e">extension saving data API docs</a></p>
 
  
   
-    <div class='pre p1 fill-light mt0'>saveExtensionData(data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+    <div class='pre p1 fill-light mt0'>saveBotData(data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
    
   
   
@@ -541,7 +541,7 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.saveExtensionData({ <span class="hljs-attr">foo</span>: <span class="hljs-string">"bar"</span> });</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.saveBotData({ <span class="hljs-attr">foo</span>: <span class="hljs-string">"bar"</span> });</pre>
     
   
 
@@ -559,8 +559,8 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='getextensiondata'>
-      getExtensionData
+    <h3 class='fl m0' id='getBotData'>
+      getBotData
     </h3>
     
     
@@ -572,7 +572,7 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
 
  
   
-    <div class='pre p1 fill-light mt0'>getExtensionData(cb: any)</div>
+    <div class='pre p1 fill-light mt0'>getBotData(cb: any)</div>
    
   
   
@@ -609,7 +609,7 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.getExtensionData();</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.getBotData();</pre>
     
   
 
@@ -635,7 +635,7 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
   </div>
   
 
-  <p>Retrieve logged-in user's extension logs</p>
+  <p>Retrieve logged-in user's bot logs</p>
 
  
   
@@ -978,7 +978,7 @@ HTML email preview of the task</p>
   <td class='break-word'><span class='code bold'>params.verbose</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
   </td>
   <td class='break-word'><span>Fires webhook to extension, returns rendered HTML emails
-in a "messages" array if the extension makes these available in the task.viewed webhook resopnse.
+in a "messages" array if the bot makes these available in the task.viewed webhook resopnse.
 </span></td>
 </tr>
 

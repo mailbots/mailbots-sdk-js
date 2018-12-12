@@ -47,8 +47,8 @@ export default {
    * HTML email preview of the task
    * @param {object} params - request params
    * @param {number} params.id - taskid
-   * @param {boolean} params.verbose - Fires webhook to extension, returns rendered HTML emails
-   * in a "messages" array if the extension makes these available in the task.viewed webhook resopnse.
+   * @param {boolean} params.verbose - Fires webhook to bot, returns rendered HTML emails
+   * in a "messages" array if the bot makes these available in the task.viewed webhook resopnse.
    * @return {Promise}
    *
    * @example const res = await getTask({id: 123});
@@ -132,7 +132,7 @@ export default {
    * @return {Promise}
    * @example
    *  const res = await mbClient.sendEmail({
-   *     command: "command@my-ext.eml.bot", // must be your extension's domain
+   *     command: "command@my-ext.eml.bot", // must be your bot's domain
    *     to: "test@exampletask.com",
    *     cc: [],
    *     bcc: [],

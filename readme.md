@@ -16,14 +16,14 @@ npm install mailbots-sdk
 const var MailBotsClient = require('mailbots-sdk');
 
 // initialize
-const mbClient = new MailBotsClient({clientId: 'YOUR_EXTENSIONS_CLIENT_ID'});
+const mbClient = new MailBotsClient({clientId: 'YOUR_MAILBOT_CLIENT_ID'});
 mbClient.setAccessToken('YOUR_OAUTH2_ACCESS_TOKEN');
 
 // create a task
 const task = {
         task: {
           reference_email: {
-            server_recipient: 'command@your-extension.eml.bot',
+            server_recipient: 'command@your-bot.eml.bot',
             to: ['you@example.com'],
             subject: "Test1",
             html: "Test1",
@@ -47,8 +47,8 @@ const res = mbClient.createTask(task)
 const res = await mbClient.createTask(task); //in async function
 ```
 
-- `YOUR_EXTENSIONS_CLIENT_ID` – Find this in the developer portal.
-- `YOUR_OAUTH2_ACCESS_TOKEN` - Log in to your extension and copy the value from the `mbToken` cookie using something like [EditThisCookie](http://www.editthiscookie.com/) or the Chrome dev tools.
+- `YOUR_MAILBOT_CLIENT_ID` – Find this in the developer portal.
+- `YOUR_OAUTH2_ACCESS_TOKEN` - Authenticate your bot and copy your bot's `access_token` from webhook requests (it is sent with every request).
 
 ## References and Examples
 
