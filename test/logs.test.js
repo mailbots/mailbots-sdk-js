@@ -1,20 +1,16 @@
 import {
-  getGopherClient,
-  getExampleTask,
+   getMailBotsClient,
   beforeEachTest,
   testConfig
-} from "./testUtils/gopherTestUtils";
+} from "./testUtils/mbTestUtils";
 import "./testUtils/nockMocks";
-import mocha from "mocha";
 import { expect } from "chai";
-import Gopher from "../src/gopherhq";
 import timestamp from "unix-timestamp";
-import { read } from "fs";
 
-const debug = require("debug")("gopherhq");
+const debug = require("debug")("mailbots-sdk");
 timestamp.round = true;
 
-let gopherClient = getGopherClient();
+let mbClient =  getMailBotsClient();
 let testTasks = [];
 
 describe("Logs", function () {
@@ -28,9 +24,9 @@ describe("Logs", function () {
     testTasks = [];
 
     // create successful task
-    let res = await gopherClient.createTask({
+    let res = await mbClient.createTask({
       task: {
-        command: `example@${process.env.EXAMPLE_EXTENSION_SUBDOMAIN_1}.gopher.email`,
+        command: `example@${process.env.EXAMPLE_EXTENSION_SUBDOMAIN_1}.eml.bot`,
         reference_email: {
           subject: "Successful task"
         },
@@ -42,10 +38,10 @@ describe("Logs", function () {
     task = res.task;
 
     // create a task which has submit_failed status
-    res = await gopherClient.createTask({
+    res = await mbClient.createTask({
       webhook: true, // <--- attempt webhook
       task: {
-        command: `example@${process.env.EXAMPLE_EXTENSION_SUBDOMAIN_1}.gopher.email`,
+        command: `example@${process.env.EXAMPLE_EXTENSION_SUBDOMAIN_1}.eml.bot`,
         reference_email: {
           subject: "Unsuccessful webhook"
         },
@@ -57,10 +53,10 @@ describe("Logs", function () {
 
     // create submit-failed webhook
     try {
-      res = await gopherClient.createTask({
+      res = await mbClient.createTask({
         // webhook: true, // <--- attempt webhook
         task: {
-          command: `example@$wrong.gopher.email`,
+          command: `example@$wrong.eml.bot`,
           reference_email: {
             subject: "Unsuccessful submission"
           },
@@ -78,7 +74,7 @@ describe("Logs", function () {
       const uniqueTestTasks = [...new Set(testTasks)]; // efficient way of de-duplicating array
       let deletePromises = uniqueTestTasks.map(testTask => {
         if (testTask && testTask.id) {
-          return gopherClient.deleteTask({
+          return mbClient.deleteTask({
             task: { id: testTask.id }
           });
         } else return true;
@@ -97,12 +93,12 @@ describe("Logs", function () {
   beforeEach(beforeEachTest);
 
   it("returns default logs with no options", async () => {
-    let res = await gopherClient.getLogs({num: 1});
+    let res = await mbClient.getLogs({num: 1});
     expect(res.logs).to.be.an("array");
   });
 
   it('filters for submit_failed user logs', async () => {
-    let res = await gopherClient.getLogs({ type: ["submit_failed"] });
+    let res = await mbClient.getLogs({ type: ["submit_failed"] });
     expect(res.logs).to.be.an("array");
     expect(res.logs[0].type).to.equal('submit_failed');
     let checkAllResults = res.logs.every((log) => (log.type == "submit_failed"));
@@ -110,14 +106,14 @@ describe("Logs", function () {
   });
 
   it('filters for api and submit_failed user logs', async () => {
-    let res = await gopherClient.getLogs({ type: ["submit_failed", "api"] });
+    let res = await mbClient.getLogs({ type: ["submit_failed", "api"] });
     expect(res.logs).to.be.an("array");
     let checkAllResults = res.logs.every((log) => (log.type == "submit_failed" || log.type == "api"));
     expect(checkAllResults).to.be.true;
   });
 
   it('limits numbers logs ', async () => {
-    let res = await gopherClient.getLogs({ num: 1 });
+    let res = await mbClient.getLogs({ num: 1 });
     expect(res.logs).to.be.an("array");
     expect(res.logs.length).to.equal(1);
   });
@@ -128,7 +124,7 @@ describe("Logs", function () {
       this.skip();
     }
     let since = Math.round(Date.now() / 1000 - (60 * 60 * 24 * 60));
-    let res = await gopherClient.getLogs({ since });
+    let res = await mbClient.getLogs({ since });
     expect(res.logs).to.be.an("array");
     let allDates = res.logs.map(log => new Date(log.date).getTime());
     let checkResults = allDates.every((date) => date > since * 1000)
@@ -136,13 +132,13 @@ describe("Logs", function () {
   }); 
 
   it("should get user logs of various types", async () => {
-    let res = await gopherClient.getLogs({
+    let res = await mbClient.getLogs({
       type: ["api", "webhook", "submit_failed"]
     });
     expect(res.logs).to.be.an("array");
   });
 
   it("should get only api type logs", async () => {
-    let res = await gopherClient.getLogs;
+    let res = await mbClient.getLogs;
   });
 });

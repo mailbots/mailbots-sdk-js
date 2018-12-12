@@ -1,19 +1,18 @@
 import {
-  getGopherClient,
+   getMailBotsClient,
   getRandomString
-} from "./testUtils/gopherTestUtils";
+} from "./testUtils/mbTestUtils";
 import "./testUtils/nockMocks";
 import { expect } from "chai";
-import Gopher from "../src/gopherhq";
-const debug = require("debug")("gopherhq");
+const debug = require("debug")("mailbots-sdk");
 
-let gopherClient = getGopherClient();
+let mbClient =  getMailBotsClient();
 let extensionId;
 let extensionName = getRandomString(); // TODO: Cache the generated extensoin name
 
 describe("Extensions", function() {
   it("should save user-level data extension save data", done => {
-    gopherClient.saveExtensionData({ three: "more" }, (err, res) => {
+    mbClient.saveExtensionData({ three: "more" }, (err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.data.three).to.equal("more");
@@ -22,7 +21,7 @@ describe("Extensions", function() {
   });
 
   it("should get data about itself", done => {
-    gopherClient.extensionGetSelf((err, res) => {
+    mbClient.extensionGetSelf((err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.extension.event_url).to.be.a("String");
@@ -31,7 +30,7 @@ describe("Extensions", function() {
   });
 
   it("should send an extension event", done => {
-    gopherClient
+    mbClient
       .sendEvent({
         event_url: process.env.EXAMPLE_EXTENSION_EVENT_URL,
         type: "github.issue.opened",
@@ -45,7 +44,7 @@ describe("Extensions", function() {
   });
 
   it("should let an extension get data", done => {
-    gopherClient.getExtensionData((err, res) => {
+    mbClient.getExtensionData((err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.data.three).to.equal("more");

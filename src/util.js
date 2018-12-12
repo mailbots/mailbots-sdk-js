@@ -1,7 +1,7 @@
 import Debug from "debug";
 import axios from "axios";
 
-export const debug = Debug("gopherhq:request");
+export const debug = Debug("mailbots-sdk:request");
 
 export const _makeRequest = (requestOptions, cb) => {
   debug("Request", requestOptions);
@@ -38,7 +38,7 @@ export const _makeRequest = (requestOptions, cb) => {
 
 export const _checkParam = (param, paramName) => {
   if (!param || typeof param !== "string") {
-    throw new Error(`'${paramName}' is required to connect to Gopher`);
+    throw new Error(`'${paramName}' is required to connect to MailBots`);
   }
 };
 

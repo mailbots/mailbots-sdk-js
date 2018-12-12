@@ -26,7 +26,7 @@ module.exports = {
 
 
   /*
-   *  After user has authorized extension with Gopher, fetch access token (server only)
+   *  After user has authorized extension with MailBots, fetch access token (server only)
    *  @param {string} code Access code after user approval from auth URL
    */
 

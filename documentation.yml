@@ -1,8 +1,8 @@
 toc:
   - name: Quick Start
     description: |
-      This is a function reference for gopherhq-js. View the 
-      [readme.md](https://github.com/gopherhq/gopherhq-js/blob/master/readme.md)
+      This is a function reference for mailbots-sdk-js. View the 
+      [readme.md](https://github.com/mailbots/mailbots-sdk-js/blob/master/readme.md)
       file in the the repo that corresponds with this version. Also, view 
-      [Gopher REST API](https://www.getpostman.com/collections/172d1b9e89c7830f6c95)
-      and the [Gopher API Docs](https://docs.gopher.email) for more information.
+      [MailBots REST API](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30)
+      and the [MailBots API Docs](https://docs.mailbots.com) for more information.

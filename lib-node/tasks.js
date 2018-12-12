@@ -19,21 +19,21 @@ var _util = require("./util");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Get a filtered list of Gopher tasks
+ * Get a filtered list of MailBots tasks
  * @param {object} params  Arguments for API call
  * @param {function} [cb]  Optional callback function
- * @param {boolean} params.suppress_webhook  Prevent Gopher from firing the task.viewed webhook
+ * @param {boolean} params.suppress_webhook  Prevent MailBots from firing the task.viewed webhook
  * @param {boolean} params.status Retrieve completed or open tasks
  * @return {Promise}
  *
  * @example
  * // Get all open tasks, sorted by due date
- * const res = await gopherClient.getTasks();
+ * const res = await mbClient.getTasks();
  * console.log(res.tasks);
  *
  * @example
  * // With a callback
- * gopherClient.getTasks({ limit: 1 }, (err, res) => {
+ * mbClient.getTasks({ limit: 1 }, (err, res) => {
  *     if (err) done(err);
  *     console.log(res.tasks);
  *   });
@@ -56,7 +56,7 @@ exports.default = {
   getTasks: getTasks,
 
   /**
-   * Get a Gopher task
+   * Get a MailBots task
    * Passing ?verbose=1 fires a webhook to the extnesion and fetches a rendered
    * HTML email preview of the task
    * @param {object} params - request params
@@ -83,16 +83,16 @@ exports.default = {
 
 
   /**
-   * Create a new Gopher Task.
+   * Create a new MailBots Task.
    * @param {object}
-   * @param {boolean} params.webhook  Force Gopher to fire the task.created webhook and use its response
+   * @param {boolean} params.webhook  Force MailBots to fire the task.created webhook and use its response
    * @param {object} params.verbose Return rendered output of HTML email
    * @param {object} params.suppress_email Prevent the API call from sending an email even if it has "send_messages"
-   * @param {Task} params.task  Gopher Task object
+   * @param {Task} params.task  MailBots Task object
    * @return {Promise}
    *
    * @example
-   * const res = await gopherClient.createTask(
+   * const res = await mbClient.createTask(
    *     {
    *       webhook: false,
    *       suppress_email: true,
@@ -140,14 +140,14 @@ exports.default = {
 
   /**
    * Send Email and automatically create a Task
-   * This creates a gopher task and sends an email. It's a wrapper
+   * This creates a MailBots task and sends an email. It's a wrapper
    * for createTask with opinionated settings for just sending email.
    *
    * @param {object} email - Email object. `command` and one recipient is required.
    * @return {Promise}
    * @example
-   *  const res = await gopherClient.sendEmail({
-   *     command: command@my-ext.gopher.email,
+   *  const res = await mbClient.sendEmail({
+   *     command: "command@my-ext.eml.bot", // must be your extension's domain
    *     to: "test@exampletask.com",
    *     cc: [],
    *     bcc: [],
@@ -206,7 +206,7 @@ exports.default = {
 
 
   /**
-   * Update A Gopher Task
+   * Update A MailBots Task
    * Used to save data against the task, update content, followup time and more
    * @param {object}
    * @param {object} params.task - Task object (see Create Task)
@@ -215,7 +215,7 @@ exports.default = {
    * @return {Promise}
    *
    * @example
-   *  const res = await gopherClient.updateTask({
+   *  const res = await mbClient.updateTask({
    *    task: {
    *     id: 1234,
    *     reference_email: {
@@ -240,7 +240,7 @@ exports.default = {
 
 
   /**
-   * Archive A Gopher Task
+   * Archive A MailBots Task
    * @param {number} params - Arguments
    * @param {number} params.task - Task object
    * @param {number} params.task.id - Taskid to complete
@@ -265,7 +265,7 @@ exports.default = {
 
 
   /**
-   * Permanently Delete A Gopher Task
+   * Permanently Delete A MailBots Task
    * @param {object} params - Taskid to delete
    * @param {object} params.task - Task object
    * @param {number} params.task.id - Taskid to delete
@@ -287,7 +287,7 @@ exports.default = {
 
 
   /**
-   * Trigger a Gopher Task
+   * Trigger a MailBots Task
    * @param {object} params
    * @param {boolean} params.trigger_url Trigger URL of the task to trigger (get from task object)
    * @param {boolean} [params.verbose] Fire webhook and render HTML email response
@@ -324,7 +324,7 @@ exports.default = {
 
 
   /**
-   * Resolve Natural Time Format (ex: {naturaltime}@ext.gopher.email)
+   * Resolve Natural Time Format (ex: {naturaltime}@ext.eml.bot)
    * @param {object} params - params object
    * @param {string} params.format - Time format to check (ex: 3days)
    * @param {string} params.timezone - IANA timezone designation (https://www.wikiwand.com/en/List_of_tz_database_time_zones) ex: "America/Los_Angeles"

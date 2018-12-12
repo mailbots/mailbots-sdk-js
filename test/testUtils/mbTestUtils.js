@@ -1,7 +1,7 @@
 require("dotenv").config({ path: "./test/.env" });
 import nock from "nock";
 import fs from "fs";
-import Gopher from "../../src/gopherhq.js"; //TODO test browser + node versions separately
+import MailBotsClient from "../../src/mailbots-sdk.js"; //TODO test browser + node versions separately
 import { join } from "path";
 require("./nockMocks");
 import crypto from "crypto";
@@ -9,13 +9,13 @@ import crypto from "crypto";
 const apiHost = process.env.API_HOST;
 const accessToken = process.env.ACCESS_TOKEN;
 let exampleTask = {};
-let gopherClient = {};
+let mbClient = {};
 
 /**
  * Simulate API Requests
  * We use Nock to mock network requests to make our tests speedy.
- * To run tests against an instance of Gopher and rebuild the mocks:
- *   1. Modify your .env to point to an install of Gopher. (Copy access token from cookie.)
+ * To run tests against an instance of MailBots and rebuild the mocks:
+ *   1. Modify your .env to point to an install of MailBots. (Copy access token from cookie.)
  *   2. `npm test:rebuild` This will delete and rebuild nockMocks.js
  */
 
@@ -40,7 +40,7 @@ function recordNockMocks() {
     `//auto-generated file
     \nvar nock = require('nock');
     \n//pass through unhandled requests
-    \nnock("http://local.gopher.email:80", { allowUnmocked: true }).get("/fdsa").reply(200, 'ok');` // allow unmocked requests to pass through
+    \nnock("http://local.mailbots.com:80", { allowUnmocked: true }).get("/fdsa").reply(200, 'ok');` // allow unmocked requests to pass through
   );
 
   nock.recorder.rec({ use_separator: false, logging: customNockLogger });
@@ -54,10 +54,10 @@ if (process.env.REBUILD_MOCKS) {
 }
 
 /**
- * Get an instance of gopherClient
+ * Get an instance of mbClient
  */
-module.exports.getGopherClient = function() {
-  let gopherClient = new Gopher({
+module.exports. getMailBotsClient = function() {
+  let mbClient = new MailBotsClient({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     redirectUri: process.env.REDIRECT_URI,
@@ -68,8 +68,8 @@ module.exports.getGopherClient = function() {
     tokenPath: apiHost + "/api/v1/oauth2/access_token",
     authorizePath: apiHost + "/settings/oauth2_authorize"
   });
-  gopherClient.setAccessToken(accessToken);
-  return gopherClient;
+  mbClient.setAccessToken(accessToken);
+  return mbClient;
 };
 
 module.exports.getExampleTask = async function() {
@@ -77,9 +77,9 @@ module.exports.getExampleTask = async function() {
     return exampleTask;
   }
 
-  gopherClient = module.exports.getGopherClient();
+  mbClient = module.exports. getMailBotsClient();
 
-  let { task } = await gopherClient.createTask({
+  let { task } = await mbClient.createTask({
     suppress_webhook: true,
     task: {
       command: process.env.EXAMPLE_COMMAND,

@@ -15,7 +15,7 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var debug = exports.debug = (0, _debug2.default)("gopherhq:request");
+var debug = exports.debug = (0, _debug2.default)("mailbots-sdk:request");
 
 var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
   debug("Request", requestOptions);
@@ -35,14 +35,14 @@ var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
     }
     var errorResponse = friendlyMessage || err.statusText || err.message || err.statusCode;
     if (cb) cb(new Error(errorResponse));
-    console.error(errorResponse);
+    debug(errorResponse);
     return Promise.reject(new Error(errorResponse));
   });
 };
 
 var _checkParam = exports._checkParam = function (param, paramName) {
   if (!param || typeof param !== "string") {
-    throw new Error("'" + paramName + "' is required to connect to Gopher");
+    throw new Error("'" + paramName + "' is required to connect to MailBots");
   }
 };
 

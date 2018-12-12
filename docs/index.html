@@ -2,20 +2,20 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>gopherhq 0.0.22-beta | Documentation</title>
+  <title>@mailbots/mailbots-sdk 0.0.23-beta | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
   <link href='assets/github.css' type='text/css' rel='stylesheet' />
   <link href='assets/split.css' type='text/css' rel='stylesheet' />
-  <meta name='description' content='Gopher Email API client for the browser and node.js'>
+  <meta name='description' content='JS SDK for access to MailBots APIs – node.js and browser'>
 </head>
 <body class='documentation m0'>
     <div class='flex'>
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
-          <h3 class='mb0 no-anchor'>gopherhq</h3>
-          <div class='mb1'><code>0.0.22-beta</code></div>
+          <h3 class='mb0 no-anchor'>@mailbots/mailbots-sdk</h3>
+          <div class='mb1'><code>0.0.23-beta</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -76,9 +76,9 @@
               
                 
                 <li><a
-                  href='#makerequest'
+                  href='#getlogs'
                   class="">
-                  makeRequest
+                  getLogs
                   
                 </a>
                 
@@ -86,9 +86,9 @@
               
                 
                 <li><a
-                  href='#getlogs'
+                  href='#makerequest'
                   class="">
-                  getLogs
+                  makeRequest
                   
                 </a>
                 
@@ -242,11 +242,11 @@
     </h2>
 
     
-      <p>This is a function reference for gopherhq-js. View the
-<a href="https://github.com/gopherhq/gopherhq-js/blob/master/readme.md">readme.md</a>
+      <p>This is a function reference for mailbots-sdk-js. View the
+<a href="https://github.com/mailbots/mailbots-sdk-js/blob/master/readme.md">readme.md</a>
 file in the the repo that corresponds with this version. Also, view
-<a href="https://www.getpostman.com/collections/172d1b9e89c7830f6c95">Gopher REST API</a>
-and the <a href="https://docs.gopher.email">Gopher API Docs</a> for more information.</p>
+<a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30">MailBots REST API</a>
+and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more information.</p>
 
     
   </section>
@@ -265,11 +265,11 @@ and the <a href="https://docs.gopher.email">Gopher API Docs</a> for more informa
   </div>
   
 
-  <p>This is a function reference for gopherhq-js. View the
-<a href="https://github.com/gopherhq/gopherhq-js/blob/master/readme.md">readme.md</a>
+  <p>This is a function reference for mailbots-sdk-js. View the
+<a href="https://github.com/mailbots/mailbots-sdk-js/blob/master/readme.md">readme.md</a>
 file in the the repo that corresponds with this version. Also, view
-<a href="https://www.getpostman.com/collections/172d1b9e89c7830f6c95">Gopher REST API</a>
-and the <a href="https://docs.gopher.email">Gopher API Docs</a> for more information.</p>
+<a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30">MailBots REST API</a>
+and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more information.</p>
 
  
    
@@ -366,7 +366,7 @@ and the <a href="https://docs.gopher.email">Gopher API Docs</a> for more informa
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.extensionGetSelf();</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.extensionGetSelf();</pre>
     
   
 
@@ -395,8 +395,8 @@ and the <a href="https://docs.gopher.email">Gopher API Docs</a> for more informa
   <p>Send an Event to the extension. This does not require
 and auth token because the endpoint is meant for 3rd
 party services. Ex: issue created in Github, or an
-email response or support ticket received. The Gopher
-Extension can listen for events, act on tasks or
+email response or support ticket received. The MailBots
+bot can listen for events, act on tasks or
 create or delete tasks based on events.</p>
 
  
@@ -455,7 +455,7 @@ create or delete tasks based on events.</p>
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.sendEvent({<span class="hljs-attr">type</span>: <span class="hljs-string">'event.type'</span>, <span class="hljs-attr">payload</span>: {<span class="hljs-string">"foo"</span>, <span class="hljs-string">"bar"</span>}, <span class="hljs-attr">event_url</span>: <span class="hljs-string">"[unique_event_url]"</span>});</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.sendEvent({<span class="hljs-attr">type</span>: <span class="hljs-string">'event.type'</span>, <span class="hljs-attr">payload</span>: {<span class="hljs-string">"foo"</span>, <span class="hljs-string">"bar"</span>}, <span class="hljs-attr">event_url</span>: <span class="hljs-string">"[unique_event_url]"</span>});</pre>
     
   
 
@@ -481,9 +481,9 @@ create or delete tasks based on events.</p>
   </div>
   
 
-  <p>Save Gopher extension data which is sent with every webhook related to that extension.
+  <p>Save MailBot data which is sent with every webhook related to that extension.
 This is how an extension persist's user settings specific to that extension.
-For params and details, see <a href="https://postman.gopheremail.com/#7f9bfa6c-a673-4104-9be9-1ada487c300e">extension saving data API docs</a></p>
+For params and details, see <a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#7f9bfa6c-a673-4104-9be9-1ada487c300e">extension saving data API docs</a></p>
 
  
   
@@ -541,7 +541,7 @@ For params and details, see <a href="https://postman.gopheremail.com/#7f9bfa6c-a
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.saveExtensionData({ <span class="hljs-attr">foo</span>: <span class="hljs-string">"bar"</span> });</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.saveExtensionData({ <span class="hljs-attr">foo</span>: <span class="hljs-string">"bar"</span> });</pre>
     
   
 
@@ -567,8 +567,8 @@ For params and details, see <a href="https://postman.gopheremail.com/#7f9bfa6c-a
   </div>
   
 
-  <p>Get saved Gopher extension data
-For params and details, see <a href="https://postman.gopheremail.com/#f98b6862-9059-4d4f-931b-78d554e8a4e7">extension get data API docs</a></p>
+  <p>Get saved MailBot data
+For params and details, see <a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7">extension get data API docs</a></p>
 
  
   
@@ -609,87 +609,8 @@ For params and details, see <a href="https://postman.gopheremail.com/#f98b6862-9
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.getExtensionData();</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.getExtensionData();</pre>
     
-  
-
-  
-
-  
-
-  
-</section>
-
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='makerequest'>
-      makeRequest
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Low-level function to make authenticated request to Gopher API</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>makeRequest(requestOptions: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>requestOptions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    Axiox-compatible request ooptions
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>cb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
-	    Optional callback.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
-        
-
-      
-    
-  
-
-  
-
   
 
   
@@ -714,8 +635,7 @@ For params and details, see <a href="https://postman.gopheremail.com/#f98b6862-9
   </div>
   
 
-  <p>Retrieve logged-in user's extension logs
-For params and details, see <a href="https://postman.gopheremail.com/#7f9bfa6c-a673-4104-9be9-1ada487c300e">extension saving data API docs</a></p>
+  <p>Retrieve logged-in user's extension logs</p>
 
  
   
@@ -788,6 +708,85 @@ For params and details, see <a href="https://postman.gopheremail.com/#7f9bfa6c-a
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='makerequest'>
+      makeRequest
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Low-level function to make authenticated request to MailBots API</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>makeRequest(requestOptions: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>requestOptions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    Axiox-compatible request ooptions
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
+	    Optional callback.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='gettasks'>
       getTasks
     </h3>
@@ -796,7 +795,7 @@ For params and details, see <a href="https://postman.gopheremail.com/#7f9bfa6c-a
   </div>
   
 
-  <p>Get a filtered list of Gopher tasks</p>
+  <p>Get a filtered list of MailBots tasks</p>
 
  
   
@@ -839,7 +838,7 @@ For params and details, see <a href="https://postman.gopheremail.com/#7f9bfa6c-a
                 <tr>
   <td class='break-word'><span class='code bold'>params.suppress_webhook</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
   </td>
-  <td class='break-word'><span>Prevent Gopher from firing the task.viewed webhook
+  <td class='break-word'><span>Prevent MailBots from firing the task.viewed webhook
 </span></td>
 </tr>
 
@@ -890,12 +889,12 @@ For params and details, see <a href="https://postman.gopheremail.com/#7f9bfa6c-a
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Get all open tasks, sorted by due date</span>
-<span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.getTasks();
+<span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.getTasks();
 <span class="hljs-built_in">console</span>.log(res.tasks);</pre>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// With a callback</span>
-gopherClient.getTasks({ <span class="hljs-attr">limit</span>: <span class="hljs-number">1</span> }, (err, res) =&gt; {
+mbClient.getTasks({ <span class="hljs-attr">limit</span>: <span class="hljs-number">1</span> }, (err, res) =&gt; {
     <span class="hljs-keyword">if</span> (err) done(err);
     <span class="hljs-built_in">console</span>.log(res.tasks);
   });</pre>
@@ -924,7 +923,7 @@ gopherClient.getTasks({ <span class="hljs-attr">limit</span>: <span class="hljs-
   </div>
   
 
-  <p>Get a Gopher task
+  <p>Get a MailBots task
 Passing ?verbose=1 fires a webhook to the extnesion and fetches a rendered
 HTML email preview of the task</p>
 
@@ -1045,7 +1044,7 @@ in a "messages" array if the extension makes these available in the task.viewed 
   </div>
   
 
-  <p>Create a new Gopher Task.</p>
+  <p>Create a new MailBots Task.</p>
 
  
   
@@ -1110,7 +1109,7 @@ in a "messages" array if the extension makes these available in the task.viewed 
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.createTask(
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.createTask(
     {
       <span class="hljs-attr">webhook</span>: <span class="hljs-literal">false</span>,
       <span class="hljs-attr">suppress_email</span>: <span class="hljs-literal">true</span>,
@@ -1158,7 +1157,7 @@ in a "messages" array if the extension makes these available in the task.viewed 
   
 
   <p>Send Email and automatically create a Task
-This creates a gopher task and sends an email. It's a wrapper
+This creates a MailBots task and sends an email. It's a wrapper
 for createTask with opinionated settings for just sending email.</p>
 
  
@@ -1219,9 +1218,9 @@ for createTask with opinionated settings for just sending email.</p>
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.sendEmail({
-    <span class="hljs-attr">command</span>: command@my-ext.gopher.email,
-    <span class="hljs-attr">to</span>: <span class="hljs-string">"test@exampletask.com"</span>,
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.sendEmail({
+    <span class="hljs-attr">command</span>: <span class="hljs-string">"command@my-ext.eml.bot"</span>, <span class="hljs-comment">// must be your extension's domain</span>
+    to: <span class="hljs-string">"test@exampletask.com"</span>,
     <span class="hljs-attr">cc</span>: [],
     <span class="hljs-attr">bcc</span>: [],
     <span class="hljs-attr">from</span>: <span class="hljs-string">"test@example.com"</span>,
@@ -1258,7 +1257,7 @@ for createTask with opinionated settings for just sending email.</p>
   </div>
   
 
-  <p>Update A Gopher Task
+  <p>Update A MailBots Task
 Used to save data against the task, update content, followup time and more</p>
 
  
@@ -1324,7 +1323,7 @@ Used to save data against the task, update content, followup time and more</p>
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> gopherClient.updateTask({
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.updateTask({
    <span class="hljs-attr">task</span>: {
     <span class="hljs-attr">id</span>: <span class="hljs-number">1234</span>,
     <span class="hljs-attr">reference_email</span>: {
@@ -1356,7 +1355,7 @@ Used to save data against the task, update content, followup time and more</p>
   </div>
   
 
-  <p>Archive A Gopher Task</p>
+  <p>Archive A MailBots Task</p>
 
  
   
@@ -1470,7 +1469,7 @@ Used to save data against the task, update content, followup time and more</p>
   </div>
   
 
-  <p>Permanently Delete A Gopher Task</p>
+  <p>Permanently Delete A MailBots Task</p>
 
  
   
@@ -1584,7 +1583,7 @@ Used to save data against the task, update content, followup time and more</p>
   </div>
   
 
-  <p>Trigger a Gopher Task</p>
+  <p>Trigger a MailBots Task</p>
 
  
   
@@ -1695,7 +1694,7 @@ Used to save data against the task, update content, followup time and more</p>
   </div>
   
 
-  <p>Resolve Natural Time Format (ex: {naturaltime}@ext.gopher.email)</p>
+  <p>Resolve Natural Time Format (ex: {naturaltime}@ext.eml.bot)</p>
 
  
   

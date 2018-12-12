@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 84);
+/******/ 	return __webpack_require__(__webpack_require__.s = 83);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -181,7 +181,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
 
 var base64 = __webpack_require__(87);
 var ieee754 = __webpack_require__(88);
-var isArray = __webpack_require__(43);
+var isArray = __webpack_require__(42);
 
 exports.Buffer = Buffer;
 exports.SlowBuffer = SlowBuffer;
@@ -5288,7 +5288,7 @@ var elliptic = exports;
 
 elliptic.version = __webpack_require__(132).version;
 elliptic.utils = __webpack_require__(133);
-elliptic.rand = __webpack_require__(65);
+elliptic.rand = __webpack_require__(64);
 elliptic.curve = __webpack_require__(25);
 elliptic.curves = __webpack_require__(138);
 
@@ -5322,7 +5322,7 @@ assert.equal = function (l, r, msg) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var bind = __webpack_require__(79);
+var bind = __webpack_require__(78);
 var isBuffer = __webpack_require__(182);
 
 /*global toString:true*/
@@ -6225,7 +6225,7 @@ var util = __webpack_require__(16);
 util.inherits = __webpack_require__(0);
 /*</replacement>*/
 
-var Readable = __webpack_require__(45);
+var Readable = __webpack_require__(44);
 var Writable = __webpack_require__(31);
 
 util.inherits(Duplex, Readable);
@@ -6330,7 +6330,7 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var debug = exports.debug = (0, _debug2.default)("gopherhq:request");
+var debug = exports.debug = (0, _debug2.default)("mailbots-sdk:request");
 
 var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
   debug("Request", requestOptions);
@@ -6350,14 +6350,14 @@ var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
     }
     var errorResponse = friendlyMessage || err.statusText || err.message || err.statusCode;
     if (cb) cb(new Error(errorResponse));
-    console.error(errorResponse);
+    debug(errorResponse);
     return Promise.reject(new Error(errorResponse));
   });
 };
 
 var _checkParam = exports._checkParam = function (param, paramName) {
   if (!param || typeof param !== "string") {
-    throw new Error("'" + paramName + "' is required to connect to Gopher");
+    throw new Error("'" + paramName + "' is required to connect to MailBots");
   }
 };
 
@@ -6783,7 +6783,7 @@ asn1.bignum = __webpack_require__(3);
 
 asn1.define = __webpack_require__(154).define;
 asn1.base = __webpack_require__(20);
-asn1.constants = __webpack_require__(71);
+asn1.constants = __webpack_require__(70);
 asn1.decoders = __webpack_require__(160);
 asn1.encoders = __webpack_require__(162);
 
@@ -6797,8 +6797,8 @@ asn1.encoders = __webpack_require__(162);
 var base = exports;
 
 base.Reporter = __webpack_require__(157).Reporter;
-base.DecoderBuffer = __webpack_require__(70).DecoderBuffer;
-base.EncoderBuffer = __webpack_require__(70).EncoderBuffer;
+base.DecoderBuffer = __webpack_require__(69).DecoderBuffer;
+base.EncoderBuffer = __webpack_require__(69).EncoderBuffer;
 base.Node = __webpack_require__(158);
 
 /***/ }),
@@ -7213,7 +7213,7 @@ var asn1 = __webpack_require__(153);
 var aesid = __webpack_require__(165);
 var fixProc = __webpack_require__(166);
 var ciphers = __webpack_require__(36);
-var compat = __webpack_require__(54);
+var compat = __webpack_require__(53);
 module.exports = parseKeys;
 
 function parseKeys(buffer) {
@@ -7328,7 +7328,7 @@ function decrypt(data, password) {
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
 var inherits = __webpack_require__(0);
-var HashBase = __webpack_require__(44);
+var HashBase = __webpack_require__(43);
 
 var ARRAY16 = new Array(16);
 
@@ -7891,12 +7891,12 @@ function isUndefined(arg) {
 "use strict";
 
 
-exports = module.exports = __webpack_require__(45);
+exports = module.exports = __webpack_require__(44);
 exports.Stream = exports;
 exports.Readable = exports;
 exports.Writable = __webpack_require__(31);
 exports.Duplex = __webpack_require__(11);
-exports.Transform = __webpack_require__(48);
+exports.Transform = __webpack_require__(47);
 exports.PassThrough = __webpack_require__(95);
 
 /***/ }),
@@ -7981,7 +7981,7 @@ var internalUtil = {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__(46);
+var Stream = __webpack_require__(45);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -7997,7 +7997,7 @@ function _isUint8Array(obj) {
 
 /*</replacement>*/
 
-var destroyImpl = __webpack_require__(47);
+var destroyImpl = __webpack_require__(46);
 
 util.inherits(Writable, Stream);
 
@@ -8904,7 +8904,7 @@ function simpleEnd(buf) {
 
 var Buffer = __webpack_require__(2).Buffer;
 var inherits = __webpack_require__(0);
-var HashBase = __webpack_require__(44);
+var HashBase = __webpack_require__(43);
 
 var ARRAY16 = new Array(16);
 
@@ -9061,9 +9061,9 @@ var _exports = module.exports = function (algorithm) {
 _exports.sha = __webpack_require__(100);
 _exports.sha1 = __webpack_require__(101);
 _exports.sha224 = __webpack_require__(102);
-_exports.sha256 = __webpack_require__(49);
+_exports.sha256 = __webpack_require__(48);
 _exports.sha384 = __webpack_require__(103);
-_exports.sha512 = __webpack_require__(50);
+_exports.sha512 = __webpack_require__(49);
 
 /***/ }),
 /* 35 */
@@ -9087,7 +9087,7 @@ exports.EDE = __webpack_require__(113);
 
 var ciphers = __webpack_require__(114);
 var deciphers = __webpack_require__(122);
-var modes = __webpack_require__(60);
+var modes = __webpack_require__(59);
 
 function getCiphers() {
   return Object.keys(modes);
@@ -9113,11 +9113,11 @@ var modeModules = {
   CFB8: __webpack_require__(118),
   CFB1: __webpack_require__(119),
   OFB: __webpack_require__(120),
-  CTR: __webpack_require__(58),
-  GCM: __webpack_require__(58)
+  CTR: __webpack_require__(57),
+  GCM: __webpack_require__(57)
 };
 
-var modes = __webpack_require__(60);
+var modes = __webpack_require__(59);
 
 for (var key in modes) {
   modes[key].module = modeModules[modes[key].mode];
@@ -9221,10 +9221,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(80);
+    adapter = __webpack_require__(79);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(80);
+    adapter = __webpack_require__(79);
   }
   return adapter;
 }
@@ -9297,19 +9297,9 @@ module.exports = defaults;
 "use strict";
 
 
-exports.decode = exports.parse = __webpack_require__(85);
-exports.encode = exports.stringify = __webpack_require__(86);
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = __webpack_require__(13);
 exports.createHash = exports.Hash = __webpack_require__(15);
-exports.createHmac = exports.Hmac = __webpack_require__(51);
+exports.createHmac = exports.Hmac = __webpack_require__(50);
 
 var algos = __webpack_require__(105);
 var algoKeys = Object.keys(algos);
@@ -9318,7 +9308,7 @@ exports.getHashes = function () {
   return hashes;
 };
 
-var p = __webpack_require__(54);
+var p = __webpack_require__(53);
 exports.pbkdf2 = p.pbkdf2;
 exports.pbkdf2Sync = p.pbkdf2Sync;
 
@@ -9400,7 +9390,7 @@ exports.constants = {
 };
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9413,7 +9403,7 @@ module.exports = Array.isArray || function (arr) {
 };
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9516,7 +9506,7 @@ HashBase.prototype._digest = function () {
 module.exports = HashBase;
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9551,7 +9541,7 @@ var pna = __webpack_require__(22);
 module.exports = Readable;
 
 /*<replacement>*/
-var isArray = __webpack_require__(43);
+var isArray = __webpack_require__(42);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -9569,7 +9559,7 @@ var EElistenerCount = function (emitter, type) {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__(46);
+var Stream = __webpack_require__(45);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -9601,7 +9591,7 @@ if (debugUtil && debugUtil.debuglog) {
 /*</replacement>*/
 
 var BufferList = __webpack_require__(90);
-var destroyImpl = __webpack_require__(47);
+var destroyImpl = __webpack_require__(46);
 var StringDecoder;
 
 util.inherits(Readable, Stream);
@@ -10542,7 +10532,7 @@ function indexOf(xs, x) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(7)))
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10551,7 +10541,7 @@ function indexOf(xs, x) {
 module.exports = __webpack_require__(29).EventEmitter;
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10631,7 +10621,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10851,7 +10841,7 @@ function done(stream, er, data) {
 }
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10978,7 +10968,7 @@ Sha256.prototype._hash = function () {
 module.exports = Sha256;
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11205,7 +11195,7 @@ Sha512.prototype._hash = function () {
 module.exports = Sha512;
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11215,7 +11205,7 @@ var inherits = __webpack_require__(0);
 var Legacy = __webpack_require__(104);
 var Base = __webpack_require__(10);
 var Buffer = __webpack_require__(1).Buffer;
-var md5 = __webpack_require__(52);
+var md5 = __webpack_require__(51);
 var RIPEMD160 = __webpack_require__(33);
 
 var sha = __webpack_require__(34);
@@ -11274,7 +11264,7 @@ module.exports = function (alg, key) {
 };
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11287,23 +11277,23 @@ module.exports = function (buffer) {
 };
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports = {"sha224WithRSAEncryption":{"sign":"rsa","hash":"sha224","id":"302d300d06096086480165030402040500041c"},"RSA-SHA224":{"sign":"ecdsa/rsa","hash":"sha224","id":"302d300d06096086480165030402040500041c"},"sha256WithRSAEncryption":{"sign":"rsa","hash":"sha256","id":"3031300d060960864801650304020105000420"},"RSA-SHA256":{"sign":"ecdsa/rsa","hash":"sha256","id":"3031300d060960864801650304020105000420"},"sha384WithRSAEncryption":{"sign":"rsa","hash":"sha384","id":"3041300d060960864801650304020205000430"},"RSA-SHA384":{"sign":"ecdsa/rsa","hash":"sha384","id":"3041300d060960864801650304020205000430"},"sha512WithRSAEncryption":{"sign":"rsa","hash":"sha512","id":"3051300d060960864801650304020305000440"},"RSA-SHA512":{"sign":"ecdsa/rsa","hash":"sha512","id":"3051300d060960864801650304020305000440"},"RSA-SHA1":{"sign":"rsa","hash":"sha1","id":"3021300906052b0e03021a05000414"},"ecdsa-with-SHA1":{"sign":"ecdsa","hash":"sha1","id":""},"sha256":{"sign":"ecdsa","hash":"sha256","id":""},"sha224":{"sign":"ecdsa","hash":"sha224","id":""},"sha384":{"sign":"ecdsa","hash":"sha384","id":""},"sha512":{"sign":"ecdsa","hash":"sha512","id":""},"DSA-SHA":{"sign":"dsa","hash":"sha1","id":""},"DSA-SHA1":{"sign":"dsa","hash":"sha1","id":""},"DSA":{"sign":"dsa","hash":"sha1","id":""},"DSA-WITH-SHA224":{"sign":"dsa","hash":"sha224","id":""},"DSA-SHA224":{"sign":"dsa","hash":"sha224","id":""},"DSA-WITH-SHA256":{"sign":"dsa","hash":"sha256","id":""},"DSA-SHA256":{"sign":"dsa","hash":"sha256","id":""},"DSA-WITH-SHA384":{"sign":"dsa","hash":"sha384","id":""},"DSA-SHA384":{"sign":"dsa","hash":"sha384","id":""},"DSA-WITH-SHA512":{"sign":"dsa","hash":"sha512","id":""},"DSA-SHA512":{"sign":"dsa","hash":"sha512","id":""},"DSA-RIPEMD160":{"sign":"dsa","hash":"rmd160","id":""},"ripemd160WithRSA":{"sign":"rsa","hash":"rmd160","id":"3021300906052b2403020105000414"},"RSA-RIPEMD160":{"sign":"rsa","hash":"rmd160","id":"3021300906052b2403020105000414"},"md5WithRSAEncryption":{"sign":"rsa","hash":"md5","id":"3020300c06082a864886f70d020505000410"},"RSA-MD5":{"sign":"rsa","hash":"md5","id":"3020300c06082a864886f70d020505000410"}}
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 exports.pbkdf2 = __webpack_require__(106);
-exports.pbkdf2Sync = __webpack_require__(57);
+exports.pbkdf2Sync = __webpack_require__(56);
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11341,7 +11331,7 @@ module.exports = function (password, salt, iterations, keylen) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11360,18 +11350,18 @@ module.exports = defaultEncoding;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var md5 = __webpack_require__(52);
+var md5 = __webpack_require__(51);
 var rmd160 = __webpack_require__(33);
 var sha = __webpack_require__(34);
 
-var checkParameters = __webpack_require__(55);
-var defaultEncoding = __webpack_require__(56);
+var checkParameters = __webpack_require__(54);
+var defaultEncoding = __webpack_require__(55);
 var Buffer = __webpack_require__(1).Buffer;
 var ZEROS = Buffer.alloc(128);
 var sizes = {
@@ -11470,7 +11460,7 @@ function pbkdf2(password, salt, iterations, keylen, digest) {
 module.exports = pbkdf2;
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11478,7 +11468,7 @@ module.exports = pbkdf2;
 
 var xor = __webpack_require__(17);
 var Buffer = __webpack_require__(1).Buffer;
-var incr32 = __webpack_require__(59);
+var incr32 = __webpack_require__(58);
 
 function getBlock(self) {
   var out = self._cipher.encryptBlockRaw(self._prev);
@@ -11505,7 +11495,7 @@ exports.encrypt = function (self, chunk) {
 };
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11528,13 +11518,13 @@ function incr32(iv) {
 module.exports = incr32;
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports) {
 
 module.exports = {"aes-128-ecb":{"cipher":"AES","key":128,"iv":0,"mode":"ECB","type":"block"},"aes-192-ecb":{"cipher":"AES","key":192,"iv":0,"mode":"ECB","type":"block"},"aes-256-ecb":{"cipher":"AES","key":256,"iv":0,"mode":"ECB","type":"block"},"aes-128-cbc":{"cipher":"AES","key":128,"iv":16,"mode":"CBC","type":"block"},"aes-192-cbc":{"cipher":"AES","key":192,"iv":16,"mode":"CBC","type":"block"},"aes-256-cbc":{"cipher":"AES","key":256,"iv":16,"mode":"CBC","type":"block"},"aes128":{"cipher":"AES","key":128,"iv":16,"mode":"CBC","type":"block"},"aes192":{"cipher":"AES","key":192,"iv":16,"mode":"CBC","type":"block"},"aes256":{"cipher":"AES","key":256,"iv":16,"mode":"CBC","type":"block"},"aes-128-cfb":{"cipher":"AES","key":128,"iv":16,"mode":"CFB","type":"stream"},"aes-192-cfb":{"cipher":"AES","key":192,"iv":16,"mode":"CFB","type":"stream"},"aes-256-cfb":{"cipher":"AES","key":256,"iv":16,"mode":"CFB","type":"stream"},"aes-128-cfb8":{"cipher":"AES","key":128,"iv":16,"mode":"CFB8","type":"stream"},"aes-192-cfb8":{"cipher":"AES","key":192,"iv":16,"mode":"CFB8","type":"stream"},"aes-256-cfb8":{"cipher":"AES","key":256,"iv":16,"mode":"CFB8","type":"stream"},"aes-128-cfb1":{"cipher":"AES","key":128,"iv":16,"mode":"CFB1","type":"stream"},"aes-192-cfb1":{"cipher":"AES","key":192,"iv":16,"mode":"CFB1","type":"stream"},"aes-256-cfb1":{"cipher":"AES","key":256,"iv":16,"mode":"CFB1","type":"stream"},"aes-128-ofb":{"cipher":"AES","key":128,"iv":16,"mode":"OFB","type":"stream"},"aes-192-ofb":{"cipher":"AES","key":192,"iv":16,"mode":"OFB","type":"stream"},"aes-256-ofb":{"cipher":"AES","key":256,"iv":16,"mode":"OFB","type":"stream"},"aes-128-ctr":{"cipher":"AES","key":128,"iv":16,"mode":"CTR","type":"stream"},"aes-192-ctr":{"cipher":"AES","key":192,"iv":16,"mode":"CTR","type":"stream"},"aes-256-ctr":{"cipher":"AES","key":256,"iv":16,"mode":"CTR","type":"stream"},"aes-128-gcm":{"cipher":"AES","key":128,"iv":12,"mode":"GCM","type":"auth"},"aes-192-gcm":{"cipher":"AES","key":192,"iv":12,"mode":"GCM","type":"auth"},"aes-256-gcm":{"cipher":"AES","key":256,"iv":12,"mode":"GCM","type":"auth"}}
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11546,7 +11536,7 @@ var Transform = __webpack_require__(10);
 var inherits = __webpack_require__(0);
 var GHASH = __webpack_require__(121);
 var xor = __webpack_require__(17);
-var incr32 = __webpack_require__(59);
+var incr32 = __webpack_require__(58);
 
 function xorTest(a, b) {
   var out = 0;
@@ -11659,7 +11649,7 @@ StreamCipher.prototype.setAAD = function (buf) {
 module.exports = StreamCipher;
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11694,7 +11684,7 @@ StreamCipher.prototype._final = function () {
 module.exports = StreamCipher;
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11706,7 +11696,7 @@ findPrime.simpleSieve = simpleSieve;
 findPrime.fermatTest = fermatTest;
 var BN = __webpack_require__(3);
 var TWENTYFOUR = new BN(24);
-var MillerRabin = __webpack_require__(64);
+var MillerRabin = __webpack_require__(63);
 var millerRabin = new MillerRabin();
 var ONE = new BN(1);
 var TWO = new BN(2);
@@ -11798,14 +11788,14 @@ function findPrime(bits, gen) {
 }
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var bn = __webpack_require__(3);
-var brorand = __webpack_require__(65);
+var brorand = __webpack_require__(64);
 
 function MillerRabin(rand) {
   this.rand = rand || new brorand.Rand();
@@ -11909,7 +11899,7 @@ MillerRabin.prototype.getDivisor = function (n, k) {
 };
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11980,7 +11970,7 @@ if ((typeof self === 'undefined' ? 'undefined' : _typeof(self)) === 'object') {
 }
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12033,7 +12023,7 @@ utils.encode = function (arr, enc) {
 };
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12085,7 +12075,7 @@ function g1_256(x) {
 exports.g1_256 = g1_256;
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12093,7 +12083,7 @@ exports.g1_256 = g1_256;
 
 var utils = __webpack_require__(8);
 var common = __webpack_require__(18);
-var shaCommon = __webpack_require__(67);
+var shaCommon = __webpack_require__(66);
 var assert = __webpack_require__(5);
 
 var sum32 = utils.sum32;
@@ -12171,7 +12161,7 @@ SHA256.prototype._digest = function (enc) {
 };
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12424,7 +12414,7 @@ function g1_512_lo(xh, xl) {
 }
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12536,7 +12526,7 @@ EncoderBuffer.prototype.join = function (out, offset) {
 };
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12562,7 +12552,7 @@ constants._reverse = function (map) {
 constants.der = __webpack_require__(159);
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12844,7 +12834,7 @@ function derDecodeLen(buf, primitive, fail) {
 }
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13093,13 +13083,13 @@ function encodeTag(tag, primitive, cls, reporter) {
 }
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports) {
 
 module.exports = {"1.3.132.0.10":"secp256k1","1.3.132.0.33":"p224","1.2.840.10045.3.1.1":"p192","1.2.840.10045.3.1.7":"p256","1.3.132.0.34":"p384","1.3.132.0.35":"p521"}
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13125,7 +13115,7 @@ function i2ops(c) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13141,7 +13131,7 @@ module.exports = function (a, b) {
 };
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13156,7 +13146,7 @@ module.exports = withPublic;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13355,7 +13345,7 @@ exports.stringify = function (obj, opts) {
 };
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13372,7 +13362,7 @@ module.exports = function (fn, thisArg) {
 };
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13383,7 +13373,7 @@ var settle = __webpack_require__(185);
 var buildURL = __webpack_require__(187);
 var parseHeaders = __webpack_require__(188);
 var isURLSameOrigin = __webpack_require__(189);
-var createError = __webpack_require__(81);
+var createError = __webpack_require__(80);
 var btoa = true && window.btoa && window.btoa.bind(window) || __webpack_require__(190);
 
 module.exports = function (config) {
@@ -13553,7 +13543,7 @@ module.exports = function (config) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13577,7 +13567,7 @@ module.exports = function (message, config, code, request, response) {
 };
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13588,7 +13578,7 @@ module.exports = function (value) {
 };
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13614,7 +13604,7 @@ Cancel.prototype.__CANCEL__ = true;
 module.exports = Cancel;
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13622,11 +13612,11 @@ module.exports = Cancel;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _querystring = __webpack_require__(41);
+var _querystring = __webpack_require__(84);
 
 var _querystring2 = _interopRequireDefault(_querystring);
 
-var _crypto = __webpack_require__(42);
+var _crypto = __webpack_require__(41);
 
 var _crypto2 = _interopRequireDefault(_crypto);
 
@@ -13670,11 +13660,11 @@ var server = false;
 
 // This block is removed by babel when it compiles the client lib (see package.json)
 
-var Gopher = function () {
-  function Gopher(config) {
-    _classCallCheck(this, Gopher);
+var MailBotsClient = function () {
+  function MailBotsClient(config) {
+    _classCallCheck(this, MailBotsClient);
 
-    if (!(this instanceof Gopher)) return new Gopher(config);
+    if (!(this instanceof MailBotsClient)) return new MailBotsClient(config);
 
     if (context === "browser" && this.clientSecret) {
       throw "SECURITY ERROR: clientSecret should only be stored the server.";
@@ -13687,10 +13677,10 @@ var Gopher = function () {
       redirectUri: "",
       scope: "",
       state: "",
-      apiHost: "https://www.gopher.email",
-      tokenHost: "https://www.gopher.email",
-      tokenPath: "https://www.gopher.email/api/v1/oauth2/access_token",
-      authorizePath: "https://www.gopher.email/settings/oauth2_authorize"
+      apiHost: "https://api.mailbots.com",
+      tokenHost: "https://api.mailbots.com",
+      tokenPath: "https://api.mailbots.com/api/v1/oauth2/access_token",
+      authorizePath: "https://api.mailbots.com/settings/oauth2_authorize"
     };
 
     this.config = Object.assign(this.configDefaults, this.config);
@@ -13706,7 +13696,7 @@ var Gopher = function () {
    */
 
 
-  _createClass(Gopher, [{
+  _createClass(MailBotsClient, [{
     key: "setAccessToken",
     value: function setAccessToken(accessToken) {
       this._accessToken = accessToken;
@@ -13739,7 +13729,7 @@ var Gopher = function () {
     }
 
     /**
-     * Low-level function to make authenticated request to Gopher API
+     * Low-level function to make authenticated request to MailBots API
      * @param {object} requestOptions - Axiox-compatible request ooptions
      * @param {function} [cb] - Optional callback.
      * @return {Promise}
@@ -13752,19 +13742,29 @@ var Gopher = function () {
     }
   }]);
 
-  return Gopher;
+  return MailBotsClient;
 }();
 
-(0, _util._extend)(Gopher, _tasks2.default);
-(0, _util._extend)(Gopher, _users2.default);
-(0, _util._extend)(Gopher, _webhooks2.default);
-(0, _util._extend)(Gopher, _auth2.default);
-(0, _util._extend)(Gopher, _extensions2.default);
-(0, _util._extend)(Gopher, _logs2.default);
+(0, _util._extend)(MailBotsClient, _tasks2.default);
+(0, _util._extend)(MailBotsClient, _users2.default);
+(0, _util._extend)(MailBotsClient, _webhooks2.default);
+(0, _util._extend)(MailBotsClient, _auth2.default);
+(0, _util._extend)(MailBotsClient, _extensions2.default);
+(0, _util._extend)(MailBotsClient, _logs2.default);
 
-module.exports = Gopher;
+module.exports = MailBotsClient;
 
-window.Gopher = Gopher;
+window.MailBotsClient = MailBotsClient;
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.decode = exports.parse = __webpack_require__(85);
+exports.encode = exports.stringify = __webpack_require__(86);
 
 /***/ }),
 /* 85 */
@@ -14624,7 +14624,7 @@ function config(name) {
 
 module.exports = PassThrough;
 
-var Transform = __webpack_require__(48);
+var Transform = __webpack_require__(47);
 
 /*<replacement>*/
 var util = __webpack_require__(16);
@@ -14902,7 +14902,7 @@ module.exports = Sha1;
  */
 
 var inherits = __webpack_require__(0);
-var Sha256 = __webpack_require__(49);
+var Sha256 = __webpack_require__(48);
 var Hash = __webpack_require__(14);
 var Buffer = __webpack_require__(1).Buffer;
 
@@ -14955,7 +14955,7 @@ module.exports = Sha224;
 
 
 var inherits = __webpack_require__(0);
-var SHA512 = __webpack_require__(50);
+var SHA512 = __webpack_require__(49);
 var Hash = __webpack_require__(14);
 var Buffer = __webpack_require__(1).Buffer;
 
@@ -15072,7 +15072,7 @@ module.exports = Hmac;
 "use strict";
 
 
-module.exports = __webpack_require__(53);
+module.exports = __webpack_require__(52);
 
 /***/ }),
 /* 106 */
@@ -15081,9 +15081,9 @@ module.exports = __webpack_require__(53);
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global, process) {
 
-var checkParameters = __webpack_require__(55);
-var defaultEncoding = __webpack_require__(56);
-var sync = __webpack_require__(57);
+var checkParameters = __webpack_require__(54);
+var defaultEncoding = __webpack_require__(55);
+var sync = __webpack_require__(56);
 var Buffer = __webpack_require__(1).Buffer;
 
 var ZERO_BUF;
@@ -15928,9 +15928,9 @@ EDE.prototype._unpad = DES.prototype._unpad;
 
 
 var MODES = __webpack_require__(37);
-var AuthCipher = __webpack_require__(61);
+var AuthCipher = __webpack_require__(60);
 var Buffer = __webpack_require__(1).Buffer;
-var StreamCipher = __webpack_require__(62);
+var StreamCipher = __webpack_require__(61);
 var Transform = __webpack_require__(10);
 var aes = __webpack_require__(23);
 var ebtk = __webpack_require__(24);
@@ -16327,10 +16327,10 @@ module.exports = GHASH;
 "use strict";
 
 
-var AuthCipher = __webpack_require__(61);
+var AuthCipher = __webpack_require__(60);
 var Buffer = __webpack_require__(1).Buffer;
 var MODES = __webpack_require__(37);
-var StreamCipher = __webpack_require__(62);
+var StreamCipher = __webpack_require__(61);
 var Transform = __webpack_require__(10);
 var aes = __webpack_require__(23);
 var ebtk = __webpack_require__(24);
@@ -16491,7 +16491,7 @@ exports['des-ede'] = {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
-var generatePrime = __webpack_require__(63);
+var generatePrime = __webpack_require__(62);
 var primes = __webpack_require__(128);
 
 var DH = __webpack_require__(129);
@@ -16591,14 +16591,14 @@ module.exports = {"modp1":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
 var BN = __webpack_require__(3);
-var MillerRabin = __webpack_require__(64);
+var MillerRabin = __webpack_require__(63);
 var millerRabin = new MillerRabin();
 var TWENTYFOUR = new BN(24);
 var ELEVEN = new BN(11);
 var TEN = new BN(10);
 var THREE = new BN(3);
 var SEVEN = new BN(7);
-var primes = __webpack_require__(63);
+var primes = __webpack_require__(62);
 var randomBytes = __webpack_require__(13);
 module.exports = DH;
 
@@ -16766,7 +16766,7 @@ var inherits = __webpack_require__(0);
 var sign = __webpack_require__(131);
 var verify = __webpack_require__(167);
 
-var algorithms = __webpack_require__(53);
+var algorithms = __webpack_require__(52);
 Object.keys(algorithms).forEach(function (key) {
   algorithms[key].id = new Buffer(algorithms[key].id, 'hex');
   algorithms[key.toLowerCase()] = algorithms[key];
@@ -16861,12 +16861,12 @@ module.exports = {
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
-var createHmac = __webpack_require__(51);
+var createHmac = __webpack_require__(50);
 var crt = __webpack_require__(38);
 var EC = __webpack_require__(4).ec;
 var BN = __webpack_require__(3);
 var parseKeys = __webpack_require__(26);
-var curves = __webpack_require__(74);
+var curves = __webpack_require__(73);
 
 function sign(hash, key, hashType, signType, tag) {
   var priv = parseKeys(key);
@@ -17024,7 +17024,7 @@ module.exports = {"_from":"elliptic@6.4.1","_id":"elliptic@6.4.1","_inBundle":fa
 var utils = exports;
 var BN = __webpack_require__(3);
 var minAssert = __webpack_require__(5);
-var minUtils = __webpack_require__(66);
+var minUtils = __webpack_require__(65);
 
 utils.assert = minAssert;
 utils.toArray = minUtils.toArray;
@@ -19068,9 +19068,9 @@ defineCurve('secp256k1', {
 
 exports.sha1 = __webpack_require__(140);
 exports.sha224 = __webpack_require__(141);
-exports.sha256 = __webpack_require__(68);
+exports.sha256 = __webpack_require__(67);
 exports.sha384 = __webpack_require__(142);
-exports.sha512 = __webpack_require__(69);
+exports.sha512 = __webpack_require__(68);
 
 /***/ }),
 /* 140 */
@@ -19081,7 +19081,7 @@ exports.sha512 = __webpack_require__(69);
 
 var utils = __webpack_require__(8);
 var common = __webpack_require__(18);
-var shaCommon = __webpack_require__(67);
+var shaCommon = __webpack_require__(66);
 
 var rotl32 = utils.rotl32;
 var sum32 = utils.sum32;
@@ -19149,7 +19149,7 @@ SHA1.prototype._digest = function (enc) {
 
 
 var utils = __webpack_require__(8);
-var SHA256 = __webpack_require__(68);
+var SHA256 = __webpack_require__(67);
 
 function SHA224() {
   if (!(this instanceof SHA224)) return new SHA224();
@@ -19179,7 +19179,7 @@ SHA224.prototype._digest = function (enc) {
 
 var utils = __webpack_require__(8);
 
-var SHA512 = __webpack_require__(69);
+var SHA512 = __webpack_require__(68);
 
 function SHA384() {
   if (!(this instanceof SHA384)) return new SHA384();
@@ -19586,7 +19586,7 @@ EC.prototype.getKeyRecoveryParam = function (e, signature, Q, enc) {
 
 
 var hash = __webpack_require__(39);
-var utils = __webpack_require__(66);
+var utils = __webpack_require__(65);
 var assert = __webpack_require__(5);
 
 function HmacDRBG(options) {
@@ -21172,7 +21172,7 @@ Node.prototype._isPrintstr = function (str) {
 "use strict";
 
 
-var constants = __webpack_require__(71);
+var constants = __webpack_require__(70);
 
 exports.tagClass = {
   0: 'universal',
@@ -21224,7 +21224,7 @@ exports.tagByName = constants._reverse(exports.tag);
 
 var decoders = exports;
 
-decoders.der = __webpack_require__(72);
+decoders.der = __webpack_require__(71);
 decoders.pem = __webpack_require__(161);
 
 /***/ }),
@@ -21237,7 +21237,7 @@ decoders.pem = __webpack_require__(161);
 var inherits = __webpack_require__(0);
 var Buffer = __webpack_require__(2).Buffer;
 
-var DERDecoder = __webpack_require__(72);
+var DERDecoder = __webpack_require__(71);
 
 function PEMDecoder(entity) {
   DERDecoder.call(this, entity);
@@ -21288,7 +21288,7 @@ PEMDecoder.prototype.decode = function (data, options) {
 
 var encoders = exports;
 
-encoders.der = __webpack_require__(73);
+encoders.der = __webpack_require__(72);
 encoders.pem = __webpack_require__(163);
 
 /***/ }),
@@ -21300,7 +21300,7 @@ encoders.pem = __webpack_require__(163);
 
 var inherits = __webpack_require__(0);
 
-var DEREncoder = __webpack_require__(73);
+var DEREncoder = __webpack_require__(72);
 
 function PEMEncoder(entity) {
   DEREncoder.call(this, entity);
@@ -21439,7 +21439,7 @@ module.exports = function (okey, password) {
 var BN = __webpack_require__(3);
 var EC = __webpack_require__(4).ec;
 var parseKeys = __webpack_require__(26);
-var curves = __webpack_require__(74);
+var curves = __webpack_require__(73);
 
 function verify(sig, hash, key, signType, tag) {
   var pub = parseKeys(key);
@@ -21677,10 +21677,10 @@ exports.publicDecrypt = function (key, buf) {
 var parseKeys = __webpack_require__(26);
 var randomBytes = __webpack_require__(13);
 var createHash = __webpack_require__(15);
-var mgf = __webpack_require__(75);
-var xor = __webpack_require__(76);
+var mgf = __webpack_require__(74);
+var xor = __webpack_require__(75);
 var bn = __webpack_require__(3);
-var withPublic = __webpack_require__(77);
+var withPublic = __webpack_require__(76);
 var crt = __webpack_require__(38);
 
 var constants = {
@@ -21779,12 +21779,12 @@ function nonZero(len) {
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
 var parseKeys = __webpack_require__(26);
-var mgf = __webpack_require__(75);
-var xor = __webpack_require__(76);
+var mgf = __webpack_require__(74);
+var xor = __webpack_require__(75);
 var bn = __webpack_require__(3);
 var crt = __webpack_require__(38);
 var createHash = __webpack_require__(15);
-var withPublic = __webpack_require__(77);
+var withPublic = __webpack_require__(76);
 module.exports = function (private_key, enc, reverse) {
   var padding;
   if (private_key.padding) {
@@ -22021,7 +22021,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _queryString = __webpack_require__(78);
+var _queryString = __webpack_require__(77);
 
 var _queryString2 = _interopRequireDefault(_queryString);
 
@@ -22034,21 +22034,21 @@ var _util = __webpack_require__(12);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Get a filtered list of Gopher tasks
+ * Get a filtered list of MailBots tasks
  * @param {object} params  Arguments for API call
  * @param {function} [cb]  Optional callback function
- * @param {boolean} params.suppress_webhook  Prevent Gopher from firing the task.viewed webhook
+ * @param {boolean} params.suppress_webhook  Prevent MailBots from firing the task.viewed webhook
  * @param {boolean} params.status Retrieve completed or open tasks
  * @return {Promise}
  *
  * @example
  * // Get all open tasks, sorted by due date
- * const res = await gopherClient.getTasks();
+ * const res = await mbClient.getTasks();
  * console.log(res.tasks);
  *
  * @example
  * // With a callback
- * gopherClient.getTasks({ limit: 1 }, (err, res) => {
+ * mbClient.getTasks({ limit: 1 }, (err, res) => {
  *     if (err) done(err);
  *     console.log(res.tasks);
  *   });
@@ -22071,7 +22071,7 @@ exports.default = {
   getTasks: getTasks,
 
   /**
-   * Get a Gopher task
+   * Get a MailBots task
    * Passing ?verbose=1 fires a webhook to the extnesion and fetches a rendered
    * HTML email preview of the task
    * @param {object} params - request params
@@ -22098,16 +22098,16 @@ exports.default = {
 
 
   /**
-   * Create a new Gopher Task.
+   * Create a new MailBots Task.
    * @param {object}
-   * @param {boolean} params.webhook  Force Gopher to fire the task.created webhook and use its response
+   * @param {boolean} params.webhook  Force MailBots to fire the task.created webhook and use its response
    * @param {object} params.verbose Return rendered output of HTML email
    * @param {object} params.suppress_email Prevent the API call from sending an email even if it has "send_messages"
-   * @param {Task} params.task  Gopher Task object
+   * @param {Task} params.task  MailBots Task object
    * @return {Promise}
    *
    * @example
-   * const res = await gopherClient.createTask(
+   * const res = await mbClient.createTask(
    *     {
    *       webhook: false,
    *       suppress_email: true,
@@ -22155,14 +22155,14 @@ exports.default = {
 
   /**
    * Send Email and automatically create a Task
-   * This creates a gopher task and sends an email. It's a wrapper
+   * This creates a MailBots task and sends an email. It's a wrapper
    * for createTask with opinionated settings for just sending email.
    *
    * @param {object} email - Email object. `command` and one recipient is required.
    * @return {Promise}
    * @example
-   *  const res = await gopherClient.sendEmail({
-   *     command: command@my-ext.gopher.email,
+   *  const res = await mbClient.sendEmail({
+   *     command: "command@my-ext.eml.bot", // must be your extension's domain
    *     to: "test@exampletask.com",
    *     cc: [],
    *     bcc: [],
@@ -22221,7 +22221,7 @@ exports.default = {
 
 
   /**
-   * Update A Gopher Task
+   * Update A MailBots Task
    * Used to save data against the task, update content, followup time and more
    * @param {object}
    * @param {object} params.task - Task object (see Create Task)
@@ -22230,7 +22230,7 @@ exports.default = {
    * @return {Promise}
    *
    * @example
-   *  const res = await gopherClient.updateTask({
+   *  const res = await mbClient.updateTask({
    *    task: {
    *     id: 1234,
    *     reference_email: {
@@ -22255,7 +22255,7 @@ exports.default = {
 
 
   /**
-   * Archive A Gopher Task
+   * Archive A MailBots Task
    * @param {number} params - Arguments
    * @param {number} params.task - Task object
    * @param {number} params.task.id - Taskid to complete
@@ -22280,7 +22280,7 @@ exports.default = {
 
 
   /**
-   * Permanently Delete A Gopher Task
+   * Permanently Delete A MailBots Task
    * @param {object} params - Taskid to delete
    * @param {object} params.task - Task object
    * @param {number} params.task.id - Taskid to delete
@@ -22302,7 +22302,7 @@ exports.default = {
 
 
   /**
-   * Trigger a Gopher Task
+   * Trigger a MailBots Task
    * @param {object} params
    * @param {boolean} params.trigger_url Trigger URL of the task to trigger (get from task object)
    * @param {boolean} [params.verbose] Fire webhook and render HTML email response
@@ -22339,7 +22339,7 @@ exports.default = {
 
 
   /**
-   * Resolve Natural Time Format (ex: {naturaltime}@ext.gopher.email)
+   * Resolve Natural Time Format (ex: {naturaltime}@ext.eml.bot)
    * @param {object} params - params object
    * @param {string} params.format - Time format to check (ex: 3days)
    * @param {string} params.timezone - IANA timezone designation (https://www.wikiwand.com/en/List_of_tz_database_time_zones) ex: "America/Los_Angeles"
@@ -23154,7 +23154,7 @@ module.exports = __webpack_require__(181);
 
 
 var utils = __webpack_require__(6);
-var bind = __webpack_require__(79);
+var bind = __webpack_require__(78);
 var Axios = __webpack_require__(183);
 var defaults = __webpack_require__(40);
 
@@ -23189,9 +23189,9 @@ axios.create = function (instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(83);
+axios.Cancel = __webpack_require__(82);
 axios.CancelToken = __webpack_require__(197);
-axios.isCancel = __webpack_require__(82);
+axios.isCancel = __webpack_require__(81);
 
 // Expose all/spread
 axios.all = function (promises) {
@@ -23343,7 +23343,7 @@ module.exports = function (headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(81);
+var createError = __webpack_require__(80);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -23749,7 +23749,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(6);
 var transformData = __webpack_require__(194);
-var isCancel = __webpack_require__(82);
+var isCancel = __webpack_require__(81);
 var defaults = __webpack_require__(40);
 var isAbsoluteURL = __webpack_require__(195);
 var combineURLs = __webpack_require__(196);
@@ -23887,7 +23887,7 @@ module.exports = function (baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(83);
+var Cancel = __webpack_require__(82);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -24058,7 +24058,7 @@ var _unixTimestamp = __webpack_require__(201);
 
 var _unixTimestamp2 = _interopRequireDefault(_unixTimestamp);
 
-var _crypto = __webpack_require__(42);
+var _crypto = __webpack_require__(41);
 
 var _crypto2 = _interopRequireDefault(_crypto);
 
@@ -24269,7 +24269,7 @@ module.exports = {
 
 
   /*
-   *  After user has authorized extension with Gopher, fetch access token (server only)
+   *  After user has authorized extension with MailBots, fetch access token (server only)
    *  @param {string} code Access code after user approval from auth URL
    */
 
@@ -24303,10 +24303,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _querystring = __webpack_require__(41);
-
-var _querystring2 = _interopRequireDefault(_querystring);
-
 var _urlJoin = __webpack_require__(21);
 
 var _urlJoin2 = _interopRequireDefault(_urlJoin);
@@ -24322,7 +24318,7 @@ exports.default = {
    * @param {function} [cb] Optional callback
    * @return {Promise}
    *
-   * @example const res = await gopherClient.extensionGetSelf();
+   * @example const res = await mbClient.extensionGetSelf();
    */
   extensionGetSelf: function extensionGetSelf(cb) {
     var requestOptions = {
@@ -24341,14 +24337,14 @@ exports.default = {
    * Send an Event to the extension. This does not require
    * and auth token because the endpoint is meant for 3rd
    * party services. Ex: issue created in Github, or an
-   * email response or support ticket received. The Gopher
-   * Extension can listen for events, act on tasks or
+   * email response or support ticket received. The MailBots
+   * bot can listen for events, act on tasks or
    * create or delete tasks based on events.
    * @param {object}  params params
    * @returns {Promise}
    *
    * @example
-   * const res = await gopherClient.sendEvent({type: 'event.type', payload: {"foo", "bar"}, event_url: "[unique_event_url]"});
+   * const res = await mbClient.sendEvent({type: 'event.type', payload: {"foo", "bar"}, event_url: "[unique_event_url]"});
    */
   sendEvent: function sendEvent(params, cb) {
     if (!params.event_url) {
@@ -24375,14 +24371,14 @@ exports.default = {
 
 
   /**
-   * Save Gopher extension data which is sent with every webhook related to that extension.
+   * Save MailBot data which is sent with every webhook related to that extension.
    * This is how an extension persist's user settings specific to that extension.
-   * For params and details, see [extension saving data API docs](https://postman.gopheremail.com/#7f9bfa6c-a673-4104-9be9-1ada487c300e)
+   * For params and details, see [extension saving data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#7f9bfa6c-a673-4104-9be9-1ada487c300e)
    * @param {object} data Nestable key value value pairs
    * @returns {Promise}
    *
    * @example
-   * const res = await gopherClient.saveExtensionData({ foo: "bar" });
+   * const res = await mbClient.saveExtensionData({ foo: "bar" });
    */
 
   saveExtensionData: function saveExtensionData(data, cb) {
@@ -24402,10 +24398,10 @@ exports.default = {
 
 
   /**
-   * Get saved Gopher extension data
-   * For params and details, see [extension get data API docs](https://postman.gopheremail.com/#f98b6862-9059-4d4f-931b-78d554e8a4e7)
+   * Get saved MailBot data
+   * For params and details, see [extension get data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7)
    * @example
-   * const res = await gopherClient.getExtensionData();
+   * const res = await mbClient.getExtensionData();
    */
   getExtensionData: function getExtensionData(cb) {
     var requestOptions = {
@@ -24433,7 +24429,7 @@ var _urlJoin2 = _interopRequireDefault(_urlJoin);
 
 var _util = __webpack_require__(12);
 
-var _queryString = __webpack_require__(78);
+var _queryString = __webpack_require__(77);
 
 var _queryString2 = _interopRequireDefault(_queryString);
 
@@ -24442,7 +24438,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 module.exports = {
   /**
    * Retrieve logged-in user's extension logs
-   * For params and details, see [extension saving data API docs](https://postman.gopheremail.com/#7f9bfa6c-a673-4104-9be9-1ada487c300e)
    * @param  {object} filter - Filter. Ex: `{type: ['api', 'submit_failed'], extension: ['subdomain'], since: 1517948366, num: 10}`)
    * @return {Promise} Promise resolving to log results in the form of: `{status: "success", logs[...]}`
    */
