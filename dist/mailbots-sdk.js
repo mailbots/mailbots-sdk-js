@@ -24015,7 +24015,7 @@ exports.default = {
 
 
   /**
-   * Invite users to this extension. If an Auth token is included, the invitation email
+   * Invite users to this bot. If an Auth token is included, the invitation email
    * includes the name of the logged in user who is sending the invitation.
    * "emails" param can be either an array of email addresses, or a string with a single
    * email address.

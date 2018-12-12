@@ -1,4 +1,4 @@
-# MailBots API JS Client (Preview)
+# MailBots API JS Client (Beta)
 
 JavaScript client for interacting with the [MailBots Email API](https://www.mailbots.com). Works in the browser and node.js.
 
@@ -43,7 +43,7 @@ const res = mbClient.createTask(task)
 		console.log(err);
 	});
 
-// along with async/await magic, of course ✨
+// along with async/await of course ✨
 const res = await mbClient.createTask(task); //in async function
 ```
 
@@ -59,12 +59,15 @@ const res = await mbClient.createTask(task); //in async function
 
 Set the env variable `DEBUG=mailbots-sdk` to log debugging information.
 
+## Note: Bots === Extensions
+The current release `0.1.1` still contains a few references to "extensions". Before MailBots was MailBots, bots were called "extensions".
+
 ## Contributions
 
 Contributions are welcome. Feel free to send us an email help+mailbots@humans.fut.io or create a PR. A few notes:
 
 - `npm t` will watch for changes and re-run tests on save, letting you make rapid progress.
-- See comment in `mbTestUtils.js` about mocking network requests.
+- See package.json and `mbTestUtils.js` about mocking network requests.
 - Make sure to run `npm run build` to rebuild the lib.
 
 ## License
