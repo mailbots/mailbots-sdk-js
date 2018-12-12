@@ -15,13 +15,89 @@ const debug = require("debug")("gopherhq");
 timestamp.round = true;
 
 let gopherClient = getGopherClient();
+let testTasks = [];
 
 describe("Logs", function () {
+
+  let task;
+  before(async function() {
+    this.timeout(15000);
+    // create various task failure scenarios to poulate log table
+
+    // reset testTasks array to zero 
+    testTasks = [];
+
+    // create successful task
+    let res = await gopherClient.createTask({
+      task: {
+        command: `example@${process.env.EXAMPLE_EXTENSION_SUBDOMAIN_1}.gopher.email`,
+        reference_email: {
+          subject: "Successful task"
+        },
+        trigger_timeformat: "1hour"
+      }
+    });
+    
+    // This first task is each example task
+    task = res.task;
+
+    // create a task which has submit_failed status
+    res = await gopherClient.createTask({
+      webhook: true, // <--- attempt webhook
+      task: {
+        command: `example@${process.env.EXAMPLE_EXTENSION_SUBDOMAIN_1}.gopher.email`,
+        reference_email: {
+          subject: "Unsuccessful webhook"
+        },
+        trigger_timeformat: "1hour"
+      }
+    });
+    // Test tasks are deleted after each test
+    testTasks.push(res.task);
+
+    // create submit-failed webhook
+    try {
+      res = await gopherClient.createTask({
+        // webhook: true, // <--- attempt webhook
+        task: {
+          command: `example@$wrong.gopher.email`,
+          reference_email: {
+            subject: "Unsuccessful submission"
+          },
+          trigger_timeformat: "1hour"
+        }
+      });
+    } catch (e) {
+      // this is supposed to fail no task created
+    }
+  });
+
+  after(async function() {
+    // delete test tasks
+    try {
+      const uniqueTestTasks = [...new Set(testTasks)]; // efficient way of de-duplicating array
+      let deletePromises = uniqueTestTasks.map(testTask => {
+        if (testTask && testTask.id) {
+          return gopherClient.deleteTask({
+            task: { id: testTask.id }
+          });
+        } else return true;
+      });
+      let res = await Promise.all(deletePromises);
+    } catch (e) {
+      // Uncomment to debug
+      // console.log(e);
+      // console.log("Suppressed an error in mocha after() method");
+    }
+    
+    testTasks = [];
+  })
+
   testConfig.call(this);
   beforeEach(beforeEachTest);
 
   it("returns default logs with no options", async () => {
-    let res = await gopherClient.getLogs();
+    let res = await gopherClient.getLogs({num: 1});
     expect(res.logs).to.be.an("array");
   });
 
@@ -41,9 +117,9 @@ describe("Logs", function () {
   });
 
   it('limits numbers logs ', async () => {
-    let res = await gopherClient.getLogs({ num: 10 });
+    let res = await gopherClient.getLogs({ num: 1 });
     expect(res.logs).to.be.an("array");
-    expect(res.logs.length).to.equal(10);
+    expect(res.logs.length).to.equal(1);
   });
 
   it('only gets recent logs', async function () {

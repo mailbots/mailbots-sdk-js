@@ -18,11 +18,11 @@
     "readme"
   ],
   "scripts": {
-    "test": "NOCK_OFF=true SERVER=true mocha --require babel-register --require babel-polyfill",
-    "test:fast": "echo '\n\n⚠️ Not all tests run in fast-mode\n\n'; sleep .1; NOCK_OFF=false SERVER=true mocha --require babel-register --require babel-polyfill",
+    "test": "echo '\nTo tests against live api, set NOCK_OFF=true\n\n'; NOCK_OFF=true SERVER=true mocha -t 5000 --require babel-register --require babel-polyfill",
+    "test:fast": "echo '\n\n⚠️ Not all tests run in fast-mode \nprocess.NOCK_OFF is not set \n\n'; SERVER=true mocha --require babel-register --require babel-polyfill",
     "test:watch": "npm run test:fast -- -w",
     "test:inspect": "npm t -- --inspect-brk -w",
-    "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t -- --inspect-brk",
+    "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t",
     "build": "npm run build:node && npm run build:browser && npm run build:dist",
     "build:watch": "concurrently \"npm run build:node -- --watch\" \"npm run build:browser -- --watch\"",
     "build:node": "rimraf lib-node && SERVER=true babel --out-dir lib-node src",

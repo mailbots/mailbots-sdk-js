@@ -19,8 +19,7 @@ let gopherClient = {};
  *   2. `npm test:rebuild` This will delete and rebuild nockMocks.js
  */
 
-exports.allNocks = []; // store all mocked tests
-function recordNockMocks({append = false} = {}) {
+function recordNockMocks() {
   let mockRequestsFile = join(__dirname, "./nockMocks.js");
 
   function customNockLogger(output) {
@@ -30,29 +29,12 @@ function recordNockMocks({append = false} = {}) {
     console.log("request added to nock mocks...");
   }
 
-  // Store all nock requests in this var. 
-  // hooks.test.js has a global "after" hook that 
-  // de-duplicates them and writes them to a file. 
-  // A necessary optimization to prevent painsully slow
-  // execution and crashing
-  function storeUniqueNocks(newNock) {
-    // Is this nock already in the array?
-    function nockAlreadyExists(existingNock) {
-      return JSON.stringify(existingNock) ===  JSON.stringify(newNock)
-    }
-
-    if(!exports.allNocks.find(nockAlreadyExists)) {
-      console.log("addingNock");
-      exports.allNocks.push(newNock);
-    } else {
-      console.log("skipping duplicate nock");
-    }
-  }
-
-  if (fs.existsSync(mockRequestsFile) && !append) {
+  if (fs.existsSync(mockRequestsFile)) {
+    // delete require.cache[require.resolve('./nockMocks')];
     fs.unlinkSync(mockRequestsFile);
-    console.log('DELETING NOCK FILE');
+    console.log('DELETED NOCK FILE');
   }
+
   fs.appendFileSync(
     mockRequestsFile,
     `//auto-generated file
@@ -61,9 +43,7 @@ function recordNockMocks({append = false} = {}) {
     \nnock("http://local.gopher.email:80", { allowUnmocked: true }).get("/fdsa").reply(200, 'ok');` // allow unmocked requests to pass through
   );
 
-  // nock.recorder.rec({ use_separator: false, logging: customNockLogger });
-  nock.recorder.rec({ use_separator: false, output_objects: true, logging: storeUniqueNocks });
-  
+  nock.recorder.rec({ use_separator: false, logging: customNockLogger });
 }
 
 module.exports.recordNockMocks = recordNockMocks;

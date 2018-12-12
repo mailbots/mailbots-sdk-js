@@ -23,8 +23,6 @@ describe("Users", function() {
     userEmail = "4068@example.com"; //: Math.floor(Math.random() * 10000) + "@example.com";
   }
 
-  let password = "fdsafdsa";
-
   it("should get the logged in user", async () => {
     let createRes = await gopherClient.getLoggedInUser();
     expect(createRes.statusCode).to.equal(200);

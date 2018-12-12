@@ -55,57 +55,6 @@ describe("Tasks", function() {
 
     // Test tasks are deleted after each test
     testTasks.push(res.task);
-
-    // More taest tasks to test sorting, filtering and things
-    res = await gopherClient.createTask({
-      suppress_webhook: true,
-      task: {
-        command: `example@${extensionSubdomain1}.gopher.email`,
-        reference_email: {
-          subject: "Space Ships!",
-          to: ["joe@example.com"]
-        },
-        trigger_timeformat: "20years"
-      }
-    });
-    testTasks.push(res.task);
-
-    res = await gopherClient.createTask({
-      suppress_webhook: true,
-      task: {
-        command: `example@${extensionSubdomain2}.gopher.email`,
-        reference_email: {
-          subject: "TEST: Subject 2"
-        },
-        trigger_timeformat: "tomorrow"
-      }
-    });
-    testTasks.push(res.task);
-
-    //null due date
-    res = await gopherClient.createTask({
-      suppress_webhook: true,
-      task: {
-        command: `example@${extensionSubdomain1}.gopher.email`,
-        reference_email: {
-          subject: "TEST: Null due date"
-        }
-      }
-    });
-    testTasks.push(res.task);
-
-    //mutable example task
-    res = await gopherClient.createTask({
-      suppress_webhook: true,
-      task: {
-        command: `example@${extensionSubdomain1}.gopher.email`,
-        reference_email: {
-          subject: "TEST: Null due date"
-        }
-      }
-    });
-    exampleTask = res.task;
-    testTasks.push(res.task);
   });
 
   /**
@@ -291,23 +240,23 @@ describe("Tasks", function() {
     });
 
     it("should get a single task", done => {
-      if (!exampleTask)
+      if (!task)
         return done("Example task does not exist. Run as part of the suite");
-      gopherClient.getTask({ id: exampleTask.id }, (err, res) => {
+      gopherClient.getTask({ id: task.id }, (err, res) => {
         if (err) done(err);
         done();
       });
     });
 
     it("should update a task", done => {
-      if (!exampleTask.hasOwnProperty("id")) {
-        done("Example Task doens't exist", exampleTask);
+      if (!task.hasOwnProperty("id")) {
+        done("Example Task doens't exist", task);
       }
       gopherClient
         .updateTask({
           suppress_webhook: true,
           task: {
-            id: exampleTask.id,
+            id: task.id,
             reference_email: {
               html: "something else new"
             }
@@ -323,14 +272,14 @@ describe("Tasks", function() {
     });
 
     it("should update trigger_timeformat for a task", done => {
-      if (!exampleTask.hasOwnProperty("id")) {
-        done(new Error("Example Task doesn't exist"), exampleTask);
+      if (!task.hasOwnProperty("id")) {
+        done(new Error("Example Task doesn't exist"), task);
       }
       gopherClient
         .updateTask({
           suppress_webhook: true,
           task: {
-            id: exampleTask.id,
+            id: task.id,
             trigger_timeformat: "1day"
           }
         })
@@ -345,13 +294,13 @@ describe("Tasks", function() {
     });
 
     it("should fail to update an unsupported trigger_timeformat", done => {
-      if (!exampleTask.hasOwnProperty("id")) {
-        done(new Error("Example Task doens't exist"), exampleTask);
+      if (!task.hasOwnProperty("id")) {
+        done(new Error("Example Task doens't exist"), task);
       }
       gopherClient
         .updateTask({
           task: {
-            id: exampleTask.id,
+            id: task.id,
             trigger_timeformat: "invalid_jibberish"
           }
         })
@@ -456,7 +405,7 @@ describe("Tasks", function() {
   /**
    * Archiving and Deleting Tasks
    */
-  describe.only("Archiving and Deleting Tasks", function() {
+  describe("Archiving and Deleting Tasks", function() {
     this.timeout(5000);
 
     it("Should archive a task", async function() {
@@ -501,6 +450,46 @@ describe("Tasks", function() {
    * Filtering Tasks
    */
   describe("Filtering & Searching", function() {
+    beforeEach(async function() {
+      // More taest tasks to test sorting, filtering and things
+      let res = await gopherClient.createTask({
+        suppress_webhook: true,
+        task: {
+          command: `example@${extensionSubdomain1}.gopher.email`,
+          reference_email: {
+            subject: "Space Ships!",
+            to: ["joe@example.com"]
+          },
+          trigger_timeformat: "20years"
+        }
+      });
+      testTasks.push(res.task);
+
+      res = await gopherClient.createTask({
+        suppress_webhook: true,
+        task: {
+          command: `example@${extensionSubdomain2}.gopher.email`,
+          reference_email: {
+            subject: "TEST: Subject 2"
+          },
+          trigger_timeformat: "tomorrow"
+        }
+      });
+      testTasks.push(res.task);
+
+      //null due date
+      res = await gopherClient.createTask({
+        suppress_webhook: true,
+        task: {
+          command: `example@${extensionSubdomain1}.gopher.email`,
+          reference_email: {
+            subject: "TEST: Null due date"
+          }
+        }
+      });
+      testTasks.push(res.task);
+    });
+
     it("Gets only the task for extension1", async () => {
       let res = await gopherClient.getTasks({
         extension: extensionSubdomain1,
@@ -576,7 +565,7 @@ describe("Tasks", function() {
       });
       if (res instanceof Error) throw res;
       expect(res.tasks).to.be.instanceof(Array);
-      expect(res.tasks[0].reference_email.subject).to.equal("Subject 1");
+      expect(res.tasks[0].reference_email.subject).to.equal("Successful task");
     });
     
     it("Gets only the later task using due_after", async function () {
