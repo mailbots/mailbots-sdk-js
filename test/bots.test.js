@@ -1,6 +1,5 @@
 import {
-   getMailBotsClient,
-  getRandomString
+   getMailBotsClient
 } from "./testUtils/mbTestUtils";
 import "./testUtils/nockMocks";
 import { expect } from "chai";

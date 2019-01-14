@@ -139,7 +139,7 @@ exports.default = {
 
 
   /**
-   * Send Email and automatically create a Task
+   * Send email and automatically create a Task
    * This creates a MailBots task and sends an email. It's a wrapper
    * for createTask with opinionated settings for just sending email.
    *
@@ -202,6 +202,51 @@ exports.default = {
     };
 
     return this.createTask(taskParams, cb);
+  },
+
+
+  /**
+   * Send emails relating to an existing Task. Does not mutate task.
+   * NOTE: This may be deprecated in favor of sending messages via the update task endpoint.
+   * @param {object} params
+   * @param {number} params.taskId
+   * @param {Array} params.messages 
+   * 
+   * @example
+   *  const res = await mbClient.sendMessages({ 
+    *   task: {
+    *     id: 123
+    *   },
+    *   send_messages: [{
+    *     to: "test@exampletask.com",
+    *     cc: [],
+    *     bcc: [],
+    *     from: "test@example.com",
+    *     subject: "Test1",
+    *     body: [
+    *       {
+    *         type: "html",
+    *         text: "<h1>This is a test</h1>"
+    *       }
+    *     ]
+    *   }]
+    *  });
+   */
+  sendMessages: function sendMessages(params, cb) {
+    if (!task.id) throw new Error("taskid is required to send messages");
+    if (!send_messages.length) throw new Error("send_messages requires at least one message");
+    var requestOptions = {
+      method: 'POST',
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/" + params.task.id + "/send-messages"),
+      headers: {
+        Authorization: 'Bearer ' + this._accessToken,
+        "Content-Type": "application/json"
+      },
+      json: true,
+      data: { send_messages: params.sendMessages }
+    };
+
+    return (0, _util._makeRequest)(requestOptions, cb);
   },
 
 

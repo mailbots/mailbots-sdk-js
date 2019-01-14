@@ -269,6 +269,38 @@ describe("Tasks", function() {
         });
     });
 
+    // TODO: Debug and / or replace with updateTask endpoint
+    it.skip("should send messages for a task", done => {
+      if (!task.hasOwnProperty("id")) {
+        done("Example Task doens't exist", task);
+      }
+      mbClient
+        .sendMessages({
+          task: {
+            id: task.id
+          },
+          send_messages: [{
+            to: "test@exampletask.com",
+            cc: [],
+            bcc: [],
+            from: "test@example.com",
+            subject: "Test1",
+            body: [
+              {
+                type: "html",
+                text: `<h1>This is a test</h1>`
+              }
+            ]
+          }]})
+        .then(res => {
+          expect(res).to.be.an("object");
+          done();
+        })
+        .catch(err => {
+          done(err);
+        });
+    });
+
     it("should update trigger_timeformat for a task", done => {
       if (!task.hasOwnProperty("id")) {
         done(new Error("Example Task doesn't exist"), task);
@@ -556,14 +588,25 @@ describe("Tasks", function() {
     });
 
     it("Orders search results by due date asc", async () => {
-      let res = await mbClient.getTasks({
-        extension: botSubdomain1,
+      let res = await mbClient.createTask({
+        suppress_webhook: true,
+        task: {
+          command: `example@${botSubdomain1}.eml.bot`,
+          reference_email: {
+            to: "joe@example.com",
+            subject: "Zuki Now"
+          },
+          trigger_timeformat: "1sec"
+        }
+      });
+      testTasks.push(res.task);
+      res = await mbClient.getTasks({
         order_by: "due",
         order_dir: "asc"
       });
       if (res instanceof Error) throw res;
       expect(res.tasks).to.be.instanceof(Array);
-      expect(res.tasks[0].reference_email.subject).to.equal("Successful task");
+      expect(res.tasks[0].reference_email.subject).to.equal("Zuki Now");
     });
     
     it("Gets only the later task using due_after", async function () {

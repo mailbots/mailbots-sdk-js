@@ -52,6 +52,28 @@ class MailBotsClient {
     this._accessToken = "";
   }
 
+  /**
+  * Factory method to return a new mbClient based on the the `bot` object.
+  * @param {object} bot - MailBots `bot` object
+  * @example 
+  *   mailbot.onCommand('foo', bot => {
+  *     const mbClient = MailBotsClient.fromBot(bot);
+  *   })
+  *   
+  */
+  static fromBot(bot) {
+    return new this({
+      clientId: bot.config.clientId,
+      clientSecret: bot.config.clientSecret,
+      redirectUri: bot.config.clientSecret,
+      scope: bot.config.scope,
+      apiHost: bot.config.apiHost || "https://api.mailbots.com",
+      tokenHost: bot.config.tokenHost || "https://api.mailbots.com",
+      tokenPath: bot.config.tokenPath || "https://api.mailbots.com/api/v1/oauth2/access_token",
+      authorizePath: bot.config.authorizePath || "https://api.mailbots.com/settings/oauth2_authorize"
+    });
+  }
+
   /*
    *  Auth: Manually set access token if we already have it (ie, in a cookie, webhook, etc)
    */
