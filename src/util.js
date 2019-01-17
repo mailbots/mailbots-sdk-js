@@ -25,6 +25,8 @@ export const _makeRequest = (requestOptions, cb) => {
         friendlyMessage =
           err.response.data.message ||
           err.response.data.type ||
+          err.response.data.error_description || // legacy
+          err.response.data.error || // legacy
           err.response.data.status ||
           null;
       }
