@@ -53,7 +53,7 @@ class MailBotsClient {
   }
 
   /**
-  * Factory method to return a new mbClient based on the the `bot` object.
+  * Factory method to return a new, fully authenticated MailBots client based on the webhook
   * @param {object} bot - MailBots `bot` object
   * @example 
   *   mailbot.onCommand('foo', bot => {
@@ -62,16 +62,19 @@ class MailBotsClient {
   *   
   */
   static fromBot(bot) {
-    return new this({
+    const mbClient = new this({
       clientId: bot.config.clientId,
       clientSecret: bot.config.clientSecret,
-      redirectUri: bot.config.clientSecret,
+      redirectUri: bot.config.redirectUri,
       scope: bot.config.scope,
       apiHost: bot.config.apiHost || "https://api.mailbots.com",
       tokenHost: bot.config.tokenHost || "https://api.mailbots.com",
       tokenPath: bot.config.tokenPath || "https://api.mailbots.com/api/v1/oauth2/access_token",
       authorizePath: bot.config.authorizePath || "https://api.mailbots.com/settings/oauth2_authorize"
     });
+    const accessToken = bot.get("mailbot.stored_data.access_token");
+    mbClient.setAccessToken(accessToken);
+    return mbClient;
   }
 
   /*
