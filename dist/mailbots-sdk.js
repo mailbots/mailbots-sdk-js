@@ -6346,7 +6346,9 @@ var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
   }).catch(function (err) {
     var friendlyMessage = void 0;
     if (typeof err.response !== "undefined" && typeof err.response.data !== "undefined") {
-      friendlyMessage = err.response.data.message || err.response.data.type || err.response.data.status || null;
+      friendlyMessage = err.response.data.message || err.response.data.type || err.response.data.error_description || // legacy
+      err.response.data.error || // legacy
+      err.response.data.status || null;
     }
     var errorResponse = friendlyMessage || err.statusText || err.message || err.statusCode;
     if (cb) cb(new Error(errorResponse));
@@ -13702,7 +13704,7 @@ var MailBotsClient = function () {
   }
 
   /**
-  * Factory method to return a new mbClient based on the the `bot` object.
+  * Factory method to return a new, fully authenticated MailBots client based on the webhook
   * @param {object} bot - MailBots `bot` object
   * @example 
   *   mailbot.onCommand('foo', bot => {
@@ -13764,16 +13766,19 @@ var MailBotsClient = function () {
   }], [{
     key: "fromBot",
     value: function fromBot(bot) {
-      return new this({
+      var mbClient = new this({
         clientId: bot.config.clientId,
         clientSecret: bot.config.clientSecret,
-        redirectUri: bot.config.clientSecret,
+        redirectUri: bot.config.redirectUri,
         scope: bot.config.scope,
         apiHost: bot.config.apiHost || "https://api.mailbots.com",
         tokenHost: bot.config.tokenHost || "https://api.mailbots.com",
         tokenPath: bot.config.tokenPath || "https://api.mailbots.com/api/v1/oauth2/access_token",
         authorizePath: bot.config.authorizePath || "https://api.mailbots.com/settings/oauth2_authorize"
       });
+      var accessToken = bot.get("mailbot.stored_data.access_token");
+      mbClient.setAccessToken(accessToken);
+      return mbClient;
     }
   }]);
 
@@ -24397,7 +24402,7 @@ exports.default = {
   botGetSelf: function botGetSelf(cb) {
     var requestOptions = {
       method: "GET",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self"),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/mailbots/self"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -24460,7 +24465,7 @@ exports.default = {
 
     var requestOptions = {
       method: "POST",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/mailbots/self/data/"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -24473,13 +24478,13 @@ exports.default = {
 
   /**
    * Get saved MailBot data
-   * For params and details, see [extension get data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7)
+   * For params and details, see [mailbots get data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7)
    * @example
    * const res = await mbClient.getBotData();
    */
   getBotData: function getBotData(cb) {
     var requestOptions = {
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/mailbots/self/data/"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -24512,7 +24517,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 module.exports = {
   /**
    * Retrieve logged-in user's bot logs
-   * @param  {object} filter - Filter. Ex: `{type: ['api', 'submit_failed'], extension: ['subdomain'], since: 1517948366, num: 10}`)
+   * @param  {object} filter - Filter. Ex: `{type: ['api', 'submit_failed'], mailbot: ['subdomain'], since: 1517948366, num: 10}`)
    * @return {Promise} Promise resolving to log results in the form of: `{status: "success", logs[...]}`
    */
   getLogs: function getLogs(filter, cb) {

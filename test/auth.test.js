@@ -31,8 +31,6 @@ describe("Auth", function() {
     }
     
     const mbClient = MailBotsClient.fromBot(botMock);
-    console.log(mbClient);
-  
     done();
   })
 });

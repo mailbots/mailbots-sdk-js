@@ -59,9 +59,6 @@ const res = await mbClient.createTask(task); //in async function
 
 Set the env variable `DEBUG=mailbots-sdk` to log debugging information.
 
-## Note: Bots === Extensions
-The current release `0.1.1` still contains a few references to "extensions". Before MailBots was MailBots, bots were called "extensions".
-
 ## Contributions
 
 Contributions are welcome. Feel free to send us an email help+mailbots@humans.fut.io or create a PR. A few notes:

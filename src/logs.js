@@ -5,7 +5,7 @@ import queryString from "query-string";
 module.exports = {
   /**
    * Retrieve logged-in user's bot logs
-   * @param  {object} filter - Filter. Ex: `{type: ['api', 'submit_failed'], extension: ['subdomain'], since: 1517948366, num: 10}`)
+   * @param  {object} filter - Filter. Ex: `{type: ['api', 'submit_failed'], mailbot: ['subdomain'], since: 1517948366, num: 10}`)
    * @return {Promise} Promise resolving to log results in the form of: `{status: "success", logs[...]}`
    */
   getLogs: function(filter, cb) {

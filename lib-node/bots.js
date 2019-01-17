@@ -30,7 +30,7 @@ exports.default = {
   botGetSelf: function botGetSelf(cb) {
     var requestOptions = {
       method: "GET",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self"),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/mailbots/self"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -93,7 +93,7 @@ exports.default = {
 
     var requestOptions = {
       method: "POST",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/mailbots/self/data/"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"
@@ -106,13 +106,13 @@ exports.default = {
 
   /**
    * Get saved MailBot data
-   * For params and details, see [extension get data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7)
+   * For params and details, see [mailbots get data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7)
    * @example
    * const res = await mbClient.getBotData();
    */
   getBotData: function getBotData(cb) {
     var requestOptions = {
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/extensions/self/data/"),
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/mailbots/self/data/"),
       headers: {
         Authorization: "Bearer " + this._accessToken,
         "Content-Type": "application/json"

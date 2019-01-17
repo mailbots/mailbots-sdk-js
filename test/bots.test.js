@@ -9,19 +9,27 @@ let mbClient =  getMailBotsClient();
 
 describe("Bot Management", function() {
   it("should save user-level data bot save data", done => {
-    mbClient.saveBotData({ three: "more" }, (err, res) => {
-      if (err) done(err);
+    mbClient.saveBotData({ three: "more" })
+    .then(res => {
       expect(res).to.be.an("object");
       expect(res.data.three).to.equal("more");
       done();
+    }).catch(err => {
+      done(err);
     });
+    // mbClient.saveBotData({ three: "more" }, (err, res) => {
+    //   if (err) done(err);
+    //   expect(res).to.be.an("object");
+    //   expect(res.data.three).to.equal("more");
+    //   done();
+    // });
   });
 
   it("should get data about itself", done => {
     mbClient.botGetSelf((err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
-      expect(res.extension.event_url).to.be.a("String");
+      expect(res.mailbot.event_url).to.be.a("String");
       done();
     });
   });

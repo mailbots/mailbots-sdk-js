@@ -19,9 +19,9 @@ let testTasks = [];
  * you'll have to create a couple test bots and add their subdomains (ids) in .env.
  */
 let botSubdomain1 =
-  process.env.EXAMPLE_BOT_SUBDOMAIN_1 || "test-extension-1";
+  process.env.EXAMPLE_BOT_SUBDOMAIN_1 || "test-mailbot-1";
 let botSubdomain2 =
-  process.env.EXAMPLE_BOT_SUBDOMAIN_2 || "test-extension-2";
+  process.env.EXAMPLE_BOT_SUBDOMAIN_2 || "test-mailbot-2";
 
 describe("Tasks", function() {
   this.timeout(15000);
@@ -100,7 +100,7 @@ describe("Tasks", function() {
           }
         }
       };
-      //TODO: Test successful MailBots Task creation even if the Extension (bot) endpoint fails.
+      //TODO: Test successful MailBots Task creation even if the MailBot (bot) endpoint fails.
       let res = mbClient.createTask(taskPayload, (err, res) => {
         if (err) done(err);
         expect(res).to.be.an("object");
@@ -522,7 +522,7 @@ describe("Tasks", function() {
 
     it("Gets only the task for bot1", async () => {
       let res = await mbClient.getTasks({
-        extension: botSubdomain1,
+        mailbot: botSubdomain1,
         search: "Subject"
       });
       if (res instanceof Error) throw res;
@@ -578,7 +578,7 @@ describe("Tasks", function() {
 
     it("Orders search results by due date desc", async () => {
       let res = await mbClient.getTasks({
-        extension: botSubdomain1,
+        mailbot: botSubdomain1,
         order_by: "due",
         order_dir: "desc"
       });
@@ -616,7 +616,7 @@ describe("Tasks", function() {
       }
       let tenYears = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365 * 10;
       let res = await mbClient.getTasks({
-        extension: botSubdomain1,
+        mailbot: botSubdomain1,
         due_after: tenYears
       });
       if (res instanceof Error) throw res;
@@ -644,7 +644,7 @@ describe("Tasks", function() {
 
         let thirtyMinutes = Math.floor(Date.now() / 1000) + 60 * 30; //30 min
         let res = await mbClient.getTasks({
-          extension: botSubdomain1,
+          mailbot: botSubdomain1,
           due_before: thirtyMinutes
         });
         if (res instanceof Error) throw res;
@@ -654,7 +654,7 @@ describe("Tasks", function() {
 
     it("Limits results using per_page param", async () => {
       let res = await mbClient.getTasks({
-        extension: botSubdomain1,
+        mailbot: botSubdomain1,
         per_page: 1
       });
       if (res instanceof Error) throw res;
@@ -664,12 +664,11 @@ describe("Tasks", function() {
 
     it("Always sorts the tasks with null due dates last", async () => {
       let res = await mbClient.getTasks({
-        extension: botSubdomain1,
+        mailbot: botSubdomain1,
         order_by: "due",
         order_dir: "desc",
         search: "TEST"
       });
-      if (res instanceof Error) throw res;
       expect(res.tasks).to.be.instanceof(Array);
       let indexOfNullDueTask = res.tasks.findIndex(
         task => task.reference_email.subject === "TEST: Null due date"
@@ -680,7 +679,7 @@ describe("Tasks", function() {
       expect(indexOfNullDueTask).to.be.greaterThan(indexOfOtherTask);
 
       res = await mbClient.getTasks({
-        extension: botSubdomain1,
+        mailbot: botSubdomain1,
         order_by: "due",
         order_dir: "asc",
         search: "TEST"
@@ -698,7 +697,7 @@ describe("Tasks", function() {
 
     it("Paginates results using per_page and page param", async () => {
       let res = await mbClient.getTasks({
-        extension: botSubdomain1,
+        mailbot: botSubdomain1,
         per_page: 1,
         page: 1
       });

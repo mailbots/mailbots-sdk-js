@@ -31,7 +31,9 @@ var _makeRequest = exports._makeRequest = function (requestOptions, cb) {
   }).catch(function (err) {
     var friendlyMessage = void 0;
     if (typeof err.response !== "undefined" && typeof err.response.data !== "undefined") {
-      friendlyMessage = err.response.data.message || err.response.data.type || err.response.data.status || null;
+      friendlyMessage = err.response.data.message || err.response.data.type || err.response.data.error_description || // legacy
+      err.response.data.error || // legacy
+      err.response.data.status || null;
     }
     var errorResponse = friendlyMessage || err.statusText || err.message || err.statusCode;
     if (cb) cb(new Error(errorResponse));

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>@mailbots/mailbots-sdk 0.1.2-beta | Documentation</title>
+  <title>@mailbots/mailbots-sdk 0.1.3-beta | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>@mailbots/mailbots-sdk</h3>
-          <div class='mb1'><code>0.1.2-beta</code></div>
+          <div class='mb1'><code>0.1.3-beta</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -588,7 +588,7 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
   
 
   <p>Get saved MailBot data
-For params and details, see <a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7">extension get data API docs</a></p>
+For params and details, see <a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7">mailbots get data API docs</a></p>
 
  
   
@@ -679,7 +679,7 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
           <div>
             <span class='code bold'>filter</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    Filter. Ex: 
-<code>{type: ['api', 'submit_failed'], extension: ['subdomain'], since: 1517948366, num: 10}</code>
+<code>{type: ['api', 'submit_failed'], mailbot: ['subdomain'], since: 1517948366, num: 10}</code>
 )
 
           </div>
@@ -815,7 +815,7 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
   </div>
   
 
-  <p>Factory method to return a new mbClient based on the the <code>bot</code> object.</p>
+  <p>Factory method to return a new, fully authenticated MailBots client based on the webhook</p>
 
  
   
