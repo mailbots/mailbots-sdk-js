@@ -25,9 +25,9 @@ exports.default = {
    * @param {function} [cb] Optional callback
    * @return {Promise}
    *
-   * @example const res = await mbClient.botGetSelf();
+   * @example const res = await mbClient.mailbotGetSelf();
    */
-  botGetSelf: function botGetSelf(cb) {
+  mailbotGetSelf: function mailbotGetSelf(cb) {
     var requestOptions = {
       method: "GET",
       url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/mailbots/self"),

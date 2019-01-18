@@ -7,7 +7,7 @@ const debug = require("debug")("mailbots-sdk");
 
 let mbClient =  getMailBotsClient();
 
-describe("Bot Management", function() {
+describe("MailBot Management", function() {
   it("should save user-level data bot save data", done => {
     mbClient.saveBotData({ three: "more" })
     .then(res => {
@@ -26,7 +26,7 @@ describe("Bot Management", function() {
   });
 
   it("should get data about itself", done => {
-    mbClient.botGetSelf((err, res) => {
+    mbClient.mailbotGetSelf((err, res) => {
       if (err) done(err);
       expect(res).to.be.an("object");
       expect(res.mailbot.event_url).to.be.a("String");

@@ -30,9 +30,9 @@ var _auth = require("./auth");
 
 var _auth2 = _interopRequireDefault(_auth);
 
-var _bots = require("./bots");
+var _mailbots = require("./mailbots");
 
-var _bots2 = _interopRequireDefault(_bots);
+var _mailbots2 = _interopRequireDefault(_mailbots);
 
 var _logs = require("./logs");
 
@@ -169,7 +169,7 @@ var MailBotsClient = function () {
 (0, _util._extend)(MailBotsClient, _users2.default);
 (0, _util._extend)(MailBotsClient, _webhooks2.default);
 (0, _util._extend)(MailBotsClient, _auth2.default);
-(0, _util._extend)(MailBotsClient, _bots2.default);
+(0, _util._extend)(MailBotsClient, _mailbots2.default);
 (0, _util._extend)(MailBotsClient, _logs2.default);
 
 module.exports = MailBotsClient;

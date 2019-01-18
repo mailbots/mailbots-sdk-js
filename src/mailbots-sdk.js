@@ -6,7 +6,7 @@ import Tasks from "./tasks";
 import Users from "./users";
 import Webhooks from "./webhooks";
 import Auth from "./auth";
-import Bots from "./bots";
+import MailBots from "./mailbots";
 import Logs from "./logs";
 
 import { debug, _makeRequest, _checkParam, _extend } from "./util";
@@ -122,7 +122,7 @@ _extend(MailBotsClient, Tasks);
 _extend(MailBotsClient, Users);
 _extend(MailBotsClient, Webhooks);
 _extend(MailBotsClient, Auth);
-_extend(MailBotsClient, Bots);
+_extend(MailBotsClient, MailBots);
 _extend(MailBotsClient, Logs);
 
 module.exports = MailBotsClient;

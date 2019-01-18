@@ -18,10 +18,10 @@ let testTasks = [];
  * run `npm run sample-data:create-bots`. in the React Admin UI. Otherwise,
  * you'll have to create a couple test bots and add their subdomains (ids) in .env.
  */
-let botSubdomain1 =
-  process.env.EXAMPLE_BOT_SUBDOMAIN_1 || "test-mailbot-1";
-let botSubdomain2 =
-  process.env.EXAMPLE_BOT_SUBDOMAIN_2 || "test-mailbot-2";
+let mailbotSubdomain1 =
+  process.env.EXAMPLE_MAILBOT_SUBDOMAIN_1 || "test-mailbot-1";
+let mailbotSubdomain2 =
+  process.env.EXAMPLE_MAILBOT_SUBDOMAIN_2 || "test-mailbot-2";
 
 describe("Tasks", function() {
   this.timeout(15000);
@@ -39,7 +39,7 @@ describe("Tasks", function() {
     let res = await mbClient.createTask({
       suppress_webhook: true,
       task: {
-        command: `example@${botSubdomain1}.eml.bot`,
+        command: `example@${mailbotSubdomain1}.eml.bot`,
         reference_email: {
           subject: "Subject 1"
         },
@@ -485,7 +485,7 @@ describe("Tasks", function() {
       let res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${botSubdomain1}.eml.bot`,
+          command: `example@${mailbotSubdomain1}.eml.bot`,
           reference_email: {
             subject: "Space Ships!",
             to: ["joe@example.com"]
@@ -498,7 +498,7 @@ describe("Tasks", function() {
       res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${botSubdomain2}.eml.bot`,
+          command: `example@${mailbotSubdomain2}.eml.bot`,
           reference_email: {
             subject: "TEST: Subject 2"
           },
@@ -511,7 +511,7 @@ describe("Tasks", function() {
       res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${botSubdomain1}.eml.bot`,
+          command: `example@${mailbotSubdomain1}.eml.bot`,
           reference_email: {
             subject: "TEST: Null due date"
           }
@@ -522,7 +522,7 @@ describe("Tasks", function() {
 
     it("Gets only the task for bot1", async () => {
       let res = await mbClient.getTasks({
-        mailbot: botSubdomain1,
+        mailbot: mailbotSubdomain1,
         search: "Subject"
       });
       if (res instanceof Error) throw res;
@@ -534,7 +534,7 @@ describe("Tasks", function() {
       let res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${botSubdomain2}.eml.bot`,
+          command: `example@${mailbotSubdomain2}.eml.bot`,
           reference_email: {
             to: "Joe<joe@example.com>",
             subject: "Hi Joe"
@@ -548,7 +548,7 @@ describe("Tasks", function() {
       let res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${botSubdomain2}.eml.bot`,
+          command: `example@${mailbotSubdomain2}.eml.bot`,
           reference_email: {
             to: "joe@example.com",
             subject: "Zuki"
@@ -578,7 +578,7 @@ describe("Tasks", function() {
 
     it("Orders search results by due date desc", async () => {
       let res = await mbClient.getTasks({
-        mailbot: botSubdomain1,
+        mailbot: mailbotSubdomain1,
         order_by: "due",
         order_dir: "desc"
       });
@@ -591,7 +591,7 @@ describe("Tasks", function() {
       let res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${botSubdomain1}.eml.bot`,
+          command: `example@${mailbotSubdomain1}.eml.bot`,
           reference_email: {
             to: "joe@example.com",
             subject: "Zuki Now"
@@ -616,7 +616,7 @@ describe("Tasks", function() {
       }
       let tenYears = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365 * 10;
       let res = await mbClient.getTasks({
-        mailbot: botSubdomain1,
+        mailbot: mailbotSubdomain1,
         due_after: tenYears
       });
       if (res instanceof Error) throw res;
@@ -633,7 +633,7 @@ describe("Tasks", function() {
         let addRes = await mbClient.createTask({
           suppress_webhook: true,
           task: {
-            command: `example@${botSubdomain1}.eml.bot`,
+            command: `example@${mailbotSubdomain1}.eml.bot`,
             reference_email: {
               subject: "Twenty Minutes"
             },
@@ -644,7 +644,7 @@ describe("Tasks", function() {
 
         let thirtyMinutes = Math.floor(Date.now() / 1000) + 60 * 30; //30 min
         let res = await mbClient.getTasks({
-          mailbot: botSubdomain1,
+          mailbot: mailbotSubdomain1,
           due_before: thirtyMinutes
         });
         if (res instanceof Error) throw res;
@@ -654,7 +654,7 @@ describe("Tasks", function() {
 
     it("Limits results using per_page param", async () => {
       let res = await mbClient.getTasks({
-        mailbot: botSubdomain1,
+        mailbot: mailbotSubdomain1,
         per_page: 1
       });
       if (res instanceof Error) throw res;
@@ -664,7 +664,7 @@ describe("Tasks", function() {
 
     it("Always sorts the tasks with null due dates last", async () => {
       let res = await mbClient.getTasks({
-        mailbot: botSubdomain1,
+        mailbot: mailbotSubdomain1,
         order_by: "due",
         order_dir: "desc",
         search: "TEST"
@@ -679,7 +679,7 @@ describe("Tasks", function() {
       expect(indexOfNullDueTask).to.be.greaterThan(indexOfOtherTask);
 
       res = await mbClient.getTasks({
-        mailbot: botSubdomain1,
+        mailbot: mailbotSubdomain1,
         order_by: "due",
         order_dir: "asc",
         search: "TEST"
@@ -697,7 +697,7 @@ describe("Tasks", function() {
 
     it("Paginates results using per_page and page param", async () => {
       let res = await mbClient.getTasks({
-        mailbot: botSubdomain1,
+        mailbot: mailbotSubdomain1,
         per_page: 1,
         page: 1
       });

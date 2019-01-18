@@ -13652,9 +13652,9 @@ var _auth = __webpack_require__(202);
 
 var _auth2 = _interopRequireDefault(_auth);
 
-var _bots = __webpack_require__(203);
+var _mailbots = __webpack_require__(203);
 
-var _bots2 = _interopRequireDefault(_bots);
+var _mailbots2 = _interopRequireDefault(_mailbots);
 
 var _logs = __webpack_require__(204);
 
@@ -13789,7 +13789,7 @@ var MailBotsClient = function () {
 (0, _util._extend)(MailBotsClient, _users2.default);
 (0, _util._extend)(MailBotsClient, _webhooks2.default);
 (0, _util._extend)(MailBotsClient, _auth2.default);
-(0, _util._extend)(MailBotsClient, _bots2.default);
+(0, _util._extend)(MailBotsClient, _mailbots2.default);
 (0, _util._extend)(MailBotsClient, _logs2.default);
 
 module.exports = MailBotsClient;
@@ -24397,9 +24397,9 @@ exports.default = {
    * @param {function} [cb] Optional callback
    * @return {Promise}
    *
-   * @example const res = await mbClient.botGetSelf();
+   * @example const res = await mbClient.mailbotGetSelf();
    */
-  botGetSelf: function botGetSelf(cb) {
+  mailbotGetSelf: function mailbotGetSelf(cb) {
     var requestOptions = {
       method: "GET",
       url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/mailbots/self"),

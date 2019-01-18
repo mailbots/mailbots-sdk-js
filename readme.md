@@ -66,6 +66,7 @@ Contributions are welcome. Feel free to send us an email help+mailbots@humans.fu
 - `npm t` will watch for changes and re-run tests on save, letting you make rapid progress.
 - See package.json and `mbTestUtils.js` about mocking network requests.
 - Make sure to run `npm run build` to rebuild the lib.
+- Try to follow [MailBot naming conventions](https://github.com/mailbots/mailbots#use-of-mailbot-mailbot-mailbots-and-bots)
 
 ## License
 

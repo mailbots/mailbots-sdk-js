@@ -9,9 +9,9 @@ export default {
    * @param {function} [cb] Optional callback
    * @return {Promise}
    *
-   * @example const res = await mbClient.botGetSelf();
+   * @example const res = await mbClient.mailbotGetSelf();
    */
-  botGetSelf(cb) {
+  mailbotGetSelf(cb) {
     const requestOptions = {
       method: "GET",
       url: urljoin(this.config.apiHost, "/api/v1/mailbots/self"),
