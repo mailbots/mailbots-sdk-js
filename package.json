@@ -1,6 +1,6 @@
 {
   "name": "@mailbots/mailbots-sdk",
-  "version": "0.1.4-beta",
+  "version": "1.0.0",
   "description": "JS SDK for access to MailBots APIs – node.js and browser",
   "repository": {
     "type": "git",
@@ -38,7 +38,6 @@
   "dependencies": {
     "axios": "0.17.1",
     "concurrently": "3.5.1",
-    "crypto": "0.0.3",
     "debug": "^2.6.8",
     "qs": "6.5.1",
     "query-string": "5.0.1",

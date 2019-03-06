@@ -199,7 +199,7 @@ export default {
      * Send emails relating to an existing Task. Does not mutate task.
      * NOTE: This may be deprecated in favor of sending messages via the update task endpoint.
      * @param {object} params
-     * @param {number} params.taskId
+     * @param {number} params.task.id
      * @param {Array} params.messages 
      * 
      * @example
@@ -223,7 +223,7 @@ export default {
       *  });
      */
     sendMessages(params, cb) {
-      if(!task.id) throw new Error("taskid is required to send messages");
+      if(!task.id) throw new Error("task.id is required to send messages");
       if(!send_messages.length) throw new Error("send_messages requires at least one message");
       var requestOptions = {
         method: 'POST',
@@ -244,7 +244,7 @@ export default {
    * Used to save data against the task, update content, followup time and more
    * @param {object}
    * @param {object} params.task - Task object (see Create Task)
-   * @param {number} params.task.id - Taskid being updated
+   * @param {number} params.task.id - Task id being updated
    * @param {string} [params.webhook] - Setting to true fires `task.updated` webhook
    * @return {Promise}
    *
@@ -258,7 +258,7 @@ export default {
    *   }});
    */
   updateTask(params, cb) {
-    if (!params.task.id) throw "taskid is required to update a task";
+    if (!params.task.id) throw "task.id is required to update a task";
     const requestOptions = {
       method: "PUT",
       url: urljoin(this.config.apiHost, "/api/v1/tasks/", params.task.id, "/"),
@@ -276,13 +276,13 @@ export default {
    * Archive A MailBots Task
    * @param {number} params - Arguments
    * @param {number} params.task - Task object
-   * @param {number} params.task.id - Taskid to complete
+   * @param {number} params.task.id - Task id to complete
    * @return {Promise}
    *
    * @example
    */
   completeTask(params, cb) {
-    if (!params.task.id) throw "taskid is required to archive a task";
+    if (!params.task.id) throw "task.id is required to archive a task";
     const requestOptions = {
       method: "PUT",
       url: urljoin(this.config.apiHost, "/api/v1/tasks/", params.task.id),
@@ -298,13 +298,13 @@ export default {
 
   /**
    * Permanently Delete A MailBots Task
-   * @param {object} params - Taskid to delete
+   * @param {object} params - Task to delete
    * @param {object} params.task - Task object
-   * @param {number} params.task.id - Taskid to delete
+   * @param {number} params.task.id - Task id to delete
    * @return {Promise}
    */
   deleteTask(params, cb) {
-    if (!params.task.id) throw "taskid is required to delete a task";
+    if (!params.task.id) throw "task.id is required to delete a task";
     const requestOptions = {
       method: "DELETE",
       url: urljoin(
