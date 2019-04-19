@@ -127,7 +127,6 @@ _extend(MailBotsClient, Logs);
 
 module.exports = MailBotsClient;
 
-if (process.env.SERVER) {
-  global.window = {};
+if (!process.env.SERVER) {
+  window.MailBotsClient = MailBotsClient;
 }
-window.MailBotsClient = MailBotsClient;

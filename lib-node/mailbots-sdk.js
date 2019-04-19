@@ -173,7 +173,3 @@ var MailBotsClient = function () {
 (0, _util._extend)(MailBotsClient, _logs2.default);
 
 module.exports = MailBotsClient;
-
-global.window = {};
-
-window.MailBotsClient = MailBotsClient;
