@@ -258,7 +258,7 @@ export default class MailBotsClient {
    */
   triggerTask(params: {
     trigger_url: string,
-    payload: any,
+    payload: object,
     verbose: boolean
   }, cb?: Function): Promise<any>;
 
@@ -306,5 +306,116 @@ export default class MailBotsClient {
    * @param {array|string} emails A single email address, or an array of emails to invite
    * @param {function} [cb] Optional callback (also can be used with promises)
    */
-  invite(emails: string | string[], cb?: Function): Promise<any>
+  invite(emails: string | string[], cb?: Function): Promise<any>;
+
+  /**
+   * Webhook typings.
+   */
+
+  /**
+   * Validate webhook signature.
+   * Set verifyAge to false when testing / mocking HTTP requests. (Server side only)
+   * @param {string} webhookSignature
+   * @param {number} webhookTimestamp - Unix Timestamp of webhook.  Used to prevent reply attack
+   * @param {string} rawBody - Unprocessed http post body
+   * @param {boolean} [verifyAge] - Use for automated testing
+   * @return {boolean} - Pass / fail webhook validation
+   *
+   */
+  validateWebhook(
+    webhookSignature: string,
+    webhookTimestamp: number,
+    rawBody: any,
+    verifyAge?: boolean
+  ): boolean;
+
+  /**
+   * Auth typings.
+   */
+
+  /**
+   *  Get OAuth2 login link from config credentials
+   *  @returns {object} Auth URI and state Ex: `{ uri: authorizationUri, state: state }`
+   */
+  getAuthorizationUri(): {
+    uri: string, state: string
+  };
+
+  /**
+   *  After user has authorized bot with MailBots, fetch access token (server only)
+   *  @param {string} code Access code after user approval from auth URL
+   */
+  getAccessToken(code: string): Promise<string>;
+
+  /**
+   * Mailbots typings.
+   */
+
+  /**
+   * Get information about the bot that corresponds with user's Bearer token
+   * (ie, most likely your bot).
+   * @param {function} [cb] Optional callback
+   * @return {Promise}
+   *
+   * @example const res = await mbClient.mailbotGetSelf();
+   */
+  mailbotGetSelf(cb?: Function): Promise<any>;
+
+  /**
+   * Send an Event to the bot. This does not require
+   * and auth token because the endpoint is meant for 3rd
+   * party services. Ex: issue created in Github, or an
+   * email response or support ticket received. The MailBots
+   * bot can listen for events, act on tasks or
+   * create or delete tasks based on events.
+   * @param {object}  params params
+   * @returns {Promise}
+   *
+   * @example
+   * const res = await mbClient.sendEvent({type: 'event.type', payload: {"foo", "bar"}, event_url: "[unique_event_url]"});
+   */
+  sendEvent(params: {
+    event_url: string,
+    type: string,
+    payload: object
+  }, cb?: Function): Promise<any>;
+
+  /**
+   * Save MailBot data which is sent with every webhook related to that bot.
+   * This is how a bot persist's user settings specific to that bot.
+   * For params and details, see [bot saving data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#7f9bfa6c-a673-4104-9be9-1ada487c300e)
+   * @param {object} data Nestable key value value pairs
+   * @returns {Promise}
+   *
+   * @example
+   * const res = await mbClient.saveBotData({ foo: "bar" });
+   */
+  saveBotData(data: object, cb?: Function): Promise<void>;
+
+  /**
+   * Get saved MailBot data
+   * For params and details, see [mailbots get data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7)
+   * @example
+   * const res = await mbClient.getBotData();
+   */
+  getBotData(cb?: Function): Promise<object>;
+
+  /**
+   * Logs typings.
+   */
+
+  /**
+   * Retrieve logged-in user's bot logs
+   * @param  {object} filter - Filter. Ex: `{type: ['api', 'submit_failed'], mailbot: ['subdomain'], since: 1517948366, num: 10}`)
+   * @return {Promise} Promise resolving to log results in the form of: `{status: "success", logs[...]}`
+   */
+  getLogs(filter: {
+    type: string[],
+    mailbot: string[],
+    since: number,
+    num: number
+  }, cb?: Function): Promise<{
+    status: string,
+    logs: Array<any>
+  }>;
 }
