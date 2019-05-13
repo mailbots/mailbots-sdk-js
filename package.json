@@ -8,6 +8,7 @@
   },
   "main": "lib-node/mailbots-sdk.js",
   "browser": "lib-browser/mailbots-sdk.js",
+  "typings": "typings/mailbots-sdk.d.ts",
   "directories": {
     "test": "test"
   },
