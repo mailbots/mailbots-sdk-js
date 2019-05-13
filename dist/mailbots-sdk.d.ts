@@ -53,7 +53,7 @@ export default class MailBotsClient {
    * @param {function} [cb] - Optional callback.
    * @return {Promise}
    */
-  makeRequest(requestOptions: AxiosRequestConfig, cb: Function): Promise<any>;
+  makeRequest(requestOptions: AxiosRequestConfig, cb?: Function): Promise<any>;
 
   /**
    * Get a MailBots task
@@ -70,7 +70,7 @@ export default class MailBotsClient {
   getTask(params: {
     id: number,
     verbose: boolean
-  }, cb: Function): Promise<any>;
+  }, cb?: Function): Promise<any>;
 
   /**
    * Create a new MailBots Task.
@@ -117,7 +117,7 @@ export default class MailBotsClient {
       to: string,
       body: Array<{type: string, text: string}>
     }>
-   }, cb: Function): Promise<any>;
+   }, cb?: Function): Promise<any>;
 
   /**
    * Send email and automatically create a Task
@@ -151,7 +151,7 @@ export default class MailBotsClient {
     subject: string,
     body: string | Array<{type: string, text: string}>,
     trigger_timeformat?: string
-  }, cb: Function): Promise<any>;
+  }, cb?: Function): Promise<any>;
 
   /**
    * Send emails relating to an existing Task. Does not mutate task.
@@ -192,7 +192,7 @@ export default class MailBotsClient {
       subject: string,
       body: string | Array<{type: string, text: string}>
     }>
-  }, cb: Function): Promise<any>;
+  }, cb?: Function): Promise<any>;
 
   /**
    * Update A MailBots Task
@@ -219,7 +219,7 @@ export default class MailBotsClient {
          to: string
        }
      }
-   }, cb: Function): Promise<any>;
+   }, cb?: Function): Promise<any>;
 
    /**
    * Archive A MailBots Task
@@ -234,7 +234,7 @@ export default class MailBotsClient {
     task: {
       id: number
     }
-  }, cb: Function): Promise<any>;
+  }, cb?: Function): Promise<any>;
 
   /**
    * Permanently Delete A MailBots Task
@@ -247,7 +247,7 @@ export default class MailBotsClient {
     task: {
       id: number
     }
-  }, cb: Function): Promise<void>;
+  }, cb?: Function): Promise<void>;
 
   /**
    * Trigger a MailBots Task
@@ -260,7 +260,7 @@ export default class MailBotsClient {
     trigger_url: string,
     payload: any,
     verbose: boolean
-  }, cb: Function): Promise<any>;
+  }, cb?: Function): Promise<any>;
 
   /**
    * Resolve Natural Time Format (ex: {naturaltime}@ext.eml.bot)
@@ -272,7 +272,7 @@ export default class MailBotsClient {
   naturalTime(params: {
     format: string,
     timezone: string
-  }, cb: Function): Promise<any>;
+  }, cb?: Function): Promise<any>;
 
   /**
    * Dispatch an email-based action for a task. (Equivalent to sending an action email.)
@@ -286,5 +286,25 @@ export default class MailBotsClient {
     action: string,
     reference_email: string,
     verbose: boolean
-  }, cb: Function): Promise<any>;
+  }, cb?: Function): Promise<any>;
+
+  /**
+   * Users typings
+   */
+
+  /**
+   * Get information about the currently logged in user
+   * @param {function} [cb] - Optional callback
+   */
+  getLoggedInUser(cb?: Function): Promise<any>;
+
+  /**
+   * Invite users to this bot. If an Auth token is included, the invitation email
+   * includes the name of the logged in user who is sending the invitation.
+   * "emails" param can be either an array of email addresses, or a string with a single
+   * email address.
+   * @param {array|string} emails A single email address, or an array of emails to invite
+   * @param {function} [cb] Optional callback (also can be used with promises)
+   */
+  invite(emails: string | string[], cb?: Function): Promise<any>
 }
