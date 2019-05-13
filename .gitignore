@@ -4,3 +4,6 @@
 .env
 .vscode
 readme-internal.md
+dist/
+lib-node/
+lib-browser/
