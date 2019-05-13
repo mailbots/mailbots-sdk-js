@@ -6,14 +6,12 @@
     "type": "git",
     "url": "https://github.com/mailbots/mailbots-sdk-js.git"
   },
-  "main": "lib-node/mailbots-sdk.js",
-  "browser": "lib-browser/mailbots-sdk.js",
+  "main": "dist/mailbots-sdk.js",
+  "browser": "dist/bundles/mailbots-sdk.umd.min.js",
   "directories": {
     "test": "test"
   },
   "files": [
-    "lib-browser",
-    "lib-node",
     "dist",
     "readme"
   ],
@@ -23,11 +21,10 @@
     "test:watch": "npm run test:fast -- -w",
     "test:inspect": "npm t -- --inspect-brk -w",
     "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t",
-    "build": "npm run build:node && npm run build:browser && npm run build:dist",
+    "build": "npm run build:node && npm run build:browser",
     "build:watch": "concurrently \"npm run build:node -- --watch\" \"npm run build:browser -- --watch\"",
-    "build:node": "rimraf lib-node && SERVER=true babel --out-dir lib-node src",
-    "build:browser": "rimraf lib-browser && SERVER=false babel --out-dir lib-browser src",
-    "build:dist": "rimraf dist && SERVER=false webpack",
+    "build:node": "rimraf dist && SERVER=true babel --out-dir dist src",
+    "build:browser": "rimraf dist && SERVER=false webpack",
     "build:docs": "documentation -c documentation.yml -f html build src/* -o docs && cd docs && now --static && echo '\n Run: \n\n now alias mailbots-sdk-js.mailbots.com\n'",
     "dev:docs": "documentation -c documentation.yml serve --watch src/* ",
     "prepublishOnly": "npm run build",
@@ -61,6 +58,7 @@
     "nock": "10.0.4",
     "node-libs-browser": "2.1.0",
     "rimraf": "2.6.2",
+    "uglifyjs-webpack-plugin": "2.1.2",
     "webpack": "3.10.0"
   }
 }
