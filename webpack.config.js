@@ -1,5 +1,5 @@
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require("webpack");
 
 module.exports = {
   entry: "./src/mailbots-sdk.js",
@@ -12,11 +12,9 @@ module.exports = {
   module: {
     rules: [{ test: /\.js$/, use: "babel-loader" }]
   },
-  optimization: {
-    minimizer: [
-      new UglifyJsPlugin()
-    ]
-  }
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({minimize: true})
+  ]
   // node: {
   // 	// fs: "empty",
   // 	global: true,

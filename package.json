@@ -24,7 +24,7 @@
     "build": "npm run build:node && npm run build:browser",
     "build:watch": "concurrently \"npm run build:node -- --watch\" \"npm run build:browser -- --watch\"",
     "build:node": "rimraf dist && SERVER=true babel --out-dir dist src",
-    "build:browser": "rimraf dist && SERVER=false webpack",
+    "build:browser": "rimraf dist/bundles && SERVER=false webpack",
     "build:docs": "documentation -c documentation.yml -f html build src/* -o docs && cd docs && now --static && echo '\n Run: \n\n now alias mailbots-sdk-js.mailbots.com\n'",
     "dev:docs": "documentation -c documentation.yml serve --watch src/* ",
     "prepublishOnly": "npm run build",
@@ -58,7 +58,6 @@
     "nock": "10.0.4",
     "node-libs-browser": "2.1.0",
     "rimraf": "2.6.2",
-    "uglifyjs-webpack-plugin": "2.1.2",
     "webpack": "3.10.0"
   }
 }
