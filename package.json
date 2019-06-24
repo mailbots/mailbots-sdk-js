@@ -16,6 +16,7 @@
     "lib-browser",
     "lib-node",
     "dist",
+    "typings",
     "readme"
   ],
   "scripts": {
