@@ -1,7 +1,7 @@
 import {
    getMailBotsClient,
 } from "./testUtils/mbTestUtils";
-import MailBotsClient from "../src/mailbots-sdk.js"; //TODO test browser + node versions separately
+import { MailBotsClient } from "../src/mailbots-sdk.js"; //TODO test browser + node versions separately
 import "./testUtils/nockMocks";
 import { expect } from "chai";
 import timestamp from "unix-timestamp";
@@ -19,8 +19,8 @@ describe("Auth", function() {
 
   it("should instantiate using fromBot factory method", (done) => {
     const requestJson = {mailbot: { stored_data: { access_token: "secure"}}}
-  
-    const botMock = { 
+
+    const botMock = {
       config: {
         clientId: "foo",
         clientSecret: "bar"
@@ -29,7 +29,7 @@ describe("Auth", function() {
         return _.get(this, path)
       }.bind(requestJson)
     }
-    
+
     const mbClient = MailBotsClient.fromBot(botMock);
     done();
   })
