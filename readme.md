@@ -55,6 +55,15 @@ const res = await mbClient.createTask(task); //in async function
 - [Reference docs](https://mailbots-sdk-js.mailbots.com/)
 - See the `test` directory for usage examples.
 
+## Tests
+`cp .env.example .env`
+`npm t`
+
+We use [nock](https://github.com/nock/nock) for mocking network requests. The mocked requests / responses match the values in .env.example.
+
+To run against the live API, you'll need to setup a couple test MailBots, copy their values into .env and run "test:live"
+
+
 ## Debugging
 
 Set the env variable `DEBUG=mailbots-sdk` to log debugging information.
