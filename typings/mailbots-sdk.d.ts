@@ -6,8 +6,8 @@ interface Task {
   completed: boolean,
   reference_email: {
     to: string,
-    cc: string,
-    bcc: string,
+    cc?: string,
+    bcc?: string,
     subject: string,
     html: string
   }
