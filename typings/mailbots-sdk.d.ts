@@ -9,11 +9,16 @@ interface Email {
 }
 
 interface Task {
+  id: number,
   command: string,
   trigger_timeformat?: string | null,
   trigger_time?: number | null,
   completed?: boolean,
-  reference_email?: Email
+  reference_email?: Email,
+  stored_data: {
+    [key: string]: any
+  },
+  search_keys?: string[]
 }
 
 interface Message {
@@ -69,6 +74,32 @@ export class MailBotsClient {
   makeRequest(requestOptions: AxiosRequestConfig, cb?: Function): Promise<any>;
 
   /**
+   * Get a filtered list of MailBots tasks
+   * @param {object} params  Arguments for API call
+   * @param {function} [cb]  Optional callback function
+   * @param {boolean} params.suppress_webhook  Prevent MailBots from firing the task.viewed webhook
+   * @param {boolean} params.status Retrieve completed or open tasks
+   * @return {Promise}
+   *
+   * @example
+   * // Get all open tasks, sorted by due date
+   * const res = await mbClient.getTasks();
+   * console.log(res.tasks);
+   *
+   * @example
+   * // With a callback
+   * mbClient.getTasks({ limit: 1 }, (err, res) => {
+   *     if (err) done(err);
+   *     console.log(res.tasks);
+   *   });
+   */
+  getTasks(params: {
+    suppress_webhook?: boolean,
+    status?: boolean,
+    search_key?: string
+  }, cb?: Function): Promise<{tasks: Task[]}>;
+
+  /**
    * Get a MailBots task
    * Passing ?verbose=1 fires a webhook to the extnesion and fetches a rendered
    * HTML email preview of the task
@@ -83,7 +114,7 @@ export class MailBotsClient {
   getTask(params: {
     id: number,
     verbose?: boolean
-  }, cb?: Function): Promise<any>;
+  }, cb?: Function): Promise<Task>;
 
   /**
    * Create a new MailBots Task.
@@ -123,7 +154,7 @@ export class MailBotsClient {
     webhook?: boolean,
     verbose?: number,
     suppress_email?: boolean,
-    task: Task,
+    task: Pick<Task, Exclude<keyof Task, "id">>,
     send_messages?: Array<Message>
   }, cb?: Function): Promise<any>;
 
