@@ -37,7 +37,7 @@ export class MailBotsClient {
    * Class constructor.
    * @param config
    */
-  constructor (config: {
+  constructor (config?: {
     clientId?: string,
     clientSecret?: string,
     redirectUri?: string,
