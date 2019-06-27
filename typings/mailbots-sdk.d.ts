@@ -1,17 +1,31 @@
 import {AxiosRequestConfig} from "axios";
 
+interface Email {
+  to: string,
+  cc?: string,
+  bcc?: string,
+  subject: string,
+  html: string
+}
+
 interface Task {
   command: string,
-  trigger_timeformat: string | null,
-  completed: boolean,
-  reference_email: {
-    to: string,
-    cc?: string,
-    bcc?: string,
-    subject: string,
-    html: string
-  }
+  trigger_timeformat?: string | null,
+  trigger_time?: number | null,
+  completed?: boolean,
+  reference_email?: Email
 }
+
+interface Message {
+  to: string,
+  cc?: string[],
+  bcc?: string[],
+  from?: string,
+  subject: string,
+  body: string | Array<{type: string, text: string}>
+}
+
+
 export class MailBotsClient {
 
   /**
@@ -68,7 +82,7 @@ export class MailBotsClient {
    */
   getTask(params: {
     id: number,
-    verbose: boolean
+    verbose?: boolean
   }, cb?: Function): Promise<any>;
 
   /**
@@ -83,13 +97,13 @@ export class MailBotsClient {
    * @example
    * const res = await mbClient.createTask(
    *     {
-   *       webhook: false,
-   *       suppress_email: true,
-   *       verbose: 1,
+   *       webhook?: false,
+   *       suppress_email?: true,
+   *       verbose?: 1,
    *       task: {
    *         command: process.env.EXAMPLE_COMMAND
    *       },
-   *       send_messages: [
+   *       send_messages?: [
    *         {
    *           type: "email",
    *           subject: "A test email message",
@@ -106,16 +120,11 @@ export class MailBotsClient {
    *
    */
   createTask(params: {
-    webhook: boolean,
-    verbose: number,
-    suppress_email: boolean,
+    webhook?: boolean,
+    verbose?: number,
+    suppress_email?: boolean,
     task: Task,
-    send_messages: Array<{
-      type: string,
-      subject: string,
-      to: string,
-      body: Array<{type: string, text: string}>
-    }>
+    send_messages?: Array<Message>
   }, cb?: Function): Promise<any>;
 
   /**
@@ -144,12 +153,11 @@ export class MailBotsClient {
   sendEmail(email: {
     command: string,
     to: string,
-    cc: string[],
-    bcc: string[],
+    cc?: string[],
+    bcc?: string[],
     from: string,
     subject: string,
     body: string | Array<{type: string, text: string}>,
-    trigger_timeformat?: string
   }, cb?: Function): Promise<any>;
 
   /**
@@ -183,14 +191,7 @@ export class MailBotsClient {
     task: {
       id: number
     },
-    send_messages: Array<{
-      to: string,
-      cc: string[],
-      bcc: string[],
-      from: string,
-      subject: string,
-      body: string | Array<{type: string, text: string}>
-    }>
+    send_messages: Array<Message>
   }, cb?: Function): Promise<any>;
 
   /**
@@ -212,12 +213,9 @@ export class MailBotsClient {
     *   }});
     */
   updateTask(params: {
-    task: {
-      id: number,
-      reference_email: {
-        to: string
-      }
-    }
+    webhook?: boolean,
+    verbose?: number,
+    task: Task
   }, cb?: Function): Promise<any>;
 
   /**
@@ -257,8 +255,8 @@ export class MailBotsClient {
    */
   triggerTask(params: {
     trigger_url: string,
-    payload: object,
-    verbose: boolean
+    payload?: object,
+    verbose?: boolean
   }, cb?: Function): Promise<any>;
 
   /**
@@ -270,7 +268,7 @@ export class MailBotsClient {
    */
   naturalTime(params: {
     format: string,
-    timezone: string
+    timezone?: string
   }, cb?: Function): Promise<any>;
 
   /**
@@ -283,7 +281,7 @@ export class MailBotsClient {
    */
   sendAction(params: {
     action: string,
-    reference_email: string,
+    reference_email: Email,
     verbose: boolean
   }, cb?: Function): Promise<any>;
 
@@ -376,7 +374,7 @@ export class MailBotsClient {
   sendEvent(params: {
     event_url: string,
     type: string,
-    payload: object
+    payload?: object
   }, cb?: Function): Promise<any>;
 
   /**
@@ -409,10 +407,10 @@ export class MailBotsClient {
    * @return {Promise} Promise resolving to log results in the form of: `{status: "success", logs[...]}`
    */
   getLogs(filter: {
-    type: string[],
-    mailbot: string[],
-    since: number,
-    num: number
+    type?: string[],
+    mailbot?: string[],
+    since?: number,
+    num?: number
   }, cb?: Function): Promise<{
     status: string,
     logs: Array<any>
