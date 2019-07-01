@@ -233,7 +233,7 @@ export default {
           "Content-Type": "application/json"
         },
         json: true,
-        data: { send_messages: params.sendMessages }
+        data: { send_messages: params.send_messages }
       };
 
       return _makeRequest(requestOptions, cb);
