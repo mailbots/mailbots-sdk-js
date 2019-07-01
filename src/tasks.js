@@ -200,10 +200,10 @@ export default {
      * NOTE: This may be deprecated in favor of sending messages via the update task endpoint.
      * @param {object} params
      * @param {number} params.task.id
-     * @param {Array} params.messages 
-     * 
+     * @param {Array} params.messages
+     *
      * @example
-     *  const res = await mbClient.sendMessages({ 
+     *  const res = await mbClient.sendMessages({
       *   task: {
       *     id: 123
       *   },
@@ -223,14 +223,14 @@ export default {
       *  });
      */
     sendMessages(params, cb) {
-      if(!task.id) throw new Error("task.id is required to send messages");
-      if(!send_messages.length) throw new Error("send_messages requires at least one message");
+      if(!params.task.id) throw new Error("task.id is required to send messages");
+      if(!params.send_messages.length) throw new Error("send_messages requires at least one message");
       var requestOptions = {
         method: 'POST',
         url: urljoin(this.config.apiHost, `/api/v1/tasks/${params.task.id}/send-messages`),
-        headers: { 
-          Authorization: 'Bearer ' + this._accessToken, 
-          "Content-Type": "application/json" 
+        headers: {
+          Authorization: 'Bearer ' + this._accessToken,
+          "Content-Type": "application/json"
         },
         json: true,
         data: { send_messages: params.sendMessages }
