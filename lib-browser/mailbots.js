@@ -78,6 +78,40 @@ exports.default = {
 
 
   /**
+   * An "Interbot Event" allows bots to send messages to each other. 
+   * This allows a MailBot to expose actions that can be utilized by
+   * other MailBots (for example, creating an Evernote note)
+   * In this way, MailBots can become composable.
+   * Requires elevated oauth scope.
+   * @param {object}  params params
+   * @returns {Promise}
+   *
+   * @example
+   * const res = await mbClient.sendInterbotEvent({subdomain: 'git', payload: {"foo", "bar"}});
+   */
+  sendInterbotEvent: function sendInterbotEvent(data, cb) {
+    if (!data.subdomain) {
+      throw new Error("subdomain is required");
+    }
+    if (!data.payload) {
+      throw new Error("payload is required");
+    }
+
+    var requestOptions = {
+      method: "POST",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/interbot_event"),
+      headers: {
+        Authorization: "Bearer " + this._accessToken,
+        "Content-Type": "application/json"
+      },
+      data: data
+    };
+
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
+
+
+  /**
    * Save MailBot data which is sent with every webhook related to that bot.
    * This is how a bot persist's user settings specific to that bot.
    * For params and details, see [bot saving data API docs](https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#7f9bfa6c-a673-4104-9be9-1ada487c300e)

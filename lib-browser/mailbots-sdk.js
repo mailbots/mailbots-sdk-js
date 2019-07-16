@@ -84,11 +84,11 @@ var MailBotsClient = function () {
   /**
   * Factory method to return a new, fully authenticated MailBots client based on the webhook
   * @param {object} bot - MailBots `bot` object
-  * @example 
+  * @example
   *   mailbot.onCommand('foo', bot => {
   *     const mbClient = MailBotsClient.fromBot(bot);
   *   })
-  *   
+  *
   */
 
 
@@ -170,6 +170,8 @@ var MailBotsClient = function () {
 (0, _util._extend)(MailBotsClient, _mailbots2.default);
 (0, _util._extend)(MailBotsClient, _logs2.default);
 
-module.exports = MailBotsClient;
+module.exports = {
+  MailBotsClient: MailBotsClient
+};
 
 window.MailBotsClient = MailBotsClient;

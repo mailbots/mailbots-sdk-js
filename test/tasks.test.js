@@ -142,7 +142,7 @@ describe("Tasks", function() {
             body: [
               {
                 type: "html",
-                text: "<h1>This is a test</h1>"
+                html: "<h1>This is a test</h1>"
               }
             ]
           }
@@ -188,7 +188,7 @@ describe("Tasks", function() {
         body: [
           {
             type: "html",
-            text: `<h1>This is a test</h1>`
+            html: `<h1>This is a test</h1>`
           }
         ],
         verbose: 1 // useful for testing only (probably)
@@ -199,7 +199,6 @@ describe("Tasks", function() {
       expect(res.messages[0].to[0]).to.equal("test@exampletask.com");
       expect(res.messages[0].html).to.contain("This is a test");
       expect(res.task.reference_email.to[0]).to.equal("test@exampletask.com");
-      // expect(res.task.reference_email.html).to.contain("This is a test");
       expect(res.statusCode).to.equal(201);
       testTasks.push(res.task);
     });

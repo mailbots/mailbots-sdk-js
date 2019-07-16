@@ -108,7 +108,7 @@ exports.default = {
    *           body: [
    *             {
    *               type: "html",
-   *               text: "<h1>This is a test</h1>"
+   *               html: "<h1>This is a test</h1>"
    *             }
    *           ]
    *         }
@@ -168,7 +168,7 @@ exports.default = {
       referenceEmailBody = email.body;
       emailBody = [{
         type: "html",
-        text: email.body
+        html: email.body
       }];
     } else if (email.body instanceof Array) {
       referenceEmailBody = "";
@@ -210,10 +210,10 @@ exports.default = {
    * NOTE: This may be deprecated in favor of sending messages via the update task endpoint.
    * @param {object} params
    * @param {number} params.task.id
-   * @param {Array} params.messages 
-   * 
+   * @param {Array} params.messages
+   *
    * @example
-   *  const res = await mbClient.sendMessages({ 
+   *  const res = await mbClient.sendMessages({
     *   task: {
     *     id: 123
     *   },
@@ -233,8 +233,8 @@ exports.default = {
     *  });
    */
   sendMessages: function sendMessages(params, cb) {
-    if (!task.id) throw new Error("task.id is required to send messages");
-    if (!send_messages.length) throw new Error("send_messages requires at least one message");
+    if (!params.task.id) throw new Error("task.id is required to send messages");
+    if (!params.send_messages.length) throw new Error("send_messages requires at least one message");
     var requestOptions = {
       method: 'POST',
       url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/" + params.task.id + "/send-messages"),
@@ -243,7 +243,7 @@ exports.default = {
         "Content-Type": "application/json"
       },
       json: true,
-      data: { send_messages: params.sendMessages }
+      data: { send_messages: params.send_messages }
     };
 
     return (0, _util._makeRequest)(requestOptions, cb);

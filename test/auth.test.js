@@ -1,5 +1,6 @@
 import {
    getMailBotsClient,
+   beforeEachTest
 } from "./testUtils/mbTestUtils";
 import { MailBotsClient } from "../src/mailbots-sdk.js"; //TODO test browser + node versions separately
 import "./testUtils/nockMocks";
@@ -13,6 +14,9 @@ timestamp.round = true;
 const mbClient =  getMailBotsClient();
 
 describe("Auth", function() {
+  
+  beforeEach(beforeEachTest);
+
   it("should build a login URL", () => {
     expect (mbClient.getAuthorizationUri().uri).to.be.a("string");
   });

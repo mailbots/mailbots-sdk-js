@@ -94,7 +94,7 @@ export default {
    *           body: [
    *             {
    *               type: "html",
-   *               text: "<h1>This is a test</h1>"
+   *               html: "<h1>This is a test</h1>"
    *             }
    *           ]
    *         }
@@ -154,7 +154,7 @@ export default {
       emailBody = [
         {
           type: "html",
-          text: email.body
+          html: email.body
         }
       ];
     } else if (email.body instanceof Array) {

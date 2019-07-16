@@ -45,7 +45,8 @@ describe("Users", function() {
     expect(res.statusCode).to.equal(200);
   });
 
-  it("should send invites to an array of users", async () => {
+  // not currently supported
+  it.skip("should send invites to an array of users", async () => {
     let res = await mbClient.invite([
       "blackhole@example.com",
       "blackhole2@example.com"

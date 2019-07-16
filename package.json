@@ -1,6 +1,6 @@
 {
   "name": "@mailbots/mailbots-sdk",
-  "version": "2.0.0-alpha.3",
+  "version": "2.1.0-beta.1",
   "description": "JS SDK for access to MailBots APIs – node.js and browser",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "test": "echo '\n\n⚠️ Some tests skipped. To tests everything, configure test mailbots, test:live and set NOCK_OFF=true \nprocess.NOCK_OFF is not set \n\n'; SERVER=true mocha --require babel-register --require babel-polyfill",
-    "test:live": "echo '\nTo test against live api, set NOCK_OFF=true\n\n'; SERVER=true mocha -t 5000 --require babel-register --require babel-polyfill --inspect-brk",
+    "test:live": "echo '\nTo test against live api, set NOCK_OFF=true\n\n'; NOCK_OFF=true SERVER=true mocha -t 5000 --require babel-register --require babel-polyfill --inspect-brk",
     "test:watch": "npm run test:fast -- -w",
     "test:inspect": "npm t -- --inspect-brk -w",
     "test:rebuild": "THROTTLE=true REBUILD_MOCKS=true npm t",

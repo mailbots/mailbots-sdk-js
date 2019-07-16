@@ -26,7 +26,7 @@ describe("Logs", function () {
     // create successful task
     let res = await mbClient.createTask({
       task: {
-        command: `example@${process.env.EXAMPLE_MAILBOT_SUBDOMAIN_1}.eml.bot`,
+        command: `example@${process.env.EXAMPLE_BOT_SUBDOMAIN_1}.eml.bot`,
         reference_email: {
           subject: "Successful task"
         },
@@ -41,7 +41,7 @@ describe("Logs", function () {
     res = await mbClient.createTask({
       webhook: true, // <--- attempt webhook
       task: {
-        command: `example@${process.env.EXAMPLE_MAILBOT_SUBDOMAIN_1}.eml.bot`,
+        command: `example@${process.env.EXAMPLE_BOT_SUBDOMAIN_1}.eml.bot`,
         reference_email: {
           subject: "Unsuccessful webhook"
         },

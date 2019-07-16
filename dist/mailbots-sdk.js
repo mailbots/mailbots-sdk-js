@@ -13706,11 +13706,11 @@ var MailBotsClient = function () {
   /**
   * Factory method to return a new, fully authenticated MailBots client based on the webhook
   * @param {object} bot - MailBots `bot` object
-  * @example 
+  * @example
   *   mailbot.onCommand('foo', bot => {
   *     const mbClient = MailBotsClient.fromBot(bot);
   *   })
-  *   
+  *
   */
 
 
@@ -13792,7 +13792,9 @@ var MailBotsClient = function () {
 (0, _util._extend)(MailBotsClient, _mailbots2.default);
 (0, _util._extend)(MailBotsClient, _logs2.default);
 
-module.exports = MailBotsClient;
+module.exports = {
+  MailBotsClient: MailBotsClient
+};
 
 window.MailBotsClient = MailBotsClient;
 
@@ -17042,7 +17044,7 @@ module.exports.makeKey = makeKey;
 /* 132 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[["elliptic@6.4.1","/Users/reilly/Projects/sandbox/mailbots-sdk-js"]],"_development":true,"_from":"elliptic@6.4.1","_id":"elliptic@6.4.1","_inBundle":false,"_integrity":"sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==","_location":"/elliptic","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"elliptic@6.4.1","name":"elliptic","escapedName":"elliptic","rawSpec":"6.4.1","saveSpec":null,"fetchSpec":"6.4.1"},"_requiredBy":["/browserify-sign","/create-ecdh"],"_resolved":"https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz","_spec":"6.4.1","_where":"/Users/reilly/Projects/sandbox/mailbots-sdk-js","author":{"name":"Fedor Indutny","email":"fedor@indutny.com"},"bugs":{"url":"https://github.com/indutny/elliptic/issues"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"},"description":"EC cryptography","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"files":["lib"],"homepage":"https://github.com/indutny/elliptic","keywords":["EC","Elliptic","curve","Cryptography"],"license":"MIT","main":"lib/elliptic.js","name":"elliptic","repository":{"type":"git","url":"git+ssh://git@github.com/indutny/elliptic.git"},"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","test":"npm run lint && npm run unit","unit":"istanbul test _mocha --reporter=spec test/index.js","version":"grunt dist && git add dist/"},"version":"6.4.1"}
+module.exports = {"_args":[["elliptic@6.4.1","/Users/reilly/Projects/mailbots-sdk-js"]],"_development":true,"_from":"elliptic@6.4.1","_id":"elliptic@6.4.1","_inBundle":false,"_integrity":"sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==","_location":"/elliptic","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"elliptic@6.4.1","name":"elliptic","escapedName":"elliptic","rawSpec":"6.4.1","saveSpec":null,"fetchSpec":"6.4.1"},"_requiredBy":["/browserify-sign","/create-ecdh"],"_resolved":"https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz","_spec":"6.4.1","_where":"/Users/reilly/Projects/mailbots-sdk-js","author":{"name":"Fedor Indutny","email":"fedor@indutny.com"},"bugs":{"url":"https://github.com/indutny/elliptic/issues"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"},"description":"EC cryptography","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"files":["lib"],"homepage":"https://github.com/indutny/elliptic","keywords":["EC","Elliptic","curve","Cryptography"],"license":"MIT","main":"lib/elliptic.js","name":"elliptic","repository":{"type":"git","url":"git+ssh://git@github.com/indutny/elliptic.git"},"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","test":"npm run lint && npm run unit","unit":"istanbul test _mocha --reporter=spec test/index.js","version":"grunt dist && git add dist/"},"version":"6.4.1"}
 
 /***/ }),
 /* 133 */
@@ -22153,7 +22155,7 @@ exports.default = {
    *           body: [
    *             {
    *               type: "html",
-   *               text: "<h1>This is a test</h1>"
+   *               html: "<h1>This is a test</h1>"
    *             }
    *           ]
    *         }
@@ -22213,7 +22215,7 @@ exports.default = {
       referenceEmailBody = email.body;
       emailBody = [{
         type: "html",
-        text: email.body
+        html: email.body
       }];
     } else if (email.body instanceof Array) {
       referenceEmailBody = "";
@@ -22255,10 +22257,10 @@ exports.default = {
    * NOTE: This may be deprecated in favor of sending messages via the update task endpoint.
    * @param {object} params
    * @param {number} params.task.id
-   * @param {Array} params.messages 
-   * 
+   * @param {Array} params.messages
+   *
    * @example
-   *  const res = await mbClient.sendMessages({ 
+   *  const res = await mbClient.sendMessages({
     *   task: {
     *     id: 123
     *   },
@@ -22278,8 +22280,8 @@ exports.default = {
     *  });
    */
   sendMessages: function sendMessages(params, cb) {
-    if (!task.id) throw new Error("task.id is required to send messages");
-    if (!send_messages.length) throw new Error("send_messages requires at least one message");
+    if (!params.task.id) throw new Error("task.id is required to send messages");
+    if (!params.send_messages.length) throw new Error("send_messages requires at least one message");
     var requestOptions = {
       method: 'POST',
       url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/" + params.task.id + "/send-messages"),
@@ -22288,7 +22290,7 @@ exports.default = {
         "Content-Type": "application/json"
       },
       json: true,
-      data: { send_messages: params.sendMessages }
+      data: { send_messages: params.send_messages }
     };
 
     return (0, _util._makeRequest)(requestOptions, cb);
@@ -24444,6 +24446,40 @@ exports.default = {
     if (params.payload) {
       Object.assign(requestOptions, { data: params.payload });
     }
+
+    return (0, _util._makeRequest)(requestOptions, cb);
+  },
+
+
+  /**
+   * An "Interbot Event" allows bots to send messages to each other. 
+   * This allows a MailBot to expose actions that can be utilized by
+   * other MailBots (for example, creating an Evernote note)
+   * In this way, MailBots can become composable.
+   * Requires elevated oauth scope.
+   * @param {object}  params params
+   * @returns {Promise}
+   *
+   * @example
+   * const res = await mbClient.sendInterbotEvent({subdomain: 'git', payload: {"foo", "bar"}});
+   */
+  sendInterbotEvent: function sendInterbotEvent(data, cb) {
+    if (!data.subdomain) {
+      throw new Error("subdomain is required");
+    }
+    if (!data.payload) {
+      throw new Error("payload is required");
+    }
+
+    var requestOptions = {
+      method: "POST",
+      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/interbot_event"),
+      headers: {
+        Authorization: "Bearer " + this._accessToken,
+        "Content-Type": "application/json"
+      },
+      data: data
+    };
 
     return (0, _util._makeRequest)(requestOptions, cb);
   },
