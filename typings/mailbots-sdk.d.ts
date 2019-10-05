@@ -94,9 +94,19 @@ export class MailBotsClient {
    *   });
    */
   getTasks(params: {
+    extension?: string,
+    order_by?: "due" | "created",
+    order_dir?: "asc" | "desc",
+    status?: "completed" | "open" | boolean, // @todo remove boolean
+    due_before?: number; // timestamp
+    due_after?: number; // timestamp
+    search?: string; // wildcard search of subject and recipients
+    search_key?: string // searches only one
+    search_keys?: string[] // "OR" search to pull multiple search keys
+    per_page?: number;
+    page?: number;
+    invisible: boolean; // background tasks
     suppress_webhook?: boolean,
-    status?: boolean,
-    search_key?: string
   }, cb?: Function): Promise<{tasks: Task[]}>;
 
   /**
