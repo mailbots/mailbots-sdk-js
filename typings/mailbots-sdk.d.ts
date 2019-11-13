@@ -327,6 +327,23 @@ export class MailBotsClient {
   }, cb?: Function): Promise<any>;
 
   /**
+   * Create a new task event.
+   *
+   * @param {object} params
+   * @param {number} params.task.id - Id of the task
+   * @param {string} params.type - The type of this event
+   * @param {object} params.data - Data associated with this event.
+   * @return {Promise}
+   */
+  createEvent(params: {
+    task: {
+      id: number
+    },
+    type: string,
+    data: any
+  }, cb?: Function): Promise<any>;
+
+  /**
    * Users typings
    */
 
@@ -419,7 +436,7 @@ export class MailBotsClient {
   }, cb?: Function): Promise<any>;
 
   /**
-   * An "Interbot Event" allows bots to send messages to each other. 
+   * An "Interbot Event" allows bots to send messages to each other.
    * This allows a MailBot to expose actions that can be utilized by
    * other MailBots (for example, creating an Evernote note)
    * In this way, MailBots can become composable.

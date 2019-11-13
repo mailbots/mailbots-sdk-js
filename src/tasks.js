@@ -404,5 +404,30 @@ export default {
       })
     };
     return _makeRequest(requestOptions, cb);
+  },
+
+  /**
+   * Create a new task event.
+   *
+   * @param {object} params
+   * @param {number} params.task.id - Id of the task
+   * @param {string} params.type - The type of this event
+   * @param {object} params.data - Data associated with this event.
+   * @return {Promise}
+   */
+  createEvent(params, cb) {
+    const requestOptions = {
+      method: "POST",
+      url: urljoin(this.config.apiHost, `/api/v1/tasks/${params.task.id}/events`),
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`,
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+      data: JSON.stringify({
+        type: params.type,
+        data: params.data
+      })
+    };
+    return _makeRequest(requestOptions, cb);
   }
 };
