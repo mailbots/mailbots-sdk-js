@@ -1,56 +1,40 @@
 "use strict";
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _querystring = _interopRequireDefault(require("querystring"));
 
-var _querystring = require("querystring");
+var _crypto = _interopRequireDefault(require("crypto"));
 
-var _querystring2 = _interopRequireDefault(_querystring);
+var _urlJoin = _interopRequireDefault(require("url-join"));
 
-var _crypto = require("crypto");
+var _tasks = _interopRequireDefault(require("./tasks"));
 
-var _crypto2 = _interopRequireDefault(_crypto);
+var _users = _interopRequireDefault(require("./users"));
 
-var _urlJoin = require("url-join");
+var _webhooks = _interopRequireDefault(require("./webhooks"));
 
-var _urlJoin2 = _interopRequireDefault(_urlJoin);
+var _auth = _interopRequireDefault(require("./auth"));
 
-var _tasks = require("./tasks");
+var _mailbots = _interopRequireDefault(require("./mailbots"));
 
-var _tasks2 = _interopRequireDefault(_tasks);
-
-var _users = require("./users");
-
-var _users2 = _interopRequireDefault(_users);
-
-var _webhooks = require("./webhooks");
-
-var _webhooks2 = _interopRequireDefault(_webhooks);
-
-var _auth = require("./auth");
-
-var _auth2 = _interopRequireDefault(_auth);
-
-var _mailbots = require("./mailbots");
-
-var _mailbots2 = _interopRequireDefault(_mailbots);
-
-var _logs = require("./logs");
-
-var _logs2 = _interopRequireDefault(_logs);
+var _logs = _interopRequireDefault(require("./logs"));
 
 var _util = require("./util");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var OAuth2 = void 0;
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var OAuth2;
 var context = "browser";
-var server = false;
+var server = false; // This block is removed by babel when it compiles the client lib (see package.json)
 
-// This block is removed by babel when it compiles the client lib (see package.json)
-
-var MailBotsClient = function () {
+var MailBotsClient =
+/*#__PURE__*/
+function () {
   function MailBotsClient(config) {
     _classCallCheck(this, MailBotsClient);
 
@@ -72,15 +56,12 @@ var MailBotsClient = function () {
       tokenPath: "https://api.mailbots.com/api/v1/oauth2/access_token",
       authorizePath: "https://api.mailbots.com/settings/oauth2_authorize"
     };
-
     this.config = Object.assign(this.configDefaults, this.config);
     this.config.state = Math.random().toString(36).substring(7);
-    (0, _util.debug)("settings: ", this.config);
+    (0, _util.debug)("settings: ", this.config); // Bearer token used in Auth header. Ex: curl url -h "Authorization: Bearer accessToken"
 
-    // Bearer token used in Auth header. Ex: curl url -h "Authorization: Bearer accessToken"
     this._accessToken = "";
   }
-
   /**
   * Factory method to return a new, fully authenticated MailBots client based on the webhook
   * @param {object} bot - MailBots `bot` object
@@ -95,14 +76,12 @@ var MailBotsClient = function () {
   _createClass(MailBotsClient, [{
     key: "setAccessToken",
 
-
     /*
      *  Auth: Manually set access token if we already have it (ie, in a cookie, webhook, etc)
      */
     value: function setAccessToken(accessToken) {
       this._accessToken = accessToken;
     }
-
     /*
      * Populates an OAuth2 client that should ONLY BE USED ON THE SERVER.
      * @return oauth2 client (simple-oauth2)
@@ -115,7 +94,6 @@ var MailBotsClient = function () {
       (0, _util._checkParam)(this.config.clientId, "clientId");
       (0, _util._checkParam)(this.config.redirectUri, "redirectUri");
       (0, _util._checkParam)(this.config.scope, "scope");
-
       return OAuth2.create({
         client: {
           id: this.config.clientId,
@@ -128,7 +106,6 @@ var MailBotsClient = function () {
         }
       });
     }
-
     /**
      * Low-level function to make authenticated request to MailBots API
      * @param {object} requestOptions - Axiox-compatible request ooptions
@@ -163,15 +140,13 @@ var MailBotsClient = function () {
   return MailBotsClient;
 }();
 
-(0, _util._extend)(MailBotsClient, _tasks2.default);
-(0, _util._extend)(MailBotsClient, _users2.default);
-(0, _util._extend)(MailBotsClient, _webhooks2.default);
-(0, _util._extend)(MailBotsClient, _auth2.default);
-(0, _util._extend)(MailBotsClient, _mailbots2.default);
-(0, _util._extend)(MailBotsClient, _logs2.default);
-
+(0, _util._extend)(MailBotsClient, _tasks["default"]);
+(0, _util._extend)(MailBotsClient, _users["default"]);
+(0, _util._extend)(MailBotsClient, _webhooks["default"]);
+(0, _util._extend)(MailBotsClient, _auth["default"]);
+(0, _util._extend)(MailBotsClient, _mailbots["default"]);
+(0, _util._extend)(MailBotsClient, _logs["default"]);
 module.exports = {
   MailBotsClient: MailBotsClient
 };
-
 window.MailBotsClient = MailBotsClient;
