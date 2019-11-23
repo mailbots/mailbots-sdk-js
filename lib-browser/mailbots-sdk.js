@@ -16,8 +16,6 @@ var _auth = _interopRequireDefault(require("./auth"));
 
 var _mailbots = _interopRequireDefault(require("./mailbots"));
 
-var _logs = _interopRequireDefault(require("./logs"));
-
 var _util = require("./util");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -145,7 +143,6 @@ function () {
 (0, _util._extend)(MailBotsClient, _webhooks["default"]);
 (0, _util._extend)(MailBotsClient, _auth["default"]);
 (0, _util._extend)(MailBotsClient, _mailbots["default"]);
-(0, _util._extend)(MailBotsClient, _logs["default"]);
 module.exports = {
   MailBotsClient: MailBotsClient
 };

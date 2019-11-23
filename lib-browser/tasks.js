@@ -70,7 +70,7 @@ var _default = {
     if (typeof params.id != "number") throw "id must be an integer. This was given instead: " + params.id;
     var qs = params.verbose ? "?verbose=1" : "";
     var requestOptions = {
-      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", params.id, qs),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", String(params.id), qs),
       headers: {
         Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json"
@@ -273,7 +273,7 @@ var _default = {
     if (!params.task.id) throw "task.id is required to update a task";
     var requestOptions = {
       method: "PUT",
-      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", params.task.id, "/"),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", String(params.task.id), "/"),
       headers: {
         Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json; charset=UTF-8"
@@ -297,7 +297,7 @@ var _default = {
     if (!params.task.id) throw "task.id is required to archive a task";
     var requestOptions = {
       method: "PUT",
-      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", params.task.id),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", String(params.task.id)),
       headers: {
         Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json; charset=UTF-8"
@@ -323,7 +323,7 @@ var _default = {
     if (!params.task.id) throw "task.id is required to delete a task";
     var requestOptions = {
       method: "DELETE",
-      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", params.task.id, "?permanent=1"),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", String(params.task.id), "?permanent=1"),
       headers: {
         Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json; charset=UTF-8"

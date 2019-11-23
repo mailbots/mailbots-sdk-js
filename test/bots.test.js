@@ -1,6 +1,5 @@
 import {
    getMailBotsClient,
-   beforeEachTest
 } from "./testUtils/mbTestUtils";
 import "./testUtils/nockMocks";
 import { expect } from "chai";
@@ -10,8 +9,6 @@ let mbClient =  getMailBotsClient();
 
 describe("MailBot Management", function() {
   
-  beforeEach(beforeEachTest);
-
   it("should save user-level data bot save data", done => {
     mbClient.saveBotData({ three: "more" })
     .then(res => {
@@ -21,12 +18,6 @@ describe("MailBot Management", function() {
     }).catch(err => {
       done(err);
     });
-    // mbClient.saveBotData({ three: "more" }, (err, res) => {
-    //   if (err) done(err);
-    //   expect(res).to.be.an("object");
-    //   expect(res.data.three).to.equal("more");
-    //   done();
-    // });
   });
 
   it("should get data about itself", done => {
@@ -52,7 +43,8 @@ describe("MailBot Management", function() {
       .catch(done);
   });
 
-  it("should allow bot to send messages to each other", done => {
+  // This test requires two MailBots to be installed and live
+  it.skip("should allow mailbots to send messages to each other", done => {
     mbClient
       .sendInterbotEvent({
         subdomain: process.env.EXAMPLE_BOT_SUBDOMAIN_2,

@@ -50,7 +50,7 @@ module.exports.recordNockMocks = recordNockMocks;
 
 if (process.env.REBUILD_MOCKS) {
   recordNockMocks(); // regenerate tests/nockMocks.js. TODO: Better switch to regenerate test. Note that user email address must also be new.
-  process.env.NOCK_OFF = true; //uncomment to hit a live API
+  process.env.NOCK_OFF = true;
 }
 
 /**
@@ -114,15 +114,6 @@ module.exports.signWebhook = function(webhook) {
 module.exports.sleep = function sleep(time) {
   console.log("...sleeping");
   return new Promise(resolve => setTimeout(resolve, time));
-};
-
-module.exports.beforeEachTest = async function() {
-  if (process.env.THROTTLE) await module.exports.sleep(500);
-
-  // @TODO Place this in the afterAll() mocha hook
-  if (!process.env.NOCK_OFF) {
-    console.log('⚠️ Warning: Some test cases were skipped. Run npm t for full tests\n\n');
-  }
 };
 
 // make sure to bind 'this'. ex: testConfig.call(this)

@@ -58,7 +58,7 @@ export default {
       throw "id must be an integer. This was given instead: " + params.id;
     let qs = params.verbose ? "?verbose=1" : "";
     const requestOptions = {
-      url: urljoin(this.config.apiHost, "/api/v1/tasks/", params.id, qs),
+      url: urljoin(this.config.apiHost, "/api/v1/tasks/", String(params.id), qs),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json"
@@ -261,7 +261,7 @@ export default {
     if (!params.task.id) throw "task.id is required to update a task";
     const requestOptions = {
       method: "PUT",
-      url: urljoin(this.config.apiHost, "/api/v1/tasks/", params.task.id, "/"),
+      url: urljoin(this.config.apiHost, "/api/v1/tasks/", String(params.task.id), "/"),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json; charset=UTF-8"
@@ -285,7 +285,7 @@ export default {
     if (!params.task.id) throw "task.id is required to archive a task";
     const requestOptions = {
       method: "PUT",
-      url: urljoin(this.config.apiHost, "/api/v1/tasks/", params.task.id),
+      url: urljoin(this.config.apiHost, "/api/v1/tasks/", String(params.task.id)),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json; charset=UTF-8"
@@ -310,7 +310,7 @@ export default {
       url: urljoin(
         this.config.apiHost,
         "/api/v1/tasks/",
-        params.task.id,
+        String(params.task.id),
         "?permanent=1"
       ),
       headers: {
