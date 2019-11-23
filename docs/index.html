@@ -1,21 +1,21 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset='utf-8' />
-  <title>@mailbots/mailbots-sdk 1.0.3 | Documentation</title>
-  <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
-  <link href='assets/style.css' type='text/css' rel='stylesheet' />
-  <link href='assets/github.css' type='text/css' rel='stylesheet' />
-  <link href='assets/split.css' type='text/css' rel='stylesheet' />
+  <meta charset='utf-8'>
+  <title>@mailbots/mailbots-sdk 3.0.0-beta.1 | Documentation</title>
   <meta name='description' content='JS SDK for access to MailBots APIs – node.js and browser'>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='assets/bass.css' rel='stylesheet'>
+  <link href='assets/style.css' rel='stylesheet'>
+  <link href='assets/github.css' rel='stylesheet'>
+  <link href='assets/split.css' rel='stylesheet'>
 </head>
 <body class='documentation m0'>
     <div class='flex'>
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>@mailbots/mailbots-sdk</h3>
-          <div class='mb1'><code>1.0.3</code></div>
+          <div class='mb1'><code>3.0.0-beta.1</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -29,16 +29,6 @@
                   href='#quick-start'
                   class="h5 bold black caps">
                   Quick Start
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#getlogs'
-                  class="">
-                  getLogs
                   
                 </a>
                 
@@ -79,6 +69,16 @@
                   href='#sendevent'
                   class="">
                   sendEvent
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#sendinterbotevent'
+                  class="">
+                  sendInterbotEvent
                   
                 </a>
                 
@@ -216,9 +216,9 @@
               
                 
                 <li><a
-                  href='#getloggedinuser'
+                  href='#createevent'
                   class="">
-                  getLoggedInUser
+                  createEvent
                   
                 </a>
                 
@@ -226,9 +226,9 @@
               
                 
                 <li><a
-                  href='#invite'
+                  href='#getloggedinuser'
                   class="">
-                  invite
+                  getLoggedInUser
                   
                 </a>
                 
@@ -254,153 +254,22 @@
       <div id='split-right' class='relative overflow-auto height-viewport-100'>
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='quick-start' class='mt0'>
-      Quick Start
-    </h2>
+  <h2 id='quick-start' class='mt0'>
+    Quick Start
+  </h2>
 
-    
-      <p>This is a function reference for mailbots-sdk-js. View the
+  
+    <p>This is a function reference for mailbots-sdk-js. View the
 <a href="https://github.com/mailbots/mailbots-sdk-js/blob/master/readme.md">readme.md</a>
 file in the the repo that corresponds with this version. Also, view
 <a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30">MailBots REST API</a>
 and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more information.</p>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='quick-start'>
-      Quick Start
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>This is a function reference for mailbots-sdk-js. View the
-<a href="https://github.com/mailbots/mailbots-sdk-js/blob/master/readme.md">readme.md</a>
-file in the the repo that corresponds with this version. Also, view
-<a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30">MailBots REST API</a>
-and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more information.</p>
-
- 
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='getlogs'>
-      getLogs
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Retrieve logged-in user's bot logs</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>getLogs(filter: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>filter</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    Filter. Ex: 
-<code>{type: ['api', 'submit_failed'], mailbot: ['subdomain'], since: 1517948366, num: 10}</code>
-)
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
-        Promise resolving to log results in the form of: 
-<code>{status: "success", logs[...]}</code>
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -418,10 +287,7 @@ and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more infor
 
   <p>Low-level function to make authenticated request to MailBots API</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>makeRequest(requestOptions: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -478,8 +344,11 @@ and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more infor
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -497,10 +366,7 @@ and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more infor
 
   <p>Factory method to return a new, fully authenticated MailBots client based on the webhook</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>fromBot(bot: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-   
   
   
 
@@ -550,8 +416,11 @@ and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more infor
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -570,10 +439,7 @@ and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more infor
   <p>Get information about the bot that corresponds with user's Bearer token
 (ie, most likely your bot).</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>mailbotGetSelf(cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -627,8 +493,11 @@ and the <a href="https://docs.mailbots.com">MailBots API Docs</a> for more infor
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -651,10 +520,7 @@ email response or support ticket received. The MailBots
 bot can listen for events, act on tasks or
 create or delete tasks based on events.</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>sendEvent(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -716,8 +582,107 @@ create or delete tasks based on events.</p>
   
 
   
+
+  
 </section>
 
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sendinterbotevent'>
+      sendInterbotEvent
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>An "Interbot Event" allows bots to send messages to each other.
+This allows a MailBot to expose actions that can be utilized by
+other MailBots (for example, creating an Evernote note)
+In this way, MailBots can become composable.
+Requires elevated oauth scope.</p>
+
+    <div class='pre p1 fill-light mt0'>sendInterbotEvent(data: any, cb: any, params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>data</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    params
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.sendInterbotEvent({<span class="hljs-attr">subdomain</span>: <span class="hljs-string">'git'</span>, <span class="hljs-attr">payload</span>: {<span class="hljs-string">"foo"</span>, <span class="hljs-string">"bar"</span>}});</pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -737,10 +702,7 @@ create or delete tasks based on events.</p>
 This is how a bot persist's user settings specific to that bot.
 For params and details, see <a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#7f9bfa6c-a673-4104-9be9-1ada487c300e">bot saving data API docs</a></p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>saveBotData(data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -802,8 +764,11 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -822,10 +787,7 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
   <p>Get saved MailBot data
 For params and details, see <a href="https://mailbots.postman.co/collections/113668-74bb4ea1-f0cc-bf5a-ab93-1978fcbcce45?workspace=4d742517-576d-424d-8918-b54b31164c30#f98b6862-9059-4d4f-931b-78d554e8a4e7">mailbots get data API docs</a></p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>getBotData(cb: any)</div>
-   
   
   
 
@@ -870,8 +832,11 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -889,10 +854,7 @@ For params and details, see <a href="https://mailbots.postman.co/collections/113
 
   <p>Get a filtered list of MailBots tasks</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>getTasks(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -998,8 +960,11 @@ mbClient.getTasks({ <span class="hljs-attr">limit</span>: <span class="hljs-numb
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -1019,10 +984,7 @@ mbClient.getTasks({ <span class="hljs-attr">limit</span>: <span class="hljs-numb
 Passing ?verbose=1 fires a webhook to the extnesion and fetches a rendered
 HTML email preview of the task</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>getTask(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -1119,8 +1081,11 @@ in a "messages" array if the bot makes these available in the task.viewed webhoo
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -1138,10 +1103,7 @@ in a "messages" array if the bot makes these available in the task.viewed webhoo
 
   <p>Create a new MailBots Task.</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>createTask(params: any, cb: any, object: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -1217,7 +1179,7 @@ in a "messages" array if the bot makes these available in the task.viewed webhoo
           <span class="hljs-attr">body</span>: [
             {
               <span class="hljs-attr">type</span>: <span class="hljs-string">"html"</span>,
-              <span class="hljs-attr">text</span>: <span class="hljs-string">"&lt;h1&gt;This is a test&lt;/h1&gt;"</span>
+              <span class="hljs-attr">html</span>: <span class="hljs-string">"&lt;h1&gt;This is a test&lt;/h1&gt;"</span>
             }
           ]
         }
@@ -1231,8 +1193,11 @@ in a "messages" array if the bot makes these available in the task.viewed webhoo
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -1252,10 +1217,7 @@ in a "messages" array if the bot makes these available in the task.viewed webhoo
 This creates a MailBots task and sends an email. It's a wrapper
 for createTask with opinionated settings for just sending email.</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>sendEmail(email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -1312,7 +1274,7 @@ for createTask with opinionated settings for just sending email.</p>
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.sendEmail({
     <span class="hljs-attr">command</span>: <span class="hljs-string">"command@my-ext.eml.bot"</span>, <span class="hljs-comment">// must be your bot's domain</span>
-    to: <span class="hljs-string">"test@exampletask.com"</span>,
+    <span class="hljs-attr">to</span>: <span class="hljs-string">"test@exampletask.com"</span>,
     <span class="hljs-attr">cc</span>: [],
     <span class="hljs-attr">bcc</span>: [],
     <span class="hljs-attr">from</span>: <span class="hljs-string">"test@example.com"</span>,
@@ -1332,8 +1294,11 @@ for createTask with opinionated settings for just sending email.</p>
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -1352,10 +1317,7 @@ for createTask with opinionated settings for just sending email.</p>
   <p>Send emails relating to an existing Task. Does not mutate task.
 NOTE: This may be deprecated in favor of sending messages via the update task endpoint.</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>sendMessages(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any)</div>
-   
   
   
 
@@ -1423,7 +1385,7 @@ NOTE: This may be deprecated in favor of sending messages via the update task en
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.sendMessages({ 
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> mbClient.sendMessages({
   <span class="hljs-attr">task</span>: {
     <span class="hljs-attr">id</span>: <span class="hljs-number">123</span>
   },
@@ -1449,8 +1411,11 @@ NOTE: This may be deprecated in favor of sending messages via the update task en
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -1469,10 +1434,7 @@ NOTE: This may be deprecated in favor of sending messages via the update task en
   <p>Update A MailBots Task
 Used to save data against the task, update content, followup time and more</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>updateTask(params: any, cb: any, object: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -1547,8 +1509,11 @@ Used to save data against the task, update content, followup time and more</p>
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -1566,10 +1531,7 @@ Used to save data against the task, update content, followup time and more</p>
 
   <p>Archive A MailBots Task</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>completeTask(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -1661,8 +1623,11 @@ Used to save data against the task, update content, followup time and more</p>
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -1680,10 +1645,7 @@ Used to save data against the task, update content, followup time and more</p>
 
   <p>Permanently Delete A MailBots Task</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>deleteTask(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -1775,8 +1737,11 @@ Used to save data against the task, update content, followup time and more</p>
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -1794,10 +1759,7 @@ Used to save data against the task, update content, followup time and more</p>
 
   <p>Trigger a MailBots Task</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>triggerTask(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -1886,8 +1848,11 @@ Used to save data against the task, update content, followup time and more</p>
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -1905,10 +1870,7 @@ Used to save data against the task, update content, followup time and more</p>
 
   <p>Resolve Natural Time Format (ex: {naturaltime}@ext.eml.bot)</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>naturalTime(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -2000,8 +1962,11 @@ Used to save data against the task, update content, followup time and more</p>
   
 
   
+
+  
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -2019,10 +1984,7 @@ Used to save data against the task, update content, followup time and more</p>
 
   <p>Dispatch an email-based action for a task. (Equivalent to sending an action email.)</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>sendAction(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-   
   
   
 
@@ -2120,8 +2082,122 @@ Used to save data against the task, update content, followup time and more</p>
   
 
   
+
+  
 </section>
 
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createevent'>
+      createEvent
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Create a new task event.</p>
+
+    <div class='pre p1 fill-light mt0'>createEvent(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cb: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.type</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>The type of this event
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>params.data</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>
+  </td>
+  <td class='break-word'><span>Data associated with this event.
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -2139,10 +2215,7 @@ Used to save data against the task, update content, followup time and more</p>
 
   <p>Get information about the currently logged in user</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>getLoggedInUser(cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</div>
-   
   
   
 
@@ -2182,82 +2255,11 @@ Used to save data against the task, update content, followup time and more</p>
   
 
   
-</section>
-
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='invite'>
-      invite
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Invite users to this bot. If an Auth token is included, the invitation email
-includes the name of the logged in user who is sending the invitation.
-"emails" param can be either an array of email addresses, or a string with a single
-email address.</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>invite(emails: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), cb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>emails</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
-	    A single email address, or an array of emails to invite
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>cb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
-	    Optional callback (also can be used with promises)
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
 
   
 </section>
 
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -2276,10 +2278,7 @@ email address.</p>
   <p>Validate webhook signature.
 Set verifyAge to false when testing / mocking HTTP requests. (Server side only)</p>
 
- 
-  
     <div class='pre p1 fill-light mt0'>validateWebhook(webhookSignature: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, webhookTimestamp: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, rawBody: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, verifyAge: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
-   
   
   
 
@@ -2354,8 +2353,11 @@ Set verifyAge to false when testing / mocking HTTP requests. (Server side only)<
   
 
   
+
+  
 </section>
 
+          
         
       </div>
     </div>

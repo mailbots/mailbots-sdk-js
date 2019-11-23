@@ -1,5 +1,5 @@
 import {
-   getMailBotsClient
+   getMailBotsClient,
 } from "./testUtils/mbTestUtils";
 import "./testUtils/nockMocks";
 import { expect } from "chai";
@@ -8,6 +8,7 @@ const debug = require("debug")("mailbots-sdk");
 let mbClient =  getMailBotsClient();
 
 describe("MailBot Management", function() {
+  
   it("should save user-level data bot save data", done => {
     mbClient.saveBotData({ three: "more" })
     .then(res => {
@@ -17,12 +18,6 @@ describe("MailBot Management", function() {
     }).catch(err => {
       done(err);
     });
-    // mbClient.saveBotData({ three: "more" }, (err, res) => {
-    //   if (err) done(err);
-    //   expect(res).to.be.an("object");
-    //   expect(res.data.three).to.equal("more");
-    //   done();
-    // });
   });
 
   it("should get data about itself", done => {
@@ -34,12 +29,28 @@ describe("MailBot Management", function() {
     });
   });
 
-  it("should send a bot event", done => {
+  it("should let an 3rd party service send a bot event", done => {
     mbClient
       .sendEvent({
         event_url: process.env.EXAMPLE_BOT_EVENT_URL,
         type: "github.issue.opened",
         payload: { foo: "bar" }
+      })
+      .then(res => {
+        expect(res.statusCode).to.equal(200);
+        done();
+      })
+      .catch(done);
+  });
+
+  // This test requires two MailBots to be installed and live
+  it.skip("should allow mailbots to send messages to each other", done => {
+    mbClient
+      .sendInterbotEvent({
+        subdomain: process.env.EXAMPLE_BOT_SUBDOMAIN_2,
+        payload: {
+          foo: "bar"
+        }
       })
       .then(res => {
         expect(res.statusCode).to.equal(200);

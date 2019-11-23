@@ -1,7 +1,0 @@
-{
-  "presets": ["babel-preset-env"],
-  "plugins": [
-    ["transform-define", "./conditionalCompile.js"],
-    "minify-dead-code-elimination"
-  ]
-}

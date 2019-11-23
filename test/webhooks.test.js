@@ -1,7 +1,6 @@
 import {
    getMailBotsClient,
   signWebhook,
-  beforeEachTest,
   testConfig
 } from "./testUtils/mbTestUtils";
 import "./testUtils/nockMocks";
@@ -15,7 +14,6 @@ let mbClient =  getMailBotsClient();
 
 describe("Webhooks", function() {
   testConfig.call(this);
-  beforeEach(beforeEachTest);
 
   it("should validate a proper webhook", () => {
     let webhookTimestamp = timestamp.now();

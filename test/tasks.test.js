@@ -20,8 +20,6 @@ let testTasks = [];
  */
 let mailbotSubdomain1 =
   process.env.EXAMPLE_MAILBOT_SUBDOMAIN_1 || "test-mailbot-1";
-let mailbotSubdomain2 =
-  process.env.EXAMPLE_MAILBOT_SUBDOMAIN_2 || "test-mailbot-2";
 
 describe("Tasks", function() {
   this.timeout(15000);
@@ -142,7 +140,7 @@ describe("Tasks", function() {
             body: [
               {
                 type: "html",
-                text: "<h1>This is a test</h1>"
+                html: "<h1>This is a test</h1>"
               }
             ]
           }
@@ -188,7 +186,7 @@ describe("Tasks", function() {
         body: [
           {
             type: "html",
-            text: `<h1>This is a test</h1>`
+            html: `<h1>This is a test</h1>`
           }
         ],
         verbose: 1 // useful for testing only (probably)
@@ -199,7 +197,6 @@ describe("Tasks", function() {
       expect(res.messages[0].to[0]).to.equal("test@exampletask.com");
       expect(res.messages[0].html).to.contain("This is a test");
       expect(res.task.reference_email.to[0]).to.equal("test@exampletask.com");
-      // expect(res.task.reference_email.html).to.contain("This is a test");
       expect(res.statusCode).to.equal(201);
       testTasks.push(res.task);
     });
@@ -240,8 +237,10 @@ describe("Tasks", function() {
       if (!task)
         return done("Example task does not exist. Run as part of the suite");
       mbClient.getTask({ id: task.id }, (err, res) => {
-        console.log(err);
-        if (err) done(err);
+        if (err) {
+          console.log(err);
+          done(err);
+        }
         done();
       });
     });
@@ -481,7 +480,7 @@ describe("Tasks", function() {
    */
   describe("Filtering & Searching", function() {
     beforeEach(async function() {
-      // More taest tasks to test sorting, filtering and things
+      // Tasks to test sorting, filtering and things
       let res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
@@ -498,7 +497,7 @@ describe("Tasks", function() {
       res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${mailbotSubdomain2}.eml.bot`,
+          command: `example@${mailbotSubdomain1}.eml.bot`,
           reference_email: {
             subject: "TEST: Subject 2"
           },
@@ -534,7 +533,7 @@ describe("Tasks", function() {
       let res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${mailbotSubdomain2}.eml.bot`,
+          command: `example@${mailbotSubdomain1}.eml.bot`,
           reference_email: {
             to: "Joe<joe@example.com>",
             subject: "Hi Joe"
@@ -548,7 +547,7 @@ describe("Tasks", function() {
       let res = await mbClient.createTask({
         suppress_webhook: true,
         task: {
-          command: `example@${mailbotSubdomain2}.eml.bot`,
+          command: `example@${mailbotSubdomain1}.eml.bot`,
           reference_email: {
             to: "joe@example.com",
             subject: "Zuki"

@@ -3,20 +3,17 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _queryString = _interopRequireDefault(require("query-string"));
 
-var _queryString = require("query-string");
-
-var _queryString2 = _interopRequireDefault(_queryString);
-
-var _urlJoin = require("url-join");
-
-var _urlJoin2 = _interopRequireDefault(_urlJoin);
+var _urlJoin = _interopRequireDefault(require("url-join"));
 
 var _util = require("./util");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function (obj) { return typeof obj; }; } else { _typeof = function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
  * Get a filtered list of MailBots tasks
@@ -39,11 +36,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *   });
  */
 function getTasks(params, cb) {
-  var qs = params ? "?" + _queryString2.default.stringify(params, { arrayFormat: "bracket" }) : "";
+  var qs = params ? "?".concat(_queryString["default"].stringify(params, {
+    arrayFormat: "bracket"
+  })) : "";
   var requestOptions = {
-    url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks", qs),
+    url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks", qs),
     headers: {
-      Authorization: "Bearer " + this._accessToken,
+      Authorization: "Bearer ".concat(this._accessToken),
       "Content-Type": "application/json"
     },
     json: true
@@ -52,7 +51,7 @@ function getTasks(params, cb) {
   return (0, _util._makeRequest)(requestOptions, cb);
 }
 
-exports.default = {
+var _default = {
   getTasks: getTasks,
 
   /**
@@ -71,16 +70,15 @@ exports.default = {
     if (typeof params.id != "number") throw "id must be an integer. This was given instead: " + params.id;
     var qs = params.verbose ? "?verbose=1" : "";
     var requestOptions = {
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.id, qs),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", String(params.id), qs),
       headers: {
-        Authorization: "Bearer " + this._accessToken,
+        Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json"
       },
       json: true
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   },
-
 
   /**
    * Create a new MailBots Task.
@@ -108,7 +106,7 @@ exports.default = {
    *           body: [
    *             {
    *               type: "html",
-   *               text: "<h1>This is a test</h1>"
+   *               html: "<h1>This is a test</h1>"
    *             }
    *           ]
    *         }
@@ -118,25 +116,27 @@ exports.default = {
    */
   createTask: function createTask(params, cb) {
     var urlParams = {};
+
     if (params.verbose) {
       urlParams.verbose = 1;
     }
-    var serializedParams = _queryString2.default.stringify(urlParams);
-    var qs = serializedParams ? "?" + serializedParams : "";
+
+    var serializedParams = _queryString["default"].stringify(urlParams);
+
+    var qs = serializedParams ? "?".concat(serializedParams) : "";
     var requestOptions = {
       method: "POST",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", qs),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", qs),
       headers: {
-        Authorization: "Bearer " + this._accessToken,
-        "Content-Type": "application/json; charset=UTF-8"
-        // "Content-Type": "application/json"
+        Authorization: "Bearer ".concat(this._accessToken),
+        "Content-Type": "application/json; charset=UTF-8" // "Content-Type": "application/json"
+
       },
       data: params,
       json: true
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   },
-
 
   /**
    * Send email and automatically create a Task
@@ -162,27 +162,30 @@ exports.default = {
    *   });
    */
   sendEmail: function sendEmail(email, cb) {
-    var emailBody = void 0;
-    var referenceEmailBody = void 0;
+    var emailBody;
+    var referenceEmailBody;
+
     if (typeof email.body === "string") {
       referenceEmailBody = email.body;
       emailBody = [{
         type: "html",
-        text: email.body
+        html: email.body
       }];
     } else if (email.body instanceof Array) {
       referenceEmailBody = "";
       emailBody = email.body;
     } else {
-      console.error("Email body should be only a string or array, not  " + _typeof(email.body));
+      console.error("Email body should be only a string or array, not  ".concat(_typeof(email.body)));
     }
+
     var taskParams = {
       verbose: !!email.verbose,
       webhook: false,
       task: {
         command: email.command,
         trigger_timeformat: email.trigger_timeformat || null,
-        completed: !email.trigger_timeformat, // automatically complete
+        completed: !email.trigger_timeformat,
+        // automatically complete
         reference_email: {
           to: email.to,
           cc: email.cc,
@@ -200,20 +203,18 @@ exports.default = {
         body: emailBody
       }]
     };
-
     return this.createTask(taskParams, cb);
   },
-
 
   /**
    * Send emails relating to an existing Task. Does not mutate task.
    * NOTE: This may be deprecated in favor of sending messages via the update task endpoint.
    * @param {object} params
    * @param {number} params.task.id
-   * @param {Array} params.messages 
-   * 
+   * @param {Array} params.messages
+   *
    * @example
-   *  const res = await mbClient.sendMessages({ 
+   *  const res = await mbClient.sendMessages({
     *   task: {
     *     id: 123
     *   },
@@ -233,22 +234,22 @@ exports.default = {
     *  });
    */
   sendMessages: function sendMessages(params, cb) {
-    if (!task.id) throw new Error("task.id is required to send messages");
-    if (!send_messages.length) throw new Error("send_messages requires at least one message");
+    if (!params.task.id) throw new Error("task.id is required to send messages");
+    if (!params.send_messages.length) throw new Error("send_messages requires at least one message");
     var requestOptions = {
       method: 'POST',
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/" + params.task.id + "/send-messages"),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/".concat(params.task.id, "/send-messages")),
       headers: {
         Authorization: 'Bearer ' + this._accessToken,
         "Content-Type": "application/json"
       },
       json: true,
-      data: { send_messages: params.sendMessages }
+      data: {
+        send_messages: params.send_messages
+      }
     };
-
     return (0, _util._makeRequest)(requestOptions, cb);
   },
-
 
   /**
    * Update A MailBots Task
@@ -272,9 +273,9 @@ exports.default = {
     if (!params.task.id) throw "task.id is required to update a task";
     var requestOptions = {
       method: "PUT",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id, "/"),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", String(params.task.id), "/"),
       headers: {
-        Authorization: "Bearer " + this._accessToken,
+        Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json; charset=UTF-8"
       },
       data: params,
@@ -282,7 +283,6 @@ exports.default = {
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   },
-
 
   /**
    * Archive A MailBots Task
@@ -297,17 +297,20 @@ exports.default = {
     if (!params.task.id) throw "task.id is required to archive a task";
     var requestOptions = {
       method: "PUT",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", String(params.task.id)),
       headers: {
-        Authorization: "Bearer " + this._accessToken,
+        Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json; charset=UTF-8"
       },
-      data: { task: { completed: true } },
+      data: {
+        task: {
+          completed: true
+        }
+      },
       json: true
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   },
-
 
   /**
    * Permanently Delete A MailBots Task
@@ -320,16 +323,15 @@ exports.default = {
     if (!params.task.id) throw "task.id is required to delete a task";
     var requestOptions = {
       method: "DELETE",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/tasks/", params.task.id, "?permanent=1"),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", String(params.task.id), "?permanent=1"),
       headers: {
-        Authorization: "Bearer " + this._accessToken,
+        Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json; charset=UTF-8"
       },
       json: true
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   },
-
 
   /**
    * Trigger a MailBots Task
@@ -352,7 +354,9 @@ exports.default = {
     };
 
     if (params.payload) {
-      Object.assign(requestOptions, { data: params.payload });
+      Object.assign(requestOptions, {
+        data: params.payload
+      });
     }
 
     if (params.verbose) {
@@ -361,12 +365,12 @@ exports.default = {
 
     if (this._accessToken) {
       Object.assign(requestOptions.headers, {
-        Authorization: "Bearer " + this._accessToken
+        Authorization: "Bearer ".concat(this._accessToken)
       });
     }
+
     return (0, _util._makeRequest)(requestOptions);
   },
-
 
   /**
    * Resolve Natural Time Format (ex: {naturaltime}@ext.eml.bot)
@@ -378,15 +382,14 @@ exports.default = {
   naturalTime: function naturalTime(params, cb) {
     var requestOptions = {
       method: "GET",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/natural_time", "?" + _queryString2.default.stringify(params)),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/natural_time", "?".concat(_queryString["default"].stringify(params))),
       headers: {
-        Authorization: "Bearer " + this._accessToken,
+        Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json; charset=UTF-8"
       }
     };
     return (0, _util._makeRequest)(requestOptions, cb);
   },
-
 
   /**
    * Dispatch an email-based action for a task. (Equivalent to sending an action email.)
@@ -400,9 +403,9 @@ exports.default = {
     var qs = params.verbose ? "?verbose=1" : "";
     var requestOptions = {
       method: "POST",
-      url: (0, _urlJoin2.default)(this.config.apiHost, "/api/v1/actions", qs),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/actions", qs),
       headers: {
-        Authorization: "Bearer " + this._accessToken,
+        Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json; charset=UTF-8"
       },
       data: JSON.stringify({
@@ -411,5 +414,31 @@ exports.default = {
       })
     };
     return (0, _util._makeRequest)(requestOptions, cb);
+  },
+
+  /**
+   * Create a new task event.
+   *
+   * @param {object} params
+   * @param {number} params.task.id - Id of the task
+   * @param {string} params.type - The type of this event
+   * @param {object} params.data - Data associated with this event.
+   * @return {Promise}
+   */
+  createEvent: function createEvent(params, cb) {
+    var requestOptions = {
+      method: "POST",
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/".concat(params.task.id, "/events")),
+      headers: {
+        Authorization: "Bearer ".concat(this._accessToken),
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+      data: JSON.stringify({
+        type: params.type,
+        data: params.data
+      })
+    };
+    return (0, _util._makeRequest)(requestOptions, cb);
   }
 };
+exports["default"] = _default;

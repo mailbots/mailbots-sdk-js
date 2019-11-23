@@ -58,7 +58,7 @@ export default {
       throw "id must be an integer. This was given instead: " + params.id;
     let qs = params.verbose ? "?verbose=1" : "";
     const requestOptions = {
-      url: urljoin(this.config.apiHost, "/api/v1/tasks/", params.id, qs),
+      url: urljoin(this.config.apiHost, "/api/v1/tasks/", String(params.id), qs),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json"
@@ -94,7 +94,7 @@ export default {
    *           body: [
    *             {
    *               type: "html",
-   *               text: "<h1>This is a test</h1>"
+   *               html: "<h1>This is a test</h1>"
    *             }
    *           ]
    *         }
@@ -154,7 +154,7 @@ export default {
       emailBody = [
         {
           type: "html",
-          text: email.body
+          html: email.body
         }
       ];
     } else if (email.body instanceof Array) {
@@ -200,10 +200,10 @@ export default {
      * NOTE: This may be deprecated in favor of sending messages via the update task endpoint.
      * @param {object} params
      * @param {number} params.task.id
-     * @param {Array} params.messages 
-     * 
+     * @param {Array} params.messages
+     *
      * @example
-     *  const res = await mbClient.sendMessages({ 
+     *  const res = await mbClient.sendMessages({
       *   task: {
       *     id: 123
       *   },
@@ -223,17 +223,17 @@ export default {
       *  });
      */
     sendMessages(params, cb) {
-      if(!task.id) throw new Error("task.id is required to send messages");
-      if(!send_messages.length) throw new Error("send_messages requires at least one message");
+      if(!params.task.id) throw new Error("task.id is required to send messages");
+      if(!params.send_messages.length) throw new Error("send_messages requires at least one message");
       var requestOptions = {
         method: 'POST',
         url: urljoin(this.config.apiHost, `/api/v1/tasks/${params.task.id}/send-messages`),
-        headers: { 
-          Authorization: 'Bearer ' + this._accessToken, 
-          "Content-Type": "application/json" 
+        headers: {
+          Authorization: 'Bearer ' + this._accessToken,
+          "Content-Type": "application/json"
         },
         json: true,
-        data: { send_messages: params.sendMessages }
+        data: { send_messages: params.send_messages }
       };
 
       return _makeRequest(requestOptions, cb);
@@ -261,7 +261,7 @@ export default {
     if (!params.task.id) throw "task.id is required to update a task";
     const requestOptions = {
       method: "PUT",
-      url: urljoin(this.config.apiHost, "/api/v1/tasks/", params.task.id, "/"),
+      url: urljoin(this.config.apiHost, "/api/v1/tasks/", String(params.task.id), "/"),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json; charset=UTF-8"
@@ -285,7 +285,7 @@ export default {
     if (!params.task.id) throw "task.id is required to archive a task";
     const requestOptions = {
       method: "PUT",
-      url: urljoin(this.config.apiHost, "/api/v1/tasks/", params.task.id),
+      url: urljoin(this.config.apiHost, "/api/v1/tasks/", String(params.task.id)),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json; charset=UTF-8"
@@ -310,7 +310,7 @@ export default {
       url: urljoin(
         this.config.apiHost,
         "/api/v1/tasks/",
-        params.task.id,
+        String(params.task.id),
         "?permanent=1"
       ),
       headers: {
@@ -401,6 +401,31 @@ export default {
       data: JSON.stringify({
         action: params.action,
         reference_email: params.reference_email
+      })
+    };
+    return _makeRequest(requestOptions, cb);
+  },
+
+  /**
+   * Create a new task event.
+   *
+   * @param {object} params
+   * @param {number} params.task.id - Id of the task
+   * @param {string} params.type - The type of this event
+   * @param {object} params.data - Data associated with this event.
+   * @return {Promise}
+   */
+  createEvent(params, cb) {
+    const requestOptions = {
+      method: "POST",
+      url: urljoin(this.config.apiHost, `/api/v1/tasks/${params.task.id}/events`),
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`,
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+      data: JSON.stringify({
+        type: params.type,
+        data: params.data
       })
     };
     return _makeRequest(requestOptions, cb);

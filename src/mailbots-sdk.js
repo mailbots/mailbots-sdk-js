@@ -7,7 +7,6 @@ import Users from "./users";
 import Webhooks from "./webhooks";
 import Auth from "./auth";
 import MailBots from "./mailbots";
-import Logs from "./logs";
 
 import { debug, _makeRequest, _checkParam, _extend } from "./util";
 
@@ -55,11 +54,11 @@ class MailBotsClient {
   /**
   * Factory method to return a new, fully authenticated MailBots client based on the webhook
   * @param {object} bot - MailBots `bot` object
-  * @example 
+  * @example
   *   mailbot.onCommand('foo', bot => {
   *     const mbClient = MailBotsClient.fromBot(bot);
   *   })
-  *   
+  *
   */
   static fromBot(bot) {
     const mbClient = new this({
@@ -123,9 +122,10 @@ _extend(MailBotsClient, Users);
 _extend(MailBotsClient, Webhooks);
 _extend(MailBotsClient, Auth);
 _extend(MailBotsClient, MailBots);
-_extend(MailBotsClient, Logs);
 
-module.exports = MailBotsClient;
+module.exports = {
+  MailBotsClient
+};
 
 if (!process.env.SERVER) {
   window.MailBotsClient = MailBotsClient;
