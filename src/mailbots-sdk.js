@@ -4,6 +4,7 @@ import urljoin from "url-join";
 
 import Tasks from "./tasks";
 import Users from "./users";
+import People from "./people";
 import Webhooks from "./webhooks";
 import Auth from "./auth";
 import MailBots from "./mailbots";
@@ -119,6 +120,7 @@ class MailBotsClient {
 
 _extend(MailBotsClient, Tasks);
 _extend(MailBotsClient, Users);
+_extend(MailBotsClient, People);
 _extend(MailBotsClient, Webhooks);
 _extend(MailBotsClient, Auth);
 _extend(MailBotsClient, MailBots);

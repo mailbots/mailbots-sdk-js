@@ -30,6 +30,24 @@ interface Message {
   body: string | Array<{type: string, text: string}>
 }
 
+export interface IPersonAttribute {
+  attribute: string,
+  title: string,
+  type: string,
+  value: string | number,
+  hidden: boolean,
+  readonly: boolean,
+  display_order: number,
+  created: string,
+}
+
+export interface IPerson {
+  id: number,
+  email: string,
+  created: string,
+  modified: string,
+  attributes: IPersonAttribute[]
+}
 
 export class MailBotsClient {
 
@@ -490,4 +508,70 @@ export class MailBotsClient {
     status: string,
     logs: Array<any>
   }>;
+
+  /**
+   * People typings.
+   */
+
+
+  /**
+   * Get a filtered list of People
+   * @param {object} params  Arguments for API call
+   * @param {function} [cb]  Optional callback function
+   * @return {Promise}
+   *
+   * @example
+   * // Get all people
+   * const res = await mbClient.searchPeople();
+   * console.log(res.people);
+   *
+   * @example
+   * // With a callback
+   * mbClient.searchPeople({ limit: 1 }, (err, res) => {
+   *     if (err) done(err);
+   *     console.log(res.people);
+   *   });
+   */
+  searchPeople(
+    params: Array<{
+      attribute: string,
+      operator: string,
+      value:string
+    }>,
+    cb?: Function
+  ): Promise<{status: string, people: IPerson[]}>;
+
+  /**
+   * Get a person by it's ID.
+   *
+   * @param {number} id The person ID
+   * @param {function} [cb]  Optional callback function
+   * @return {Promise}
+   *
+   * @example
+   * // Get person with id 3
+   * const res = await mbClient.getPersonById(3);
+   * console.log(res.person);
+   */
+  getPersonById(id: number, cb?: Function): Promise<{status: string, person: IPerson}>;
+
+  /**
+   * Update a person by id.
+   * @param {number} id The person ID
+   * @param {object} params  Arguments for API call
+   * @param {function} [cb]  Optional callback function
+   * @return {Promise}
+   *
+   * @example
+   */
+  updatePerson(
+    id: number,
+    params: {
+      person: {
+        email?: string,
+        attributes?: IPersonAttribute[]
+      }
+    },
+    cb?: Function
+  ): Promise<void>
 }
