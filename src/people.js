@@ -1,6 +1,6 @@
 import querystring from "query-string";
 import urljoin from "url-join";
-import { _makeRequest, _checkParam, debug } from "./util";
+import { _checkParam, debug } from "./util";
 
 /**
  * Get a filteredx list of People
@@ -33,7 +33,7 @@ function searchPeople(params, cb) {
 
   };
   debug("Request options for getting people:", requestOptions);
-  return _makeRequest(requestOptions, cb);
+  return this.makeRequest(requestOptions, cb);
 }
 
 export default {

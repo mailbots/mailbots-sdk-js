@@ -3,9 +3,10 @@ import axios from "axios";
 
 export const debug = Debug("mailbots-sdk:request");
 
-export const _makeRequest = (requestOptions, cb) => {
+export function _makeRequest(requestOptions, cb) {
   debug("Request", requestOptions);
-  return axios(requestOptions)
+  const axiosClient = this.config.axiosClient || axios; // customized client can be passed into constructor
+  return axiosClient(requestOptions)
     .then(res => {
       // Add http statusCode to response object
       if (res.data === "") {

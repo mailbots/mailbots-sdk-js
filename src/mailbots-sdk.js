@@ -38,7 +38,8 @@ class MailBotsClient {
       apiHost: "https://api.mailbots.com",
       tokenHost: "https://api.mailbots.com",
       tokenPath: "https://api.mailbots.com/api/v1/oauth2/access_token",
-      authorizePath: "https://api.mailbots.com/settings/oauth2_authorize"
+      authorizePath: "https://api.mailbots.com/settings/oauth2_authorize",
+      axiosClient: null // instantiate with additional options ex: caching
     };
 
     this.config = Object.assign(this.configDefaults, this.config);
@@ -113,7 +114,7 @@ class MailBotsClient {
    * @return {Promise}
    */
   makeRequest(requestOptions, cb) {
-    return _makeRequest(requestOptions, cb);
+    return _makeRequest.call(this, requestOptions, cb);
   }
 }
 

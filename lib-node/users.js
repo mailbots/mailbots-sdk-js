@@ -25,7 +25,7 @@ var _default = {
         "Content-Type": "application/json"
       }
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   }
 };
 exports["default"] = _default;

@@ -72,7 +72,7 @@ var _default = {
       });
     }
 
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -105,7 +105,7 @@ var _default = {
       },
       data: data
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -129,7 +129,7 @@ var _default = {
       },
       data: data
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -147,7 +147,7 @@ var _default = {
       },
       json: true
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   }
 };
 exports["default"] = _default;

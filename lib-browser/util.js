@@ -3,7 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports._extend = exports._checkParam = exports._makeRequest = exports.debug = void 0;
+exports._makeRequest = _makeRequest;
+exports._extend = exports._checkParam = exports.debug = void 0;
 
 var _debug = _interopRequireDefault(require("debug"));
 
@@ -14,9 +15,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var debug = (0, _debug["default"])("mailbots-sdk:request");
 exports.debug = debug;
 
-var _makeRequest = function (requestOptions, cb) {
+function _makeRequest(requestOptions, cb) {
   debug("Request", requestOptions);
-  return (0, _axios["default"])(requestOptions).then(function (res) {
+  var axiosClient = this.config.axiosClient || _axios["default"]; // customized client can be passed into constructor
+
+  return axiosClient(requestOptions).then(function (res) {
     // Add http statusCode to response object
     if (res.data === "") {
       res.data = {
@@ -42,9 +45,7 @@ var _makeRequest = function (requestOptions, cb) {
     debug(errorResponse);
     return Promise.reject(new Error(errorResponse));
   });
-};
-
-exports._makeRequest = _makeRequest;
+}
 
 var _checkParam = function (param, paramName) {
   if (!param || typeof param !== "string") {

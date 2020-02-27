@@ -15,7 +15,7 @@ export default {
         "Content-Type": "application/json"
       }
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   }
 
 };
