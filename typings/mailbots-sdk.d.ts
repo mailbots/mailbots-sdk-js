@@ -34,11 +34,11 @@ export interface IPersonAttribute {
   attribute: string,
   title: string,
   type: string,
-  value: string | number,
+  value: string | number | Array<string | number>,
   hidden: boolean,
   readonly: boolean,
   display_order: number,
-  created: string,
+  created?: string,
 }
 
 export interface IPerson {
