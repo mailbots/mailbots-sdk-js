@@ -10,6 +10,8 @@ var _tasks = _interopRequireDefault(require("./tasks"));
 
 var _users = _interopRequireDefault(require("./users"));
 
+var _people = _interopRequireDefault(require("./people"));
+
 var _webhooks = _interopRequireDefault(require("./webhooks"));
 
 var _auth = _interopRequireDefault(require("./auth"));
@@ -140,6 +142,7 @@ function () {
 
 (0, _util._extend)(MailBotsClient, _tasks["default"]);
 (0, _util._extend)(MailBotsClient, _users["default"]);
+(0, _util._extend)(MailBotsClient, _people["default"]);
 (0, _util._extend)(MailBotsClient, _webhooks["default"]);
 (0, _util._extend)(MailBotsClient, _auth["default"]);
 (0, _util._extend)(MailBotsClient, _mailbots["default"]);

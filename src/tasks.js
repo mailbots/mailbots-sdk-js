@@ -311,7 +311,7 @@ export default {
         this.config.apiHost,
         "/api/v1/tasks/",
         String(params.task.id),
-        "?permanent=1"
+        "?permanent=1&webhook=1"
       ),
       headers: {
         Authorization: `Bearer ${this._accessToken}`,

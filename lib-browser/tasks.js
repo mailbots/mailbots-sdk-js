@@ -323,7 +323,7 @@ var _default = {
     if (!params.task.id) throw "task.id is required to delete a task";
     var requestOptions = {
       method: "DELETE",
-      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", String(params.task.id), "?permanent=1"),
+      url: (0, _urlJoin["default"])(this.config.apiHost, "/api/v1/tasks/", String(params.task.id), "?permanent=1&webhook=1"),
       headers: {
         Authorization: "Bearer ".concat(this._accessToken),
         "Content-Type": "application/json; charset=UTF-8"
