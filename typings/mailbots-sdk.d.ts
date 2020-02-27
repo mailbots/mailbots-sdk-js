@@ -34,7 +34,7 @@ export interface IPersonAttribute {
   attribute: string,
   title: string,
   type: string,
-  value: string | number | Array<string | number>,
+  value: string | number | Array<string | number> | null,
   hidden: boolean,
   readonly: boolean,
   display_order: number,
@@ -123,7 +123,8 @@ export class MailBotsClient {
     search_keys?: string[] // "OR" search to pull multiple search keys
     per_page?: number;
     page?: number;
-    invisible: boolean; // background tasks
+    invisible?: boolean; // background tasks
+    person?: number,
     suppress_webhook?: boolean,
   }, cb?: Function): Promise<{tasks: Task[]}>;
 
