@@ -48,10 +48,12 @@ function searchPeople(params, cb) {
  * const res = await mbClient.getPersonById(3);
  * console.log(res.person);
  */
-function getPersonById(id, cb) {
+function getPerson(params, cb) {
+  if (typeof params.id != "number")
+    throw "id must be an integer. This was given instead: " + params.id;
   const requestOptions = {
     method: "GET",
-    url: urljoin(this.config.apiHost, "/api/v1/people", id.toString()),
+    url: urljoin(this.config.apiHost, "/api/v1/people", String(params.id)),
     headers: {
       Authorization: `Bearer ${this._accessToken}`
     }
@@ -86,6 +88,6 @@ function updatePerson(id, params, cb) {
 
 export default {
   searchPeople,
-  getPersonById,
+  getPerson,
   updatePerson
 };

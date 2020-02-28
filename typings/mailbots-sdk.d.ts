@@ -554,7 +554,7 @@ export class MailBotsClient {
    * const res = await mbClient.getPersonById(3);
    * console.log(res.person);
    */
-  getPersonById(id: number, cb?: Function): Promise<{status: string, person: IPerson}>;
+  getPerson(params: {id: number}, cb?: Function): Promise<{status: string, person: IPerson}>;
 
   /**
    * Update a person by id.
