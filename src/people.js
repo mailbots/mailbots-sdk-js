@@ -63,17 +63,17 @@ function getPerson(params, cb) {
 
 /**
  * Update a person by id.
- * @param {number} id The person ID
  * @param {object} params  Arguments for API call
  * @param {function} [cb]  Optional callback function
  * @return {Promise}
  *
  * @example
  */
-function updatePerson(id, params, cb) {
+function updatePerson(params, cb) {
+  if (!params.person.id) throw "person.id is required to update a person";
   const requestOptions = {
     method: "PUT",
-    url: urljoin(this.config.apiHost, "/api/v1/people", id.toString()),
+    url: urljoin(this.config.apiHost, "/api/v1/people", String(params.person.id)),
     headers: {
       Authorization: `Bearer ${this._accessToken}`,
       "Content-Type": "application/json"

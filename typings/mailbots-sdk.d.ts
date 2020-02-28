@@ -543,22 +543,22 @@ export class MailBotsClient {
   ): Promise<{status: string, people: IPerson[]}>;
 
   /**
-   * Get a person by it's ID.
+   * Get a person .
    *
-   * @param {number} id The person ID
+   * @param {object} params - request params
+   * @param {number} params.id - person id
    * @param {function} [cb]  Optional callback function
    * @return {Promise}
    *
    * @example
    * // Get person with id 3
-   * const res = await mbClient.getPersonById(3);
+   * const res = await mbClient.getPerson({ person: {id: 3} });
    * console.log(res.person);
    */
   getPerson(params: {id: number}, cb?: Function): Promise<{status: string, person: IPerson}>;
 
   /**
    * Update a person by id.
-   * @param {number} id The person ID
    * @param {object} params  Arguments for API call
    * @param {function} [cb]  Optional callback function
    * @return {Promise}
@@ -566,9 +566,9 @@ export class MailBotsClient {
    * @example
    */
   updatePerson(
-    id: number,
     params: {
       person: {
+        id: number,
         email?: string,
         attributes?: IPersonAttribute[]
       }
