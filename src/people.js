@@ -58,7 +58,7 @@ function getPerson(params, cb) {
       Authorization: `Bearer ${this._accessToken}`
     }
   };
-  return _makeRequest(requestOptions, cb);
+  return this.makeRequest(requestOptions, cb);
 }
 
 /**
@@ -83,7 +83,7 @@ function updatePerson(params, cb) {
 
   };
   debug("Request options for getting people:", requestOptions);
-  return _makeRequest(requestOptions, cb);
+  return this.makeRequest(requestOptions, cb);
 }
 
 export default {
