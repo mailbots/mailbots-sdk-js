@@ -1,6 +1,6 @@
 import querystring from "query-string";
 import urljoin from "url-join";
-import { _makeRequest, _checkParam, debug } from "./util";
+import { _checkParam, debug } from "./util";
 
 /**
  * Get a filtered list of MailBots tasks

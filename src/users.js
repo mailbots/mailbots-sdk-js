@@ -1,5 +1,4 @@
 import urljoin from "url-join";
-import { debug, _makeRequest } from "./util";
 
 export default {
   /**

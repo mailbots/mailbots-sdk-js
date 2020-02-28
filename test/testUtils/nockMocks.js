@@ -1348,7 +1348,7 @@ nock('http://local.followupthen.com:80', {"encodedQueryParams":true})
   'application/json' ]);
 nock('http://local.followupthen.com:80', {"encodedQueryParams":true})
   .delete('/api/v1/tasks/25')
-  .query({"permanent":"1"})
+  .query({"permanent":"1", "webhook": "1"})
   .reply(200, [], [ 'Date',
   'Sat, 23 Nov 2019 01:44:34 GMT',
   'Server',
