@@ -56,7 +56,7 @@ export default {
       Object.assign(requestOptions, { data: params.payload });
     }
 
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -89,7 +89,7 @@ export default {
       data
     };
 
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -115,7 +115,7 @@ export default {
       },
       data
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -133,6 +133,6 @@ export default {
       },
       json: true
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   }
 };

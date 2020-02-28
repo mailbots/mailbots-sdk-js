@@ -48,7 +48,7 @@ function getTasks(params, cb) {
     json: true
   };
   (0, _util.debug)("Request options for getting followups:", requestOptions);
-  return (0, _util._makeRequest)(requestOptions, cb);
+  return this.makeRequest(requestOptions, cb);
 }
 
 var _default = {
@@ -77,7 +77,7 @@ var _default = {
       },
       json: true
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -135,7 +135,7 @@ var _default = {
       data: params,
       json: true
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -248,7 +248,7 @@ var _default = {
         send_messages: params.send_messages
       }
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -281,7 +281,7 @@ var _default = {
       data: params,
       json: true
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -309,7 +309,7 @@ var _default = {
       },
       json: true
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -330,7 +330,7 @@ var _default = {
       },
       json: true
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -369,7 +369,7 @@ var _default = {
       });
     }
 
-    return (0, _util._makeRequest)(requestOptions);
+    return this.makeRequest(requestOptions);
   },
 
   /**
@@ -388,7 +388,7 @@ var _default = {
         "Content-Type": "application/json; charset=UTF-8"
       }
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -413,7 +413,7 @@ var _default = {
         reference_email: params.reference_email
       })
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -438,7 +438,7 @@ var _default = {
         data: params.data
       })
     };
-    return (0, _util._makeRequest)(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   }
 };
 exports["default"] = _default;

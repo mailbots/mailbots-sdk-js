@@ -35,7 +35,7 @@ function getTasks(params, cb) {
     json: true
   };
   debug("Request options for getting followups:", requestOptions);
-  return _makeRequest(requestOptions, cb);
+  return this.makeRequest(requestOptions, cb);
 }
 
 export default {
@@ -65,7 +65,7 @@ export default {
       },
       json: true
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -120,7 +120,7 @@ export default {
       data: params,
       json: true
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -236,7 +236,7 @@ export default {
         data: { send_messages: params.send_messages }
       };
 
-      return _makeRequest(requestOptions, cb);
+      return this.makeRequest(requestOptions, cb);
     },
 
   /**
@@ -269,7 +269,7 @@ export default {
       data: params,
       json: true
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -293,7 +293,7 @@ export default {
       data: { task: { completed: true } },
       json: true
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -319,7 +319,7 @@ export default {
       },
       json: true
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -355,7 +355,7 @@ export default {
         Authorization: `Bearer ${this._accessToken}`
       });
     }
-    return _makeRequest(requestOptions);
+    return this.makeRequest(requestOptions);
   },
 
   /**
@@ -378,7 +378,7 @@ export default {
         "Content-Type": "application/json; charset=UTF-8"
       }
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -403,7 +403,7 @@ export default {
         reference_email: params.reference_email
       })
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   },
 
   /**
@@ -428,6 +428,6 @@ export default {
         data: params.data
       })
     };
-    return _makeRequest(requestOptions, cb);
+    return this.makeRequest(requestOptions, cb);
   }
 };

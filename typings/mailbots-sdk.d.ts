@@ -1,4 +1,4 @@
-import {AxiosRequestConfig} from "axios";
+import {AxiosRequestConfig, AxiosInstance} from "axios";
 
 interface Email {
   to: string,
@@ -64,7 +64,8 @@ export class MailBotsClient {
     apiHost?: string,
     tokenHost?: string,
     tokenPath?: string,
-    authorizePath?: string
+    authorizePath?: string,
+    axiosClient?: AxiosInstance // optionally pass a customized axios client for caching, etc
   });
 
   /**
