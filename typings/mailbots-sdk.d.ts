@@ -575,5 +575,29 @@ export class MailBotsClient {
       }
     },
     cb?: Function
-  ): Promise<void>
+  ): Promise<void>;
+
+  /**
+   * Create a new person event.
+   *
+   * @param {object} params
+   * @param {number} params.person.id - Id of the person
+   * @param {string} params.type - The type of this event
+   * @param {string} params.title - Title of the event
+   * @param {string} params.body - Event content
+   * @param {array} params.links - Event content
+   * @return {Promise}
+   */
+  createPersonEvent(params: {
+    person: {
+      id: number
+    },
+    type: string,
+    title: string,
+    body: string,
+    links: Array<{
+      link_text: string,
+      link_url: string
+    }>
+  }, cb?: Function): Promise<any>;
 }

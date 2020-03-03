@@ -86,8 +86,41 @@ function updatePerson(params, cb) {
   return this.makeRequest(requestOptions, cb);
 }
 
+/**
+ * Create a new person event.
+ *
+ * @param {object} params
+ * @param {number} params.person.id - Id of the person
+ * @param {string} params.type - The type of this event
+ * @param {string} params.title - Title of the event
+ * @param {string} params.body - Event content
+ * @param {array} params.links - Event content
+ * @return {Promise}
+ */
+function createPersonEvent(params, cb) {
+  const requestOptions = {
+    method: "POST",
+    url: urljoin(this.config.apiHost, `/api/v1/people/${params.person.id}/events`),
+    headers: {
+      Authorization: `Bearer ${this._accessToken}`,
+      "Content-Type": "application/json; charset=UTF-8"
+    },
+    data: JSON.stringify({
+      event: {
+        type: params.type,
+        title: params.title,
+        body: params.body,
+        links: params.links
+      }
+    })
+  };
+  return this.makeRequest(requestOptions, cb);
+}
+
+
 export default {
   searchPeople,
   getPerson,
-  updatePerson
+  updatePerson,
+  createPersonEvent
 };
