@@ -1,6 +1,5 @@
-import querystring from "querystring";
 import urljoin from "url-join";
-import { _checkParam, debug } from "./util";
+import { _checkParam } from "./util";
 
 export default {
   /**

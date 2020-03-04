@@ -1,4 +1,3 @@
-import querystring from "query-string";
 import urljoin from "url-join";
 import { _checkParam, debug } from "./util";
 
