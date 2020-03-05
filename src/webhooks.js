@@ -2,7 +2,7 @@ import { debug } from "./util";
 import timestamp from "unix-timestamp";
 import crypto from "crypto";
 
-module.exports = {
+export default {
   /**
    * Validate webhook signature.
    * Set verifyAge to false when testing / mocking HTTP requests. (Server side only)

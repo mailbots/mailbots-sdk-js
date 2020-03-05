@@ -1,6 +1,6 @@
 import { _checkParam, debug } from "./util";
 
-module.exports = {
+export default {
   /*
    *  Get OAuth2 login link from config credentials
    *  @returns {object} Auth URI and state Ex: `{ uri: authorizationUri, state: state }`
