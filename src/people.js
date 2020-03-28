@@ -22,7 +22,7 @@ import { _checkParam, debug } from "./util";
 function searchPeople(params, cb) {
   const requestOptions = {
     method: "POST",
-    url: urljoin(this.config.apiHost, "/api/v1/people"),
+    url: urljoin(this.config.apiHost, "/api/v1/people/search"),
     headers: {
       Authorization: `Bearer ${this._accessToken}`,
       "Content-Type": "application/json"
