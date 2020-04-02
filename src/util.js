@@ -33,9 +33,11 @@ export function _makeRequest(requestOptions, cb) {
       }
       let errorResponse =
         friendlyMessage || err.statusText || err.message || err.statusCode;
-      if (cb) cb(new Error(errorResponse));
+      let error = new Error(errorResponse);
+      error.statusCode = err.response.status;
+      if (cb) cb(error);
       debug(errorResponse);
-      return Promise.reject(new Error(errorResponse));
+      return Promise.reject(error);
     });
 };
 
