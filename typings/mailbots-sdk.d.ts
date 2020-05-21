@@ -10,12 +10,12 @@ interface Email {
 
 interface Task {
   id: number,
-  command: string,
+  command?: string,
   trigger_timeformat?: string | null,
   trigger_time?: number | null,
   completed?: boolean,
   reference_email?: Email,
-  stored_data: {
+  stored_data?: {
     [key: string]: any
   },
   search_keys?: string[]
