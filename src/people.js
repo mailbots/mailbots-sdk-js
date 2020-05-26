@@ -142,9 +142,7 @@ function updatePersonTags(params, cb) {
   if (tagsAttr) {
     const allTags = [
       ...new Set(
-        params.replace ?
-          params.newTags :
-          params.newTags.concat(tagsAttr.value)
+        params.newTags.concat(tagsAttr.value)
       ),
     ]; // make sure to deduplicate
     tagsAttr.value = allTags;

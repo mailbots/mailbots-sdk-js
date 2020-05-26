@@ -620,8 +620,7 @@ export class MailBotsClient {
         id: number,
         attributes: IPersonAttribute[]
       },
-      newTags: string[],
-      replace?: boolean
+      newTags: string[]
     },
     cb?: Function
   ): Promise<void>;
