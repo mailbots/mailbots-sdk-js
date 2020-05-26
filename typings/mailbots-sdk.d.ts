@@ -600,4 +600,29 @@ export class MailBotsClient {
       link_url: string
     }>
   }, cb?: Function): Promise<any>;
+
+  /**
+   * Update a person's tags attribute by id.
+   *
+   * @param {object} params  Arguments for API call
+   * @param {number} params.person.id
+   * @param {IPersonAttribute[]} params.person.attributes
+   * @param {string[]} params.newTags
+   * @param {boolean} params.replace - keep exising tags or replace them
+   * @param {function} [cb]  Optional callback function
+   * @return {Promise}
+   *
+   * @example
+   */
+  updatePersonTags(
+    params: {
+      person: {
+        id: number,
+        attributes: IPersonAttribute[]
+      },
+      newTags: string[],
+      replace?: boolean
+    },
+    cb?: Function
+  ): Promise<void>;
 }

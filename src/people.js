@@ -116,10 +116,75 @@ function createPersonEvent(params, cb) {
   return this.makeRequest(requestOptions, cb);
 }
 
+/**
+ * Update a person's tags attribute by id.
+ *
+ * @param {object} params  Arguments for API call
+ * @param {number} params.person.id
+ * @param {IPersonAttribute[]} params.person.attributes
+ * @param {string[]} params.newTags
+ * @param {boolean} params.replace - keep exising tags or replace them
+ * @param {function} [cb]  Optional callback function
+ * @return {Promise}
+ *
+ * @example
+ */
+function updatePersonTags(params, cb) {
+  if (!params.person.id) throw "person.id is required to update a person";
+  if (
+    !params.person.attributes ||
+    !Array.isArray(params.person.attributes)
+  ) throw "person.attributes is required to update a person";
+
+  let tagsAttr = params.person.attributes.find(
+    (attr) => attr.attribute === "tags"
+  );
+  if (tagsAttr) {
+    const allTags = [
+      ...new Set(
+        params.replace ?
+          params.newTags :
+          params.newTags.concat(tagsAttr.value)
+      ),
+    ]; // make sure to deduplicate
+    tagsAttr.value = allTags;
+  } else {
+    tagsAttr = {
+      attribute: "tags",
+      created: "",
+      type: "global_multiselect",
+      title: "Tags",
+      value: [...new Set(params.newTags)],
+      display_order: 4,
+      hidden: false,
+      readonly: false,
+    };
+  }
+
+  const requestOptions = {
+    method: "PUT",
+    url: urljoin(this.config.apiHost, "/api/v1/people", String(params.person.id)),
+    headers: {
+      Authorization: `Bearer ${this._accessToken}`,
+      "Content-Type": "application/json"
+    },
+    data: {
+      person: {
+        id: params.person.id,
+        attributes: [tagsAttr]
+      }
+    },
+    json: true
+
+  };
+  debug("Request options for getting people:", requestOptions);
+  return this.makeRequest(requestOptions, cb);
+}
 
 export default {
   searchPeople,
   getPerson,
   updatePerson,
-  createPersonEvent
+  createPersonEvent,
+  updatePersonTags
 };
