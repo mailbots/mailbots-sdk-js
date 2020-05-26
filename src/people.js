@@ -159,24 +159,7 @@ function updatePersonTags(params, cb) {
     };
   }
 
-  const requestOptions = {
-    method: "PUT",
-    url: urljoin(this.config.apiHost, "/api/v1/people", String(params.person.id)),
-    headers: {
-      Authorization: `Bearer ${this._accessToken}`,
-      "Content-Type": "application/json"
-    },
-    data: {
-      person: {
-        id: params.person.id,
-        attributes: [tagsAttr]
-      }
-    },
-    json: true
-
-  };
-  debug("Request options for getting people:", requestOptions);
-  return this.makeRequest(requestOptions, cb);
+  return updatePerson.bind(this)({ person: { id: params.person.id, attributes: [tagsAttr] } });
 }
 
 export default {

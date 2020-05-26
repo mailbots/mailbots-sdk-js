@@ -608,7 +608,6 @@ export class MailBotsClient {
    * @param {number} params.person.id
    * @param {IPersonAttribute[]} params.person.attributes
    * @param {string[]} params.newTags
-   * @param {boolean} params.replace - keep exising tags or replace them
    * @param {function} [cb]  Optional callback function
    * @return {Promise}
    *
