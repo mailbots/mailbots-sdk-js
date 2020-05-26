@@ -159,7 +159,7 @@ function updatePersonTags(params, cb) {
     };
   }
 
-  return updatePerson.bind(this)({ person: { id: params.person.id, attributes: [tagsAttr] } });
+  return this.updatePerson({ person: { id: params.person.id, attributes: [tagsAttr] } });
 }
 
 export default {
