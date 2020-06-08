@@ -140,19 +140,14 @@ function updatePersonTags(params, cb) {
     (attr) => attr.attribute === "tags"
   );
   if (tagsAttr) {
-    const allTags = [
-      ...new Set(
-        params.newTags.concat(tagsAttr.value)
-      ),
-    ]; // make sure to deduplicate
-    tagsAttr.value = allTags;
+    tagsAttr.value = params.newTags;
   } else {
     tagsAttr = {
       attribute: "tags",
       created: "",
       type: "global_multiselect",
       title: "Tags",
-      value: [...new Set(params.newTags)],
+      value: params.newTags,
       display_order: 4,
       hidden: false,
       readonly: false,
