@@ -578,6 +578,22 @@ export class MailBotsClient {
   ): Promise<void>;
 
   /**
+   * Update multiple people with a single batch operation.
+   * @param {object} params  Arguments for API call
+   * @param {function} [cb]  Optional callback function
+   * @return {Promise}
+   */
+  batchUpdatePeople(
+    params: {
+      people: Array<{
+        id: number,
+        attributes: IPersonAttribute[]
+      }>
+    },
+    cb?: Function
+  ): Promise<void>;
+
+  /**
    * Create a new person event.
    *
    * @param {object} params

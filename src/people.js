@@ -86,6 +86,28 @@ function updatePerson(params, cb) {
 }
 
 /**
+ * Update multiple people with a single batch operation.
+ * @param {object} params  Arguments for API call
+ * @param {function} [cb]  Optional callback function
+ * @return {Promise}
+ */
+function batchUpdatePeople(params, cb) {
+  const requestOptions = {
+    method: "PUT",
+    url: urljoin(this.config.apiHost, "/api/v1/people/batch_update"),
+    headers: {
+      Authorization: `Bearer ${this._accessToken}`,
+      "Content-Type": "application/json"
+    },
+    data: params,
+    json: true
+
+  };
+  debug("Request options for batch update people:", requestOptions);
+  return this.makeRequest(requestOptions, cb);
+}
+
+/**
  * Create a new person event.
  *
  * @param {object} params
@@ -161,6 +183,7 @@ export default {
   searchPeople,
   getPerson,
   updatePerson,
+  batchUpdatePeople,
   createPersonEvent,
   updatePersonTags
 };
