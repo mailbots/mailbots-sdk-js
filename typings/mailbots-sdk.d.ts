@@ -642,4 +642,28 @@ export class MailBotsClient {
     },
     cb?: Function
   ): Promise<void>;
+
+  /** Parse date format, add skill to command
+   * @param {string} existingCmd - ex: 3days-sms-r+foo
+   * @param {string} newSkill - ex: -t.3days
+   */
+  addSkillToCommand(existingCmd: string, newSkill: string): string;
+
+  /**
+   * Remove a skill from a command string.
+   * @param existingCmd
+   * @param skillToRemove
+   */
+  removeSkillFromCommand(existingCmd: string, skillToRemove: string): string;
+
+  /**
+   * Simple parser for fut command, separating date format and skills and domain
+   */
+  futCmdParse(cmdStr: string): { dateStr: string, skillsArr: string[], domain: string };
+
+
+  /**
+   * Simple stringifier for fut command
+   */
+  futCmdStringify({ dateStr, skillsArr, domain }: { dateStr: string, skillsArr: string[], domain?: string }): string;
 }
