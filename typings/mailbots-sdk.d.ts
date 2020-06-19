@@ -535,11 +535,14 @@ export class MailBotsClient {
    *   });
    */
   searchPeople(
-    params: Array<{
-      attribute: string,
-      operator: string,
-      value:string
-    }>,
+    params: {
+      filter?: Array<{
+        attribute: string,
+        operator: string,
+        value:string
+      }>,
+      email?: string[]
+    },
     cb?: Function
   ): Promise<{status: string, people: IPerson[]}>;
 
