@@ -36,6 +36,25 @@ function searchPeople(params, cb) {
 }
 
 /**
+ * Create a new person.
+ *
+ * @param {string} params.email The person email
+ * @param {IPersonAttribute[]} params.attributes Person attributes
+ * @param {function} [cb]  Optional callback function
+ * @return {Promise}
+ */
+function createPerson(params, cb) {
+  const requestOptions = {
+    method: "POST",
+    url: urljoin(this.config.apiHost, "/api/v1/people", String(params.id)),
+    headers: {
+      Authorization: `Bearer ${this._accessToken}`
+    }
+  };
+  return this.makeRequest(requestOptions, cb);
+}
+
+/**
  * Get a person by it's ID.
  *
  * @param {number} id The person ID
@@ -181,6 +200,7 @@ function updatePersonTags(params, cb) {
 
 export default {
   searchPeople,
+  createPerson,
   getPerson,
   updatePerson,
   batchUpdatePeople,

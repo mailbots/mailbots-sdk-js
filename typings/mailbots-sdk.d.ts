@@ -547,6 +547,21 @@ export class MailBotsClient {
   ): Promise<{status: string, people: IPerson[]}>;
 
   /**
+   * Create a new person.
+   *
+   * @param {string} params.email The person email
+   * @param {IPersonAttribute[]} params.attributes Person attributes
+   * @param {function} [cb]  Optional callback function
+   * @return {Promise}
+   */
+  createPerson(params: {
+    person: {
+      email: string,
+      attributes: IPersonAttribute[]
+    }
+  }, cb?: Function): Promise<{status: string, person: IPerson}>;
+
+  /**
    * Get a person .
    *
    * @param {object} params - request params
