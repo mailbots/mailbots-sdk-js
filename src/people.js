@@ -46,10 +46,12 @@ function searchPeople(params, cb) {
 function createPerson(params, cb) {
   const requestOptions = {
     method: "POST",
-    url: urljoin(this.config.apiHost, "/api/v1/people", String(params.id)),
+    url: urljoin(this.config.apiHost, "/api/v1/people"),
     headers: {
       Authorization: `Bearer ${this._accessToken}`
-    }
+    },
+    data: params,
+    json: true
   };
   return this.makeRequest(requestOptions, cb);
 }
