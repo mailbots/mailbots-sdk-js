@@ -200,6 +200,30 @@ function updatePersonTags(params, cb) {
   return this.updatePerson({ person: { id: params.person.id, attributes: [tagsAttr] } });
 }
 
+/**
+ * Merge one or more people into a base person.
+ *
+ * @param {object} params
+ * @param {number} params.basePersonId - Id of the person to merge into
+ * @param {number[]} params.mergePersonIds - Ids of people to merge with
+ * @return {Promise}
+ */
+function mergePeople(params, cb) {
+  const requestOptions = {
+    method: "PUT",
+    url: urljoin(this.config.apiHost, `/api/v1/people/merge`),
+    headers: {
+      Authorization: `Bearer ${this._accessToken}`,
+      "Content-Type": "application/json; charset=UTF-8"
+    },
+    data: JSON.stringify({
+      basePersonId: params.basePersonId,
+      mergePersonIds: params.mergePersonIds
+    })
+  };
+  return this.makeRequest(requestOptions, cb);
+}
+
 export default {
   searchPeople,
   createPerson,
@@ -207,5 +231,6 @@ export default {
   updatePerson,
   batchUpdatePeople,
   createPersonEvent,
-  updatePersonTags
+  updatePersonTags,
+  mergePeople
 };

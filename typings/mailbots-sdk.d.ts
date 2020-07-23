@@ -657,4 +657,20 @@ export class MailBotsClient {
     },
     cb?: Function
   ): Promise<void>;
+
+  /**
+   * Merge one or more people into a base person.
+   *
+   * @param {object} params
+   * @param {number} params.basePersonId - Id of the person to merge into
+   * @param {number[]} params.mergePersonIds - Ids of people to merge with
+   * @return {Promise}
+   */
+  mergePeople(
+    params: {
+      basePersonId: number,
+      mergePersonIds: number[]
+    },
+    cb?: Function
+  ): Promise<void>;
 }
