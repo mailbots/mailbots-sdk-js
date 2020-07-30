@@ -541,7 +541,8 @@ export class MailBotsClient {
         operator: string,
         value:string
       }>,
-      email?: string[]
+      email?: string[],
+      id?: number[]
     },
     cb?: Function
   ): Promise<{status: string, people: IPerson[]}>;
