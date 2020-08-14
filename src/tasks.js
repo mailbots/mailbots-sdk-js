@@ -429,5 +429,25 @@ export default {
       })
     };
     return this.makeRequest(requestOptions, cb);
+  },
+
+  /**
+   * Upload an attachment to a task.
+   *
+   * @param {object} params
+   * @param {number} params.task.id - formdata object containing the file to be uploaded
+   * @param {FormData} params.formData - formdata object containing the file to be uploaded
+   * @return {Promise}
+   */
+  uploadTaskAttachment(params, cb) {
+    const requestOptions = {
+      method: "POST",
+      url: urljoin(this.config.apiHost, `/api/v1/tasks/${params.task.id}/attachments`),
+      data: params.formData,
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`
+      }
+    };
+    return this.makeRequest(requestOptions, cb);
   }
 };
