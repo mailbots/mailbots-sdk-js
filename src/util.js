@@ -11,7 +11,7 @@ export function _makeRequest(requestOptions, cb) {
       // Add http statusCode to response object
       if (res.data === "") {
         res.data = { statusCode: res.status };
-      } else {
+      } else if (typeof res.data === "object") {
         res.data.statusCode = res.status;
       }
       if (cb) cb(null, res.data);
