@@ -125,7 +125,7 @@ export class MailBotsClient {
     per_page?: number;
     page?: number;
     invisible?: boolean; // background tasks
-    person?: number,
+    personid?: number,
     suppress_webhook?: boolean,
   }, cb?: Function): Promise<{tasks: Task[]}>;
 
