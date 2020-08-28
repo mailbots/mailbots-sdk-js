@@ -65,6 +65,7 @@ class MailBotsClient {
       redirectUri: bot.config.redirectUri,
       scope: bot.config.scope,
       apiHost: bot.config.apiHost || "https://api.mailbots.com",
+      apiHostV3: bot.config.apiHostV3,
       tokenHost: bot.config.tokenHost || "https://api.mailbots.com",
       tokenPath: bot.config.tokenPath || "https://api.mailbots.com/api/v1/oauth2/access_token",
       authorizePath: bot.config.authorizePath || "https://api.mailbots.com/settings/oauth2_authorize"

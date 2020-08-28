@@ -59,7 +59,7 @@ export default {
   },
 
   /**
-   * An "Interbot Event" allows bots to send messages to each other. 
+   * An "Interbot Event" allows bots to send messages to each other.
    * This allows a MailBot to expose actions that can be utilized by
    * other MailBots (for example, creating an Evernote note)
    * In this way, MailBots can become composable.
@@ -78,9 +78,13 @@ export default {
       throw new Error("payload is required");
     }
 
+    const url = this.config.apiHostV3
+      ? urljoin(this.config.apiHostV3, "/api/v2/interbot_event")
+      : urljoin(this.config.apiHost, "/api/v1/interbot_event");
+
     const requestOptions = {
       method: "POST",
-      url: urljoin(this.config.apiHost, "/api/v1/interbot_event"),
+      url,
       headers: {
         Authorization: `Bearer ${this._accessToken}`,
         "Content-Type": "application/json"
