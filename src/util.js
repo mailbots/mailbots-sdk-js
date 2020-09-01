@@ -34,7 +34,7 @@ export function _makeRequest(requestOptions, cb) {
       let errorResponse =
         friendlyMessage || err.statusText || err.message || err.statusCode;
       let error = new Error(errorResponse);
-      error.statusCode = err.response.status;
+      error.statusCode = err && err.response && err.response.status;
       if (cb) cb(error);
       debug(errorResponse);
       return Promise.reject(error);
