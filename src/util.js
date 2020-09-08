@@ -33,6 +33,7 @@ export function _makeRequest(requestOptions, cb) {
       }
       let errorResponse =
         friendlyMessage || err.statusText || err.message || err.statusCode;
+      if (axios.isCancel(err)) errorResponse = "request cancelled";
       let error = new Error(errorResponse);
       error.statusCode = err && err.response && err.response.status;
       if (cb) cb(error);
