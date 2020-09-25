@@ -4,6 +4,7 @@ import People from "./people";
 import Webhooks from "./webhooks";
 import Auth from "./auth";
 import MailBots from "./mailbots";
+import Helpers from "./helpers";
 
 import { debug, _makeRequest, _checkParam, _extend } from "./util";
 
@@ -122,6 +123,7 @@ _extend(MailBotsClient, People);
 _extend(MailBotsClient, Webhooks);
 _extend(MailBotsClient, Auth);
 _extend(MailBotsClient, MailBots);
+_extend(MailBotsClient, Helpers);
 
 module.exports = {
   MailBotsClient

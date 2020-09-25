@@ -1,5 +1,23 @@
 import {AxiosRequestConfig, AxiosInstance} from "axios";
 
+export interface IFriendlyDate {
+  friendlyDate: string;
+  daysInFuture: number;
+  hoursInFuture: number;
+  howFarInFuture: string;
+}
+
+export interface IFUTCommand {
+  isTimeless: boolean;
+  timeFormat: string;
+  fullFormat: string;
+  emailDomain: string;
+  isValidTimeFormat: boolean;
+  timestamp: number | undefined;
+  friendlyDate: IFriendlyDate | undefined;
+  skills: Array<{ flag: string; tags: string[]; args: string[] }>;
+}
+
 interface Email {
   to: string,
   cc?: string,
@@ -674,4 +692,23 @@ export class MailBotsClient {
     },
     cb?: Function
   ): Promise<void>;
+
+  /**
+   * Parse a full fut command and extract individual components (timeFormat, skills, etc).
+   *
+   * @param {string} fullCommand - task command
+   * @param {ISkillInfo[]} existingSkills - task command
+   * @param {Object} options - date parsing extras
+   */
+  parseFutCommand(
+    fullCommand: string,
+    existingSkills: any[], // copy ISkillInfo interface in this project too?
+    options: {
+      validateNaturalTime?: boolean,
+      userTimezone?: string,
+      userPreferredDateFormat?: string,
+
+      commandFormatLegacy?: string
+    }
+  ) : Promise<IFUTCommand>;
 }

@@ -64,6 +64,10 @@
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10"
   },
+  "peerDependencies": {
+    "moment": "2.24.0",
+    "moment-timezone": "0.5.27"
+  },
   "husky": {
     "hooks": {
       "pre-push": "npm t"
