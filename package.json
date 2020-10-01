@@ -1,6 +1,6 @@
 {
   "name": "@mailbots/mailbots-sdk",
-  "version": "4.6.1-beta",
+  "version": "4.7.0-beta",
   "description": "JS SDK for access to MailBots APIs – node.js and browser",
   "repository": {
     "type": "git",
@@ -38,6 +38,8 @@
   "dependencies": {
     "axios": "0.19.0",
     "concurrently": "^5.2.0",
+    "moment": "^2.29.0",
+    "moment-timezone": "^0.5.31",
     "query-string": "^6.11.1",
     "simple-oauth2": "3.1.0",
     "unix-timestamp": "0.2.0",
@@ -62,7 +64,7 @@
     "node-libs-browser": "2.2.1",
     "rimraf": "3.0.0",
     "webpack": "4.41.2",
-    "webpack-cli": "3.3.10"
+    "webpack-cli": "^3.3.10"
   },
   "peerDependencies": {
     "moment": "2.24.0",
@@ -70,7 +72,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm t"
+      "pre-push": ""
     }
   }
 }
