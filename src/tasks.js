@@ -387,17 +387,18 @@ export default {
    * @param {string} params.action - The action string
    * @param {object} params.reference_email - The email that would be sent as the action email
    * @param {boolean} [params.verbose] - Include rendered HTML email contents in API response
+   * @param {boolean} [params.open] - Call an open actions (when action starts with "ao+")
    * @return {Promise}
    */
   sendAction(params, cb) {
     let qs = params.verbose ? "?verbose=1" : "";
+    let headers = {};
+    headers["Content-Type"] = "application/json; charset=UTF-8";
+    if (!params.open) headers.Authorization = `Bearer ${this._accessToken}`;
     const requestOptions = {
       method: "POST",
       url: urljoin(this.config.apiHost, "/api/v1/actions", qs),
-      headers: {
-        Authorization: `Bearer ${this._accessToken}`,
-        "Content-Type": "application/json; charset=UTF-8"
-      },
+      headers,
       data: JSON.stringify({
         action: params.action,
         reference_email: params.reference_email
