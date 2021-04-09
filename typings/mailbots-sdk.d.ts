@@ -337,7 +337,7 @@ export class MailBotsClient {
   naturalTime(params: {
     format: string,
     timezone?: string
-  }, cb?: Function): Promise<any>;
+  }, cb?: Function): Promise<{valid: boolean, time_ts?: number}>;
 
   /**
    * Dispatch an email-based action for a task. (Equivalent to sending an action email.)
