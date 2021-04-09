@@ -122,7 +122,6 @@ _extend(MailBotsClient, People);
 _extend(MailBotsClient, Webhooks);
 _extend(MailBotsClient, Auth);
 _extend(MailBotsClient, MailBots);
-_extend(MailBotsClient, Helpers);
 
 module.exports = {
   MailBotsClient
