@@ -1,12 +1,5 @@
 import {AxiosRequestConfig, AxiosInstance} from "axios";
 
-export interface IFriendlyDate {
-  friendlyDate: string;
-  daysInFuture: number;
-  hoursInFuture: number;
-  howFarInFuture: string;
-}
-
 interface Email {
   to: string,
   cc?: string,
