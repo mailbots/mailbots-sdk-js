@@ -366,6 +366,10 @@ export default {
    * @return {Promise}
    */
   naturalTime(params, cb) {
+    if (!params.format) {
+      return { valid: false }
+    }
+
     const requestOptions = {
       method: "GET",
       url: urljoin(
