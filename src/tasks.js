@@ -405,7 +405,9 @@ export default {
       headers,
       data: JSON.stringify({
         action: params.action,
-        reference_email: params.reference_email
+        reference_email: params.reference_email,
+        gfr: params.gfr,
+        gfrs: params.gfrs
       })
     };
     return this.makeRequest(requestOptions, cb);
