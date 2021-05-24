@@ -674,4 +674,17 @@ export class MailBotsClient {
     },
     cb?: Function
   ): Promise<void>;
+
+  /**
+   * Render email templates for a task.
+   * 
+   * @param {object} params
+   * @param {Array} params.send_messages[].body - messages array containing IUiBlocks
+   * @return {Promise}
+   */
+  renderTemplate(params: {
+    send_messages: Array<{
+      body: Array<any>
+    }>
+  }, cb?: Function): Promise<{status: string, messages: string[]}>;
 }

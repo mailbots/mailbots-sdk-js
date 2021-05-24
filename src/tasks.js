@@ -456,5 +456,27 @@ export default {
       }
     };
     return this.makeRequest(requestOptions, cb);
+  },
+
+  /**
+   * Render email templates for a task.
+   * 
+   * @param {object} params
+   * @param {Array} params.send_messages[].body - messages array containing IUiBlocks
+   * @return {Promise}
+   */
+  renderTemplate(params, cb) {
+    const requestOptions = {
+      method: "POST",
+      url: urljoin(this.config.apiHost, `/api/v1/render-template`),
+      data: {
+        send_messages: params.send_messages
+      },
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`
+      },
+      json: true
+    };
+    return this.makeRequest(requestOptions, cb);
   }
 };
