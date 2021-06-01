@@ -683,6 +683,9 @@ export class MailBotsClient {
    * @return {Promise}
    */
   renderTemplate(params: {
+    task: {
+      id: number
+    },
     send_messages: Array<{
       body: Array<any>
     }>

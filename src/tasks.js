@@ -470,6 +470,9 @@ export default {
       method: "POST",
       url: urljoin(this.config.apiHost, `/api/v1/render-template`),
       data: {
+        task: {
+          id: params.task.id
+        },
         send_messages: params.send_messages
       },
       headers: {
