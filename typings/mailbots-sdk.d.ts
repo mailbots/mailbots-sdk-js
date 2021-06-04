@@ -13,7 +13,7 @@ interface Task {
   command?: string,
   trigger_timeformat?: string | null,
   trigger_time?: number | null,
-  completed?: 0 | 1,
+  completed?: boolean,
   reference_email?: Email,
   stored_data?: {
     [key: string]: any
