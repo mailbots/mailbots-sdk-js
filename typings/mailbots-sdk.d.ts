@@ -687,7 +687,11 @@ export class MailBotsClient {
       id: number
     },
     send_messages: Array<{
-      body: Array<any>
+      type: "email",
+      body: Array<any>,
+      to: string,
+      cc?: string,
+      bcc?: string
     }>
   }, cb?: Function): Promise<{status: string, messages: string[]}>;
 }
