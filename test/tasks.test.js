@@ -29,7 +29,7 @@ describe("Tasks", function() {
    * is set up newly for each test.
    */
   let task;
-  beforeEach(async function() {
+  beforeEach("create new example task", async  function() {
   
     // reset testTasks array to zero 
     testTasks = [];
@@ -38,6 +38,7 @@ describe("Tasks", function() {
       suppress_webhook: true,
       task: {
         command: `example@${mailbotSubdomain1}.eml.bot`,
+        // command: `3days@followupthen.com`, // @todo - incorporate into mocks
         reference_email: {
           subject: "Subject 1"
         },
@@ -714,4 +715,31 @@ describe("Tasks", function() {
       exampleTask = res.tasks[0];
     });
   });
+
+  describe.skip("Rendering templates", () => {
+    it("should render a template with a taskid", async () => {
+      try {
+      const res = await mbClient.renderTemplate({
+        task: {id: 5 },
+        send_messages: [{ type: "email", to: "example@example.co", body: [{ type: "text", text: "hi"}] }],
+      })
+        console.log(res);
+      } catch (e) {
+    console.log(e.message);
+      }
+    })
+    
+    it("should render a template without a taskid", async () => {
+      try {
+      const res = await mbClient.renderTemplate({
+        task: { id: null },
+        send_messages: [{ type: "email", to: "example@example.co", body: [{ type: "text", text: "hi"}] }],
+      })
+      console.log(res);
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    })
+  })
 });

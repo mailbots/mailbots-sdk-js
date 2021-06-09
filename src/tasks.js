@@ -466,8 +466,6 @@ export default {
    * @return {Promise}
    */
   renderTemplate(params, cb) {
-    if(!params.task || !params.task.id)
-      throw Error("params.task.id is required");
     const requestOptions = {
       method: "POST",
       url: urljoin(this.config.apiHost, `/api/v1/render-template`),
