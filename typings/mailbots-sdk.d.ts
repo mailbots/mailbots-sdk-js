@@ -676,8 +676,36 @@ export class MailBotsClient {
   ): Promise<void>;
 
   /**
+   * Delete a task attachment.
+   * @param {object} params
+   * @param {number} params.task.id - formdata object containing the file to be uploaded
+   * @param {name} params.name - attachment name to remove
+   * @param {*} cb
+   * @returns {Promise}
+   */
+  deleteTaskAttachmentByName(params: {
+    task: {
+      id: number
+    },
+    name: string
+  }, cb?: Function): Promise<void>;
+
+  /**
+   * Delete ALL task attachments.
+   * @param {object} params
+   * @param {number} params.task.id - formdata object containing the file to be uploaded
+   * @param {*} cb
+   * @returns {Promise}
+   */
+  deleteAllTaskAttachments(params: {
+    task: {
+      id: number
+    }
+  }, cb?: Function): Promise<void>;
+
+  /**
    * Render email templates for a task.
-   * 
+   *
    * @param {object} params
    * @param {Array} params.send_messages[].body - messages array containing IUiBlocks
    * @return {Promise}

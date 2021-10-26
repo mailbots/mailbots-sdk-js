@@ -459,8 +459,47 @@ export default {
   },
 
   /**
+   * Delete a task attachment.
+   * @param {object} params
+   * @param {number} params.task.id - formdata object containing the file to be uploaded
+   * @param {name} params.name - attachment name to remove
+   * @param {*} cb
+   * @returns {Promise}
+   */
+  deleteTaskAttachmentByName(params, cb) {
+    const requestOptions = {
+      method: "DELETE",
+      url: urljoin(this.config.apiHost, `/api/v1/tasks/${params.task.id}/attachments/${params.name}`),
+      data: params.formData,
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`
+      }
+    };
+    return this.makeRequest(requestOptions, cb);
+  },
+
+  /**
+   * Delete ALL task attachments.
+   * @param {object} params
+   * @param {number} params.task.id - formdata object containing the file to be uploaded
+   * @param {*} cb
+   * @returns {Promise}
+   */
+   deleteAllTaskAttachments(params, cb) {
+    const requestOptions = {
+      method: "DELETE",
+      url: urljoin(this.config.apiHost, `/api/v1/tasks/${params.task.id}/attachments`),
+      data: params.formData,
+      headers: {
+        Authorization: `Bearer ${this._accessToken}`
+      }
+    };
+    return this.makeRequest(requestOptions, cb);
+  },
+
+  /**
    * Render email templates for a task.
-   * 
+   *
    * @param {object} params
    * @param {Array} params.send_messages[].body - messages array containing IUiBlocks
    * @return {Promise}
