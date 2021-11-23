@@ -4,6 +4,13 @@ import axios from "axios";
 export const debug = Debug("mailbots-sdk:request");
 
 export function _makeRequest(requestOptions, cb) {
+  
+  // add x-mailbots-sessionid for distributed tracing
+  requestOptions.headers = requestOptions.headers || {};
+  if (this._sessionId) {
+    requestOptions.headers = Object.assign({"x-mailbots-sessionid": this._sessionId}, requestOptions.headers);
+  }
+  
   debug("Request", requestOptions);
   const axiosClient = this.config.axiosClient || axios; // customized client can be passed into constructor
   return axiosClient(requestOptions)

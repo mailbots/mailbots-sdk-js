@@ -34,4 +34,22 @@ describe("Auth", function() {
     const mbClient = MailBotsClient.fromBot(botMock);
     done();
   })
+
+  it("instantiates in fromBot method with distributed sessionid set", (done) => {
+    const requestJson = {session_id: "1234", mailbot: { stored_data: { access_token: "secure"}}}
+
+    const botMock = {
+      config: {
+        clientId: "foo",
+        clientSecret: "bar"
+      },
+      get: function(path) {
+        return _.get(this, path)
+      }.bind(requestJson)
+    }
+
+    const mbClient = MailBotsClient.fromBot(botMock);
+    expect(mbClient._sessionId).to.equal("1234");
+    done();
+  })
 });

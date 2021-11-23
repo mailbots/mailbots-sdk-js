@@ -72,6 +72,11 @@ class MailBotsClient {
     });
     const accessToken = bot.get("mailbot.stored_data.access_token");
     mbClient.setAccessToken(accessToken);
+
+    // for distributed tracing
+    const sessionId = bot.get("session_id");
+    mbClient.setSessionId(sessionId);
+
     return mbClient;
   }
 
@@ -80,6 +85,13 @@ class MailBotsClient {
    */
   setAccessToken(accessToken) {
     this._accessToken = accessToken;
+  }
+
+  /*
+   *  Auth: Manually set access token if we already have it (ie, in a cookie, webhook, etc)
+   */
+  setSessionId(sessionId) {
+    this._sessionId = sessionId;
   }
 
   /*
