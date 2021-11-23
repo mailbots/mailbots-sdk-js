@@ -85,6 +85,11 @@ export class MailBotsClient {
   setAccessToken(accessToken: string): void;
 
   /**
+   *  Auth: Manually set session id for distributed tracing
+   */
+  setSessionId(sessionId: string): void;
+
+  /**
    * Low-level function to make authenticated request to MailBots API
    * @param {object} requestOptions - Axiox-compatible request ooptions
    * @param {function} [cb] - Optional callback.
