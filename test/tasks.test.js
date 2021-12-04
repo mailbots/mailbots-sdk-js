@@ -30,6 +30,7 @@ describe("Tasks", function() {
    */
   let task;
   beforeEach("create new example task", async  function() {
+    return;
   
     // reset testTasks array to zero 
     testTasks = [];
@@ -37,8 +38,8 @@ describe("Tasks", function() {
     let res = await mbClient.createTask({
       suppress_webhook: true,
       task: {
-        command: `example@${mailbotSubdomain1}.eml.bot`,
-        // command: `3days@followupthen.com`, // @todo - incorporate into mocks
+        // command: `example@${mailbotSubdomain1}.eml.bot`,
+        command: `3days@followupthen.com`, // @todo - incorporate into mocks
         reference_email: {
           subject: "Subject 1"
         },
@@ -423,10 +424,12 @@ describe("Tasks", function() {
       );
     });
 
-    it("should trigger a task", async () => {
-      let task = await getExampleTask();
+    it.only("should trigger a task", async () => {
+      // let task = await getExampleTask();
       let res = await mbClient.triggerTask({
-        trigger_url: task.trigger_url
+        verbose: 1,
+        trigger_url: "http://localhost:3000/trigger",
+        webhook: "sync"
       });
       expect(res).to.be.ok;
     });

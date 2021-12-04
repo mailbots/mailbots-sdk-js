@@ -334,9 +334,17 @@ export default {
       throw new Error("trigger_url is required");
     }
 
+    // build query string + url
+    let [url, qs] = params.trigger_url.split("?");
+    if(!qs) qs = {};
+    else qs = querystring.parse(qs)
+    if (params.verbose) qs.verbose = 1;
+    if (params.webhook) qs.webhook = params.webhook; // webhook = sync | async
+    if (Object.keys(qs).length > 0) url = url + "?" + querystring.stringify(qs);
+
     const requestOptions = {
       method: "POST",
-      url: params.trigger_url,
+      url,
       headers: {
         "Content-Type": "application/json; charset=UTF-8"
       }
@@ -346,10 +354,7 @@ export default {
       Object.assign(requestOptions, { data: params.payload });
     }
 
-    if (params.verbose) {
-      requestOptions.url += "?verbose=1";
-    }
-
+    // access token optional - tasks can be triggered from external sources
     if (this._accessToken) {
       Object.assign(requestOptions.headers, {
         Authorization: `Bearer ${this._accessToken}`

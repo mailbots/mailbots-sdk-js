@@ -1,6 +1,6 @@
 {
   "name": "@mailbots/mailbots-sdk",
-  "version": "4.10.1-beta",
+  "version": "4.11.0-beta",
   "description": "JS SDK for access to MailBots APIs – node.js and browser",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "test": "echo '⚠️ Running against mocked requests' && SERVER=true mocha --require @babel/register --require @babel/polyfill",
-    "test:live": "echo '\nTesting against live api set within .env \n\n'; SERVER=true NOCK_OFF=true mocha -t 5000 --require @babel/register --require @babel/polyfill --inspect",
+    "test:live": "echo '\nTesting against live api set within .env \n\n'; SERVER=true NOCK_OFF=true mocha -t 5000 --require @babel/register --require @babel/polyfill",
     "test:rebuild": "REBUILD_MOCKS=true npm run test:live",
     "build": "npm run build:node && npm run build:browser && npm run build:dist",
     "build:watch": "concurrently \"npm run build:node -- --watch\" \"npm run build:browser -- --watch\"",
