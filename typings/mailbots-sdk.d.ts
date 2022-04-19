@@ -132,6 +132,7 @@ export class MailBotsClient {
     invisible?: boolean; // background tasks
     personid?: number,
     suppress_webhook?: boolean,
+    verbose?: boolean // include html / text body
   }, cb?: Function): Promise<{tasks: Task[]}>;
 
   /**
