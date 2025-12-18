@@ -424,7 +424,7 @@ describe("Tasks", function() {
       );
     });
 
-    it.only("should trigger a task", async () => {
+    it("should trigger a task", async () => {
       // let task = await getExampleTask();
       let res = await mbClient.triggerTask({
         verbose: 1,

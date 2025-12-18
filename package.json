@@ -1,7 +1,10 @@
 {
   "name": "@mailbots/mailbots-sdk",
-  "version": "4.12.0-beta",
+  "version": "4.13.0-beta.1",
   "description": "JS SDK for access to MailBots APIs – node.js and browser",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mailbots/mailbots-sdk-js.git"
@@ -20,8 +23,8 @@
     "readme"
   ],
   "scripts": {
-    "test": "echo '⚠️ Running against mocked requests' && SERVER=true mocha --require @babel/register --require @babel/polyfill",
-    "test:live": "echo '\nTesting against live api set within .env \n\n'; SERVER=true NOCK_OFF=true mocha -t 5000 --require @babel/register --require @babel/polyfill",
+    "test": "echo '⚠️ Running against mocked requests' && SERVER=true mocha --require @babel/register",
+    "test:live": "echo '\nTesting against live api set within .env \n\n'; SERVER=true NOCK_OFF=true mocha -t 5000 --require @babel/register",
     "test:rebuild": "REBUILD_MOCKS=true npm run test:live",
     "build": "npm run build:node && npm run build:browser && npm run build:dist",
     "build:watch": "concurrently \"npm run build:node -- --watch\" \"npm run build:browser -- --watch\"",
@@ -36,39 +39,45 @@
   "author": "Reilly Sweetland @rsweetland",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.1",
-    "concurrently": "^5.2.0",
-    "moment": "^2.29.0",
-    "moment-timezone": "^0.5.31",
+    "axios": "^1.7.9",
     "query-string": "^6.11.1",
     "simple-oauth2": "3.1.0",
     "unix-timestamp": "0.2.0",
     "url-join": "4.0.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.14.5",
-    "@babel/core": "7.7.2",
-    "@babel/polyfill": "7.7.0",
-    "@babel/preset-env": "7.7.1",
-    "@babel/register": "7.7.0",
-    "babel-loader": "8.0.6",
-    "babel-plugin-minify-dead-code-elimination": "0.5.1",
-    "babel-plugin-transform-define": "2.0.0",
-    "chai": "4.2.0",
+    "@babel/cli": "^7.26.10",
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.10",
+    "@babel/register": "^7.26.10",
+    "babel-loader": "^8.4.1",
+    "babel-plugin-minify-dead-code-elimination": "^0.5.2",
+    "babel-plugin-transform-define": "^2.1.4",
+    "chai": "^4.2.0",
+    "concurrently": "^5.2.0",
+    "core-js": "^3.38.1",
     "debug": "^4.1.1",
-    "documentation": "12.1.4",
-    "dotenv": "8.2.0",
-    "husky": "3.1.0",
-    "mocha": "6.2.2",
-    "nock": "11.7.0",
-    "node-libs-browser": "2.2.1",
-    "rimraf": "3.0.0",
-    "webpack": "4.41.2",
+    "documentation": "^12.1.4",
+    "dotenv": "^8.2.0",
+    "husky": "^3.1.0",
+    "mocha": "^6.2.2",
+    "nock": "^11.7.0",
+    "node-libs-browser": "^2.2.1",
+    "rimraf": "^3.0.0",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },
   "peerDependencies": {
-    "moment": "2.24.0",
-    "moment-timezone": "0.5.27"
+    "moment": ">=2.24.0",
+    "moment-timezone": ">=0.5.27"
+  },
+  "peerDependenciesMeta": {
+    "moment": {
+      "optional": true
+    },
+    "moment-timezone": {
+      "optional": true
+    }
   },
   "husky": {
     "hooks": {
